@@ -23,7 +23,7 @@
   --m-glass:#A9BCC3; --m-glass-d:#8AA0A9; --m-frame:#30363A; --m-water:#94C4CF; --m-water-d:#6FA6B4;
   --m-scaff:#80878B; --m-steel:#40464B; --m-pave:#BAB5AB; --m-pave-d:#9D978C; --m-deck:#AE8763;
   --m-machine:#D9921C; --m-machine-d:#A86C0E; --m-car:#5B6670;
-  --m-void:#2B3034;
+  --m-void:#2B3034; --m-pv:#3C5873;
   --vz-maxh:max(260px, calc(100vh - 300px)); --vz-maxh:max(260px, calc(100dvh - 300px));
   container-type:inline-size;
   color:var(--vz-ink); font-family:var(--vz-f); font-variant-numeric:tabular-nums;
@@ -46,7 +46,7 @@
   --m-roof:#2A2D31; --m-roof-d:#1F2125; --m-roof-t:#34383D; --m-metal:#4B5056; --m-metal-d:#393D42;
   --m-glass:#24323B; --m-glass-d:#1B262D; --m-frame:#0F1215; --m-water:#2F7E92; --m-water-d:#22606F;
   --m-scaff:#59616A; --m-steel:#1E2226; --m-pave:#4E4B46; --m-pave-d:#3D3A36; --m-deck:#5A4431;
-  --m-machine:#9C6A16; --m-machine-d:#704B0E; --m-car:#3B444C; --m-void:#07090B;
+  --m-machine:#9C6A16; --m-machine-d:#704B0E; --m-car:#3B444C; --m-void:#07090B; --m-pv:#4F82B3;
 }}
 :root[data-theme="dark"] .viz{
   --vz-paper:var(--bg,#11161C); --vz-sheet:var(--pane,#18202A); --vz-rule:var(--line,#2C3743); --vz-rule-2:var(--line-2,#3F4C59);
@@ -65,7 +65,7 @@
   --m-roof:#2A2D31; --m-roof-d:#1F2125; --m-roof-t:#34383D; --m-metal:#4B5056; --m-metal-d:#393D42;
   --m-glass:#24323B; --m-glass-d:#1B262D; --m-frame:#0F1215; --m-water:#2F7E92; --m-water-d:#22606F;
   --m-scaff:#59616A; --m-steel:#1E2226; --m-pave:#4E4B46; --m-pave-d:#3D3A36; --m-deck:#5A4431;
-  --m-machine:#9C6A16; --m-machine-d:#704B0E; --m-car:#3B444C; --m-void:#07090B;
+  --m-machine:#9C6A16; --m-machine-d:#704B0E; --m-car:#3B444C; --m-void:#07090B; --m-pv:#4F82B3;
 }
 
 /* ===== Interfejs ===== */

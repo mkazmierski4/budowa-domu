@@ -224,7 +224,7 @@ const STAGES = [
   ['Okna i drzwi', 'Stan surowy zamknięty: okna z ramiakami, drzwi wejściowe, segmentowa brama garażowa.'],
   ['Instalacje', 'Z zewnątrz widać tylko złącze kablowo-pomiarowe w ogrodzeniu i przepusty w ścianie.'],
   ['Ogrzewanie i woda', 'Przy ścianie stanęła jednostka zewnętrzna pompy ciepła na fundamencie.'],
-  ['Rekuperacja i PV', 'Na dachu panele fotowoltaiczne, na ścianie czerpnia i wyrzutnia rekuperatora.'],
+  ['Rekuperacja i PV', 'Na połaci od ogrodu 14 modułów PV (2 × 7, ok. 6,4 kWp). Połać jest za dachem, więc rysujemy ją przez dach, a na ścianie widać czerpnię i wyrzutnię rekuperatora.'],
   ['Tynki i wylewki', 'Mokre prace w środku: agregat do wylewek przed domem, wąż wchodzi przez okno.'],
   ['Elewacja', 'Ocieplenie w toku od prawej: płyty na kołkach, siatka w kleju, z lewej gotowy tynk, kamień i deska.'],
   ['Wykończenie', 'Rusztowanie zdjęte. W środku, za przeszkleniami, widać kuchnię z wyspą i ciepłe światło.'],
@@ -493,6 +493,22 @@ function walls(n){
   return s;
 }
 
+/* wstawka: połać od ogrodu w rzucie na płaszczyznę połaci (7 × 2 moduły 1,13 × 1,72 m) */
+function pvInset(anchor){
+  const X = 925, Y = 78, Wd = 262, Hd = 170, k = 29, ox = X + (Wd - (7*1.18-.05)*k)/2, oy = Y + 34;
+  let s = `<path class="thin" style="stroke:var(--vz-accent);stroke-dasharray:4 3" d="M${r1(anchor[0])} ${r1(anchor[1])}L${X} ${Y+Hd-10}"/><circle class="inkf" cx="${r1(anchor[0])}" cy="${r1(anchor[1])}" r="2.2"/>`;
+  s += `<rect x="${X}" y="${Y}" width="${Wd}" height="${Hd}" class="paper e"/><rect x="${X+6}" y="${Y+28}" width="${Wd-12}" height="${Hd-52}" class="roof e"/>`;
+  let t = ''; for (let y = Y+28+16; y < Y+Hd-24; y += 16) t += `M${X+6} ${y}H${X+Wd-6}`;
+  s += path(t,'jj" style="stroke:var(--vz-sheet);opacity:.25');
+  for (let i = 0; i < 7; i++) [0,1].forEach(r => {
+    const x = ox + i*1.18*k, y = oy + 8 + r*1.85*k, w = 1.13*k, h = 1.72*k;
+    s += `<rect x="${r1(x)}" y="${r1(y)}" width="${r1(w)}" height="${r1(h)}" style="fill:var(--m-pv);stroke:var(--m-frame);stroke-width:1.4"/>`
+       + `<path class="jj" style="stroke:var(--vz-sheet);opacity:.55" d="M${r1(x+w/2)} ${r1(y)}v${r1(h)}M${r1(x)} ${r1(y+h/2)}h${r1(w)}"/>`;
+  });
+  s += `<text class="call" x="${X+10}" y="${Y+19}" style="font-weight:700">Połać od ogrodu (południe)</text>`
+     + `<text class="lbl" x="${X+10}" y="${Y+Hd-8}">14 modułów PV · ok. 6,4 kWp</text>`;
+  return s;
+}
 /* ---------- Dach ---------- */
 function roof(n){
   if (n < 6) return '';
@@ -536,12 +552,19 @@ function roof(n){
     s += fpoly(ff,R(u-.05,2.15,u+.83,3.65),'metal e') + fpoly(ff,R(u+.04,2.25,u+.74,3.52),n >= 13 ? 'lit e' : 'glass e');
     if (n >= 13) s += `<g class="glow">${fpoly(ff,R(u+.04,2.25,u+.74,3.52),'e0')}</g>`;
   });
-  if (n >= 10) [6.5,7.68,10.7,11.88].forEach(u => [1.0,2.78].forEach(v => {
-    s += fpoly(ff,R(u,v,u+1.13,v+1.72),'frame e') + path(stripes(ff,u,u+1.13,v,v+1.72,.28,true) + stripes(ff,u,u+1.13,v,v+1.72,.29,false),'jj" style="stroke:var(--vz-sheet);opacity:.35');
-  }));
   if (!stage6) s += pline([ff(-.4,LS),ff(13.4,LS)],'ln" style="stroke:var(--m-roof-d);stroke-width:3.2') + path(stripes((u,v) => ff(u,LS+v),-.4,13.4,-.05,.05,.33,true),'jj');
   s += poly([ff(13.4,0),ff(13.4,LS),[13.4,4.75,RIDGE-.25],[13.4,9.5+OVH,EZ-.25]],'wood-d e') + poly([fb(13.4,0),fb(13.4,LS),[13.4,4.75,RIDGE-.25],[13.4,-OVH,EZ-.25]],'wood-d e');
   s += fpoly(FY(9.5+OVH),R(-.4,EZ-.22,13.4,EZ),'wood-d e');                                         // deska czołowa / podbitka
+  // PV: 14 modułów (2 × 7, ok. 6,4 kWp) na połaci od ogrodu (południe) = połać tylna fb, w tej aksonometrii zasłonięta przez połać frontową.
+  // Pokazujemy ją dwa razy: cienki przerywany obrys w prawdziwym miejscu (przez dach) i czytelną wstawkę „połać od ogrodu” obok domu.
+  if (n >= 10){
+    let pv = '';
+    for (let i = 0; i < 7; i++) [1.0,2.85].forEach(v => {
+      pv += fpoly(fb,R(2.75+i*1.18,v,3.88+i*1.18,v+1.72),'frame e" style="fill:var(--m-pv);fill-opacity:.7;stroke:var(--vz-sheet);stroke-width:.8;stroke-dasharray:3 2');
+    });
+    s += `<g class="pv-ghost">${pv}</g>`;
+    s += pvInset(P(13.4,4.75,RIDGE));
+  }
   if (!stage6 || true){
     s += poly([[-.4,10.25,EZ-.18],[13.4,10.25,EZ-.18],[13.4,10.25,EZ-.02],[-.4,10.25,EZ-.02]],'metal e'); // rynna
     [[.3,9.6],[12.7,9.6]].forEach(p => s += fpoly(FY(p[1]+.02),R(p[0]-.05,0,p[0]+.05,EZ-.1),'metal e'));
@@ -778,7 +801,7 @@ const DETAILS = [
       + `<rect x="110" y="190" width="16" height="8" class="roof e"/><rect x="234" y="190" width="16" height="8" class="roof e"/>` + rc(96,198,168,30,'hConc') + rc(150,228,60,70,'hGrav')
       + `<path class="ln" style="stroke-width:6;stroke:var(--m-eps-d)" d="M100 110H40V60"/>`
       + nb(200,120,268,52,1) + nb(118,194,56,248,2) + nb(240,212,286,240,3) + nb(180,270,240,292,4) + nb(70,110,40,140,5) + nb(30,40,60,28,6) },
- { t:'Mocowanie paneli fotowoltaicznych', tg:[8.1,ff(8,3)[1],ff(8,3)[2]], d:'Hak dachowy przykręca się do krokwi i wyprowadza spod dachówki, bez jej przewiercania. Na hakach leżą szyny, a do nich klemy trzymają moduły.',
+ { t:'Mocowanie paneli fotowoltaicznych', tg:[8.1,fb(8,2.7)[1],fb(8,2.7)[2]], d:'Hak dachowy przykręca się do krokwi i wyprowadza spod dachówki, bez jej przewiercania. Na hakach leżą szyny, a do nich klemy trzymają moduły.',
    items:['Moduł fotowoltaiczny w ramie','Klema mocująca','Szyna aluminiowa','Hak dachowy pod dachówką','Krokiew','Dachówka na łatach i kontrłatach'],
    svg: rc(0,230,320,50,'hWood') + `<rect x="0" y="222" width="320" height="8" class="memb e"/>` + rc(0,206,320,16,'hWoodX') + (() => { let s = ''; for (let x = 0; x < 320; x += 52) s += `<path class="roof e" d="M${x} 206h50v-14h-50z"/>`; return s; })()
       + `<path class="metal-d e" d="M120 230v-46h40v-14h8v20h-40v40z"/><rect x="40" y="152" width="250" height="16" class="metal e"/><rect x="30" y="118" width="270" height="20" class="frame e"/><path class="metal e" d="M150 138h20v14h-20z"/>`
