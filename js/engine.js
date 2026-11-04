@@ -172,18 +172,20 @@
       return '<div class="seg seg-'+c.id+(c.reserve?' res':'')+'" style="flex-grow:'+c.plan+'"><span class="trk"><i class="f"></i><i class="c"></i></span><div class="seg-l"><b>'+c.name+'</b><span class="num" data-cat="'+c.id+'"></span></div></div>';
     }).join('');
   }
-  // Ciemny pasek = kroki odebrane, jasny = zaplanowane (środek widełek). flashCat: kategoria do podświetlenia po zmianie wyboru.
+  // Budżet idzie za pozycją czytelnika: ciemny pasek = wydane do bieżącego kroku (włącznie), jasny = reszta planu (środek widełek).
+  // flashCat: kategoria do podświetlenia po zmianie wyboru.
   function budget(flashCat){
-    var per = {}, all = 0, lo = 0, hi = 0;
+    var per = {}, all = 0, spent = 0, lo = 0, hi = 0;
     CATS.forEach(function(c){ per[c.id] = { d:0, p:0, lo:0, hi:0 }; });
     registered().forEach(function(s){
       var c = per[s.category];
       if (c && CATS.filter(function(x){ return x.id===s.category; })[0].reserve) c = null;
       if (!c){ if (window.console) console.warn('Nieznana kategoria budżetu w etapie '+s.id+': '+s.category); return; }
-      s.steps.forEach(function(p){
+      s.steps.forEach(function(p, i){
         var v = costOf(s, p); if (!v) return;
         var m = (v.min+v.max)/2;
-        if (isDone(s, p)) c.d += m; else c.p += m;
+        var past = cur.nr !== null && (s.nr < cur.nr || (s.nr === cur.nr && i <= cur.step));
+        if (past){ c.d += m; spent += m; } else c.p += m;
         c.lo += v.min; c.hi += v.max; lo += v.min; hi += v.max; all += m;
       });
     });
@@ -195,11 +197,11 @@
       $('.c', seg).style.left = fw+'%';
       $('.c', seg).style.width = cw+'%';
       seg.classList.toggle('over', x.d+x.p > c.plan);
-      $('[data-cat="'+c.id+'"]', seg).textContent = k(x.d+x.p)+' / '+k(c.plan)+' tys.';
-      seg.title = c.name+': '+zl(x.d+x.p)+' z '+zl(c.plan)+(x.lo||x.hi ? ' (widełki '+money(x.lo, x.hi)+')' : '');
+      $('[data-cat="'+c.id+'"]', seg).textContent = k(x.d)+' / '+k(c.plan)+' tys.';
+      seg.title = c.name+': wydano do tego kroku '+zl(x.d)+', plan całej kategorii '+zl(x.d+x.p)+' z limitu '+zl(c.plan)+(x.lo||x.hi ? ' (widełki '+money(x.lo, x.hi)+')' : '');
     });
-    countTo($('#mSpent'), all); countTo($('#mLeft'), TOTAL-all);
-    $('#mRange').textContent = hi ? 'widełki '+money(lo, hi) : '';
+    countTo($('#mSpent'), spent); countTo($('#mLeft'), TOTAL-spent);
+    $('#mRange').textContent = 'plan całości '+zl(Math.round(all/1000)*1000)+(hi ? ' · widełki '+money(lo, hi) : '');
     $('#mRes').textContent = 'w tym rezerwa '+k(RESERVE)+' tys.';
     $('.money .left').classList.toggle('over', all > TOTAL - RESERVE);
     if (flashCat && lastAll !== null && Math.round(lastAll) !== Math.round(all)){
@@ -463,6 +465,7 @@
     var dir = (a[0]-b[0] || a[1]-b[1] || a[2]-b[2]) > 0 ? 1 : -1;
     var stageChg = nr !== cur.nr, same = !stageChg && step === cur.step;
     cur = { nr:nr, step:step, panel:panel };
+    if (!same) budget();
     if (same) swap($('#panel'), dir, function(){ renderPanel(); toCard(); });
     else swap(wrap, dir, function(){ renderStep(); renderRail(); toCard(); });
     if (stageChg) viz('setStage', vizNr(reg[nr]));
