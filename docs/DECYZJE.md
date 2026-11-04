@@ -1,0 +1,88 @@
+# Rejestr decyzji (rekomendowana ścieżka)
+
+Każda sesja z treścią dopisuje tu wybrane rozwiązania (jedna linia), żeby kolejne etapy były spójne.
+Format: `etap | temat | wybór | szacowany koszt`
+
+- 00 | budżet całkowity | 2 300 000 zł (wariant A, decyzja właściciela 2026-11-03: dom jak na zdjęciu, z basenem i rezerwą 10%) | —
+- 00 | podział budżetu (plan od 2026-11-03) | działka i formalności 330 tys. · stan surowy 680 tys. · instalacje 270 tys. · wykończenie (z elewacją i meblami) 540 tys. · ogród 250 tys. · **rezerwa 230 tys. (10%)** | razem 2 300 000 zł; limity kategorii razem 2 070 000 zł; etapy planują w limitach kategorii, rezerwy nie wydają
+- 01 | działka | ok. 1200 m², prostokąt ok. 30 × 40 m (front min. 27 m), obrzeża małego miasta 5–10 km, MPZP z przeznaczeniem MN, prąd i woda w drodze, wjazd od północy (ogród, taras i basen od południa), grunt nośny pod ławy wg opinii geotechnicznej | działka 190–240 tys. zł (śr. 215 tys.)
+- 01 | koszty zakupu i przygotowania | umowa przedwstępna notarialna 1–1,6 tys. · akt: PCC 2% + taksa + KW ok. 6,5–8,5 tys. · geotechnika 1,8–3,5 tys. · mapa do celów projektowych 2–3,5 tys. · wypis MPZP ok. 0,1 tys. | etap 01 razem ok. 202–257 tys. zł (śr. ok. 229 tys.)
+- F1 | budżet w silniku | koszt kroku = `cost` kroku + `cost` wybranej opcji; opcja to dopłata/oszczędność względem kosztów kroków (może być ujemna); pasek: ciemny = kroki odebrane, jasny = zaplanowane (środek widełek) | —
+- F1 | wizualizacja a postęp | silnik woła `VIZ.setStage(nr)` przy zmianie etapu; po odebraniu wszystkich kroków etapu `VIZ.setStage(nr + 1)` (dom „dorasta” do kolejnego etapu) | —
+- F1 | układ strony (poprawka) | jedno przewijanie całej strony; pasek budżetu sticky u góry, stopka kroku sticky u dołu; lista etapów i panel domu sticky pod paskiem tylko gdy mieszczą się w wysokości ekranu (klasa `.stick`); po zmianie kroku płynny powrót do początku karty | —
+- F1 | rezerwa w pasku budżetu | 6. kategoria `rezerwa` 230 tys. (`reserve:true` w `CATS`), kreskowany segment, etapy jej nie wydają; „Zostaje” liczone od 2,3 mln, czerwone gdy plan przekroczy 2,07 mln | —
+- F0c | geometria domu w wizualizacji | bryła 13 × 9,5 m + garaż 6,5 × 7 m (dach dwuspadowy prostopadły), dach 40°, ścianka kolankowa 1 m, posadzka ±0,00 = teren +0,35–0,40 | —
+- F0c | przegroda ściany (przekrój) | pustak ceramiczny 25 + styropian grafitowy 20 (wełna jako wariant), cokół i fundament XPS 15, ściana fund. z bloczków 25, ława 60 × 35 (4Ø12, strz. Ø6), spód ławy −1,40 | —
+- F0c | podłoga na gruncie | podkład 10 + papa + EPS 100 15 cm + jastrych 6,5 z podłogówką | —
+- F0c | ogród w wizualizacji | basen 4,2 × 8,5 m z boku domu, taras zadaszony szkłem przy szczycie, PV 8 modułów na połaci frontowej, pompa ciepła powietrzna przy ścianie bocznej | —
+- F2 | viz: kolory | tokeny `--vz-*` w `css/viz.css` biorą kolory aplikacji (`--bg --pane --line --ink --wood --lamp --sky1/2 --draw --lit`), akcent viz = `--wood` (w makiecie był niebieski); materiały `--m-*` własne, z makiety | —
+- F2 | viz: animacja | `setStage` porównuje elementy SVG z poprzednim etapem: nowe dorysowują się (stroke-dashoffset) i wsuwają kaskadowo, znikające gasną; suwak w viz to tylko podgląd z przyciskiem „Wróć do bieżącego” | —
+- F2 | viz: układ | responsywność przez container query (`.viz` = kontener), bo viz siedzi w wąskim panelu; widok Dom/Przekrój przełączany zakładkami w samej viz i przez `VIZ.setView` / `VIZ.highlight` | —
+- 00 | wkład i kredyt | wkład min. 20% (działka wlicza się do wkładu), kredyt ok. 0,8–1 mln zł (35–45% budżetu 2,3 mln), rata do 30–35% dochodu netto, test przy stopach +2 pp | koszt w odsetkach, nie w budżecie budowy
+- 00 | dopłaty | w budżecie nie zakładamy żadnych dotacji; wniosek zwykle przed zakupem pompy i PV; „sprawdź aktualne warunki” | —
+- 00 | rezerwa | 10% = 230 tys. zł (kategoria „rezerwa”), część 2,3 mln zł; etapy planują w limitach kategorii razem 2,07 mln, rezerwy nie wydają; osobne konto | —
+- 00 | sposób budowy | ekipy na etapy + kierownik budowy (GW ok. +100–180 tys. zł, system gospodarczy ok. −60–−120 tys. zł); transze kredytu = etapy | baza 0 zł
+- 00 | umowy z wykonawcami | ryczałt za etap, zaliczka 10–20% tylko na materiał, kara ok. 0,2–0,5%/dzień, kaucja gwarancyjna 5–10%, zmiany tylko na piśmie | —
+- 00 | kredyt na budowę | kredyt hipoteczny w transzach (5–8, inspekcja banku, wypłata po kilku dniach), wniosek po pozwoleniu, wstępna decyzja przed zakupem działki | ok. 3–25 tys. zł (wycena, prowizja 0–2%)
+- 00 | ubezpieczenie budowy | pełna polisa budowlana (szkody, kradzież, OC) z cesją na bank, przed pierwszym wykopem | ok. 3–8 tys. zł
+- 00 | harmonogram ogólny | 18–24 mies. od zakupu działki, w tym budowa ok. 12–15 mies.; fundamenty wiosną, stan surowy zamknięty przed zimą, instalacje i tynki zimą | —
+- 00 | etap 00 razem | kosztorys 1,5–4 tys. · kredyt 3–25 tys. · polisa 3–8 tys. | ok. 7,5–37 tys. zł (śr. ok. 22 tys.), kategoria „działka i formalności”
+- 02 | projekt | gotowy + adaptacja + zmiany pod nasz dom (układ wnętrz i przeszklenia, bryła bez zmian; istotne zmiany wg licencji za zgodą autora); zakres: PZT + arch-bud + techniczny | 24–38 tys. zł (śr. 31 tys.)
+- 02 | zgodność z MPZP/WZ | zabudowa ok. 169 m² (ok. 14% działki), kalenica ok. 8–8,5 m nad terenem, dach 40° musi mieścić się w widełkach planu, biologicznie czynna ok. 60–70% (basen nie liczy się); sprawdza architekt przed adaptacją | —
+- 02 | dokumentacja techniczna | rozszerzona: rysunki wykonawcze instalacji (PC, podłogówka, rekuperacja, PV), więźby i schodów | +5–11 tys. zł (razem z wydrukami 0,3–0,8 tys.)
+- 02 | pozwolenie vs zgłoszenie | pozwolenie na budowę (ostrożnie); zgłoszenie z projektem możliwe, gdy architekt potwierdzi obszar oddziaływania w całości na działce, wtedy oszczędność 1–2 mies. | opłata skarbowa 47 zł
+- 02 | wniosek | e-Budownictwo, architekt jako pełnomocnik | 17–800 zł
+- 02 | kierownik budowy | niezależny kierownik (zgodnie z 00: ekipy na etapy); inspektor nadzoru opcjonalnie +10–18 tys. zł | 7–12 tys. zł (śr. 9,5 tys.)
+- 02 | media | wnioski o warunki przyłączenia (prąd z zapasem 3×25–32 A, woda, kanalizacja lub oczyszczalnia) składane równolegle z projektem; bez gazu (pompa ciepła); koszty przyłączy w etapie 03 | —
+- 02 | terminy | pozwolenie do 65 dni + 14 dni na uprawomocnienie, zgłoszenie 21 dni, zawiadomienie min. 7 dni przed startem; formalności razem 3–6 mies.; kredyt na budowę po ostatecznym pozwoleniu | —
+- 02 | etap 02 razem | projekt 24–38 · dokumentacja rozszerzona i wydruki 5,3–11,8 · pozwolenie 0,05 · pełnomocnik 0,02–0,8 · kierownik 7–12 · tablica 0,15–0,4 | ok. 37–63 tys. zł (śr. ok. 50 tys.), kategoria „działka i formalności” (razem z 01 i 00 ok. 300 tys. z 330 tys.)
+- 03 | start budowy | kierownik, tablica i zawiadomienie PINB liczone w etapie 02 (nie dublować); inspektor nadzoru na kluczowych odbiorach (zbrojenie, izolacje, strop, więźba, instalacje) | +4–8 tys. zł
+- 03 | ogrodzenie tymczasowe | panele budowlane ok. 60 m wokół strefy budowy (zakup, odsprzedaż ok. 50–60%), brama min. 4 m | 3–6 tys. zł
+- 03 | droga dojazdowa | kruszywo 0/63 25–30 cm na geowłókninie, ok. 120 m², szer. min. 3,5 m; po budowie podbudowa podjazdu | 6–10 tys. zł
+- 03 | zaplecze | kontener 20' z wynajmu + toaleta przenośna z serwisem | 7,5–13 tys. zł
+- 03 | prąd | przyłącze docelowe 3×25–32 A używane na budowie + rozdzielnia budowlana z RCD 30 mA; rury rezerwowe w wykopie | 9,5–19 tys. zł
+- 03 | woda | przyłącze PE 32–40 mm poniżej przemarzania (ok. 1,0–1,2 m), studnia wodomierzowa w granicy, wspólny wykop z prądem i światłowodem; podlicznik ogrodowy do rozważenia | 6–12 tys. zł
+- 03 | humus | zdjęcie ok. 500 m² × 30 cm (ok. 150 m³ w gruncie, ok. 190 m³ w hałdzie); hałdy na działce do 1,5–2 m, osobno podglebie; humus wraca do ogrodu (etap 15) | 3–6 tys. zł
+- 03 | wytyczenie i ławy ciesielskie | geodeta wytycza narożniki i reper, wpis do dziennika; ławice 1,5–2 m od wykopu, kontrola przekątnych (dom 13 × 9,5 m: 16,10 m) | 2–4,2 tys. zł
+- 03 | kanalizacja | przydomowa oczyszczalnia ok. 5 RLM, bo na działce referencyjnej nie założono sieci (przy sieci w drodze przełączyć na przyłącze gminne, ok. 8–16 tys. zł); przejścia przez fundament w etapie 04; miejsce na drenaż zarezerwować w projekcie ogrodu (etap 15) | 18–30 tys. zł
+- 03 | gaz | bez gazu (pompa ciepła powietrzna + PV, płyta indukcyjna, kominek na drewno); bez komina dla kotła | 0 zł
+- 03 | światłowód | rura HDPE 40–50 mm z linką + 1–2 rury rezerwowe w wykopie przyłączy | 1–4 tys. zł
+- 03 | etap 03 razem | kategoria „stan surowy”; suma bez kierownika (jest w 02) | 60–112,2 tys. zł (śr. ok. 86 tys.)
+- 06 | geometria dachu | kalenica wzdłuż boku 13 m, 40°, okap ok. 0,4 m, połać ok. 255 m² (dom ok. 190 + garaż ok. 70 m², garaż prostopadły, bez okapu od strony domu); krokiew ok. 6,7 m, kalenica ok. 4 m nad ścianką kolankową | —
+- 06 | drewno i murłata | C24 suszone komorowo ok. 15–18%, impregnowane fabrycznie, ok. 16–18 m³; murłata 14 × 14 na izolacji, kotwy M12–M14 co 1–1,5 m zabetonowane w wieńcu (etap 05), poziom ± 5 mm | murłata i kotwy 2–3,5 tys. zł
+- 06 | więźba | tradycyjna ciesielska (krokwie ok. 8 × 20 co 80–90 cm, jętki ok. 2,4–2,6 m nad podłogą); wiązary attic odrzucone (zabierają szerokość poddasza), dopłata −2–+8 tys. zł | 36–48 tys. zł
+- 06 | membrana i łaty | membrana wysokoparoprzepuszczalna (sd ≤ 0,1 m) pod kontrłatami, wentylowana szczelina okap–kalenica, łaty 40 × 50 co ok. 33 cm; paroizolacja od wnętrza w etapie 11 | membrana 3–4,5 tys. · kontrłaty i łaty 5–7,5 tys. zł
+- 06 | pokrycie | dachówka ceramiczna ciemna (grafit/antracyt, angoba lub szkliwo), ok. 160–215 zł/m²; alternatywy: betonowa 27–38, blachodachówka 23–34, rąbek 60–82 tys. zł | 40–55 tys. zł
+- 06 | obróbki | komin tylko od kominka (wylot wg kominiarza), obróbka przyścienna garażu, kalenice wentylowane, wiatrownice i deski czołowe | 4,5–8 tys. zł
+- 06 | okna dachowe | ok. 4 szt. (np. 78 × 140), trzyszybowe, kołnierz do dachówki + zestaw izolacyjny, dolna krawędź ok. 90–110 cm nad podłogą, rolety zewnętrzne do rozważenia (etap 07/13) | 13–18 tys. zł
+- 06 | rynny | stal powlekana grafit/antracyt, ok. 43 mb i ok. 6 rur; deszczówka do zbiornika/drenażu w etapie 15 (nie do kanalizacji) | 5–8 tys. zł (PVC 3–4,5, tytan-cynk 12–17)
+- 06 | śnieg, wyłaz, PV | płotki ok. 25–30 mb (wejście, garaż, taras), wyłaz + ława kominiarska; haki, przepust i rura Ø 32–40 z linką pod 8 modułów PV (etap 10); podbitka dopiero w etapie 12 | 2,5–4,5 tys. · 0,8–1,8 tys. zł
+- 06 | etap 06 razem | kategoria „stan surowy”; z ceramiką i stalą | 111,8–158,8 tys. zł (śr. ok. 135 tys.)
+- 05 | materiał ścian | pustak ceramiczny poryzowany 25 cm P+W z jednego systemu (nadproża, wieńce, komin); ok. 175 m² ścian zewn. netto + 50 m² nośnych wewn., ok. 2,6 tys. szt.; zamiana materiału tylko za zgodą projektanta | materiał 38–48 tys. zł (silikat 33–42, komórkowy 35–45)
+- 05 | spoina | zaprawa ciepła ok. 1 cm (pianka i szlifowane pustaki jako wariant dla doświadczonej ekipy, koszt całkowity podobny); murowanie od +5°C, nie zimą | robocizna parteru 12–17 tys. zł
+- 05 | rusztowanie | ramowe z wynajmu z montażem i protokołem odbioru, ok. 450–520 m², zostaje do końca dachu (i do elewacji w etapie 12, ponowny montaż liczyć tam) | 12–20 tys. zł
+- 05 | dostawa | 2–3 transporty z HDS (parter, kolankowa i szczyty, nadproża/wieńce/komin), ok. 55 palet | 2,5–5 tys. zł
+- 05 | nadproża | prefabrykowane (belki + L19) z elementem izolacyjnym, oparcie min. ok. 25 cm; monolityczne tylko przy nietypowych otworach | 6–10 tys. zł
+- 05 | duże przeszklenia | podciąg żelbetowy w grubości stropu (stal IPE/HEB tylko gdy konstruktor dopuści); wymiary wyłącznie z projektu konstrukcyjnego | 7–14 tys. zł
+- 05 | wieniec | wieniec stropowy ok. 25 × 25 cm, min. 4Ø12 + strzemiona Ø6 (wg projektu), ocieplony (XPS ok. 5 cm), ok. 70 mb | 8–12 tys. zł
+- 05 | strop nad parterem | filigran ok. 20–24 cm, ok. 125 m²; monolit i Teriva jako warianty; stemple orient. 14–21 dni, obciążenie po ok. 28 dniach; przepusty i otwór schodowy przed zalaniem | 34–46 tys. zł
+- 05 | schody | w etapie 05 tylko otwór ok. 1,0–1,2 × 2,8–3,2 m (wymiar z projektu schodów) i wypusty, jeśli żelbetowe; wybór typu i koszt w etapie 13 | —
+- 05 | ścianki działowe | 11,5 cm, murowane po stropie z dylatacją od góry, ok. 110 m² (+ nośne wewn. ok. 50 m²) | 16–24 tys. zł
+- 05 | kolankowa i szczyty | kolankowa 1,0 m, szczyty pod 40° z wieńcami szczytowymi, wieniec pod murłatę z kotwami uzgodnionymi z dekarzem (etap 06), ok. 80 m² netto | 19–28 tys. zł
+- 05 | komin | systemowy ceramiczny ok. 8–9 m z własną podstawą (sprawdzić w projekcie konstrukcji) wyłącznie dla kominka na drewno; stalowy dwuścienny jako wariant; kominek zamknięty z doprowadzeniem powietrza z zewnątrz; wywiewka i czerpnia rekuperacji osobno (etap 10); opinia kominiarska | 9–14 tys. zł
+- 05 | odbiór | pion/poziom/przekątne, wieńce, strop, nadproża, komin, przepusty przed dachem; geodeta | 0,6–1,5 tys. zł
+- 05 | etap 05 razem | kategoria „stan surowy”; bez dachu, okien i tynków | 165,6–242,5 tys. zł (śr. ok. 204 tys.)
+- 04 | fundament | ławy 60 × 35 (4Ø12, strz. Ø6 co 25–30, otulina ok. 5 cm) + ściany z bloczków betonowych 25 cm, ok. 76 m ław, spód ławy −1,40; płyta +25–50 tys., bloczki szalunkowe +9–15 tys. | baza 0 zł
+- 04 | wykop i chudy beton | wykop ok. 1,0 m szer. do −1,50 (ok. 70 m³, 40–50 m³ wraca na zasypkę), odbiór dna przez kierownika wg geotechniki; chudy beton C8/10 10 cm | 3,5–6 + 3–4,5 tys. zł
+- 04 | szalunek | szalunek z desek/płyt; ława w gruncie tylko w stabilnym gruncie spoistym (−1,5–2,5 tys.) | 3–5,5 tys. zł
+- 04 | beton i pielęgnacja | C16/20–C25/30 wg projektu (XC2), ok. 17 m³, pompa, wibrator, pielęgnacja min. 7 dni, murowanie po 3–7 dniach za zgodą kierownika | 9,5–14 tys. zł
+- 04 | uziom | taśma FeZn 30 × 4 w ławach (wyprowadzenia 2–3 szt., pomiar przed zasypką); etap 08 tylko podłącza do szyny wyrównawczej | 2–3,5 tys. zł
+- 04 | izolacje | pionowa: masa KMB 2 warstwy (papa termozgrzewalna +0,5–1,5 tys.), pozioma: papa/folia na koronie ściany; XPS 15 cm do cokołu +30 cm nad terenem, wyżej styropian grafitowy (etap 12), cokół tynk mozaikowy (etap 12) | 4–6,5 + 7–10,5 tys. zł
+- 04 | przejścia instalacji | rękawy: kanalizacja Ø160 (na Ø110), woda i prąd Ø63–75, światłowód Ø50 + rezerwy Ø110 i Ø50, nad ławą w ścianie fundamentowej | 2–4,5 tys. zł
+- 04 | zasypka i drenaż | zasypka obustronna warstwami 20–30 cm; bez drenażu opaskowego przy gruncie przepuszczalnym (drenaż +7–14 tys. gdy geotechnika stwierdzi glinę lub wodę) | 2,5–5 tys. zł
+- 04 | kanalizacja pod podłogą | PVC-KG Ø110–160, spadek min. 2%, rewizje, próba szczelności przed obsypką; piony i podejścia w etapie 09 | 3,5–6 tys. zł
+- 04 | podłoga na gruncie (zakres) | w etapie 04: podsypka ok. 35 cm, podkład 10 cm, papa podposadzkowa; EPS 100 15 cm, folia i jastrych z podłogówką w etapie 11 | 20–27 tys. zł
+- 04 | etap 04 razem | kategoria „stan surowy”; inspektor na odbiorach w etapie 03 (nie dublować) | 78,5–120 tys. zł (śr. ok. 99 tys.)
+- F5a | ilustracje kroków | `BUDOWA.addIllus("NN-slug/step-id", fn | {frames})`, rysuje `js/illus.js` (biblioteka `api.*`), pokazywane na górze zakładki „Opis” przed leadem; gdy krok ma ilustrację, jego stary `diagram` jest pomijany; figura ma klasę `.viz`, więc kolory i materiały biorą tokeny `--vz-*`/`--m-*` (oba motywy) | —
+- F5a | ilustracje: interakcje | podpisy (`api.callout`) i elementy z tym samym `k` podświetlają się po najechaniu/fokusie, na dotyku klik przypina; sekwencja: ▶, kropki, strzałki, przenikanie klatek, elementy w `api.fresh()` dorysowują się kreską; przybliżanie Ctrl + kółko / dwuklik / pełny ekran — własny lekki zoom w `illus.js`, bo `panzoom` z viz.js nie jest eksportowany (do ujednolicenia, gdy viz.js wystawi `VIZ.panzoom`) | —
+- F5b | ilustracje: styl (decyzja właściciela 2026-11-03) | instrukcja obrazkowa zamiast rysunku technicznego: scena w lekkiej aksonometrii, ludzie i dłonie w akcji, płaskie kolory materiałów (tokeny `--il-*` w `css/illus.css`, jasny i ciemny), 2–4 podpisy + 1–3 liczby, ✓/✗ dla błędów, ruch między klatkami (`move`, `fresh`, `draw`); rysunek techniczny tylko w viz (dom + przekrój); układ 480 × 320 | —

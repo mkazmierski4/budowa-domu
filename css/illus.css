@@ -1,0 +1,146 @@
+/* =====================================================================
+   ILLUS — ilustracje kroków (js/illus.js), styl „instrukcja obrazkowa”.
+   Płaskie kolory materiałów (--il-*), miękkie cienie, oba motywy.
+   Figura ma też klasę .viz (tokeny --vz-* z css/viz.css: arkusz, tusz, akcent).
+   ===================================================================== */
+.il{
+  --il-bg:#F3ECE0; --il-line:#5B4A3A; --il-sh:rgba(92,62,30,.16);
+  --il-beton:#BCBDB8; --il-chudy:#D5D2C8; --il-stal:#B4633A; --il-stal-d:#80401F; --il-drewno:#E0B77F; --il-wood-d:#9C6B3A;
+  --il-ziemia:#B98B5F; --il-trawa:#9DB26C; --il-piasek:#E3CD98; --il-zwir:#C9C1B2;
+  --il-kmb:#3B3532; --il-papa:#4C4440; --il-folia:#EBC64A; --il-eps:#F6F4EE; --il-xps:#8EC0D6; --il-welna:#E8CF7E;
+  --il-ceramika:#CF8F68; --il-bloczek:#C4C4BD; --il-woda:#79B6D8; --il-dachowka:#8E4F3A; --il-szklo:#BFDCE6; --il-blacha:#9FA6AB;
+  --il-papier:#FFFDF8; --il-maszyna:#E39A3B; --il-poziomica:#F0C24A; --il-ok:#4E8B4C; --il-bad:#C4553B;
+  --il-skin:#EFBE96; --il-skin-d:#C98F68; --il-shirt:#E07B39; --il-pants:#4F6274; --il-helmet:#F3B73A; --il-hair:#6B4A33;
+  --il-road:#E2D5C1;
+  margin:0 0 24px; max-width:760px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .il{
+  --il-bg:#262019; --il-line:#1A1511; --il-sh:rgba(0,0,0,.38);
+  --il-beton:#8E908C; --il-chudy:#A19D93; --il-stal:#B8693F; --il-stal-d:#7D3F20; --il-drewno:#B38C58; --il-wood-d:#7A5530;
+  --il-ziemia:#86603F; --il-trawa:#6E8150; --il-piasek:#B39E6E; --il-zwir:#8E877A;
+  --il-kmb:#151210; --il-papa:#2A2420; --il-folia:#C9A73A; --il-eps:#DAD6CC; --il-xps:#5F94AC; --il-welna:#BFA75E;
+  --il-ceramika:#A86D4D; --il-bloczek:#8F8F89; --il-woda:#4E93B8; --il-dachowka:#6B3A2A; --il-szklo:#7FA6B4; --il-blacha:#737A80;
+  --il-papier:#E8E2D6; --il-maszyna:#C47F2A; --il-poziomica:#D2A535; --il-ok:#5E9E5B; --il-bad:#D0664B;
+  --il-skin:#D9A47D; --il-skin-d:#A9744F; --il-shirt:#C9692C; --il-pants:#3C4B59; --il-helmet:#D9A02A; --il-hair:#3E2B1E;
+  --il-road:#3A3229;
+}}
+:root[data-theme="dark"] .il{
+  --il-bg:#262019; --il-line:#1A1511; --il-sh:rgba(0,0,0,.38);
+  --il-beton:#8E908C; --il-chudy:#A19D93; --il-stal:#B8693F; --il-stal-d:#7D3F20; --il-drewno:#B38C58; --il-wood-d:#7A5530;
+  --il-ziemia:#86603F; --il-trawa:#6E8150; --il-piasek:#B39E6E; --il-zwir:#8E877A;
+  --il-kmb:#151210; --il-papa:#2A2420; --il-folia:#C9A73A; --il-eps:#DAD6CC; --il-xps:#5F94AC; --il-welna:#BFA75E;
+  --il-ceramika:#A86D4D; --il-bloczek:#8F8F89; --il-woda:#4E93B8; --il-dachowka:#6B3A2A; --il-szklo:#7FA6B4; --il-blacha:#737A80;
+  --il-papier:#E8E2D6; --il-maszyna:#C47F2A; --il-poziomica:#D2A535; --il-ok:#5E9E5B; --il-bad:#D0664B;
+  --il-skin:#D9A47D; --il-skin-d:#A9744F; --il-shirt:#C9692C; --il-pants:#3C4B59; --il-helmet:#D9A02A; --il-hair:#3E2B1E;
+  --il-road:#3A3229;
+}
+.il .il-sheet{background:var(--il-bg); border-radius:18px; padding:10px; position:relative; box-shadow:inset 0 0 0 1px var(--vz-rule)}
+
+/* rysunek i klatki: wszystkie w jednej komórce siatki, przenikają się */
+.il .il-vp{position:relative; overflow:hidden; border-radius:12px; touch-action:pan-y; user-select:none; -webkit-user-select:none}
+.il .il-vp.il-zoomed{cursor:grab; touch-action:none}
+.il .il-vp.il-drag{cursor:grabbing}
+.il .il-vp:focus-visible{outline-offset:-2px}
+.il .il-stack{display:grid; transform-origin:0 0; transition:transform .28s var(--vz-out)}
+.il .il-vp.il-drag .il-stack{transition:none}
+.il .il-fr{grid-area:1/1; opacity:0; visibility:hidden; transition:opacity .7s var(--vz-out), visibility 0s linear .7s}
+.il .il-fr.on{opacity:1; visibility:visible; transition:opacity .7s var(--vz-out)}
+.il .il-fr svg{display:block; width:100%; height:auto}
+
+/* materiały: płaski kolor; w aksonometrii trzy odcienie ścian bryły */
+.il .c-beton{color:var(--il-beton)} .il .c-chudy{color:var(--il-chudy)} .il .c-stal{color:var(--il-stal)} .il .c-drewno{color:var(--il-drewno)}
+.il .c-ziemia{color:var(--il-ziemia)} .il .c-trawa{color:var(--il-trawa)} .il .c-piasek{color:var(--il-piasek)} .il .c-zwir{color:var(--il-zwir)}
+.il .c-kmb{color:var(--il-kmb)} .il .c-papa{color:var(--il-papa)} .il .c-folia{color:var(--il-folia)} .il .c-eps{color:var(--il-eps)} .il .c-xps{color:var(--il-xps)}
+.il .c-welna{color:var(--il-welna)} .il .c-ceramika{color:var(--il-ceramika)} .il .c-bloczek{color:var(--il-bloczek)} .il .c-woda{color:var(--il-woda)}
+.il .c-dachowka{color:var(--il-dachowka)} .il .c-szklo{color:var(--il-szklo)} .il .c-blacha{color:var(--il-blacha)} .il .c-papier{color:var(--il-papier)}
+.il .c-maszyna{color:var(--il-maszyna)} .il .c-poziomica{color:var(--il-poziomica)} .il .c-bad{color:var(--il-bad)}
+.il .il-m{fill:currentColor; stroke:color-mix(in srgb, currentColor 62%, var(--il-line)); stroke-width:1.2; stroke-linejoin:round}
+.il .ft,.il .fl,.il .fr{stroke:color-mix(in srgb, currentColor 60%, var(--il-line)); stroke-width:1; stroke-linejoin:round}
+.il .ft{fill:color-mix(in srgb, currentColor 80%, #fff)}
+.il .fl{fill:currentColor}
+.il .fr{fill:color-mix(in srgb, currentColor 78%, #000)}
+.il .il-sh{fill:var(--il-sh); stroke:none}
+.il .il-ln{fill:none; stroke:var(--il-line); stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round}
+.il .il-jt{fill:none; stroke:var(--il-line); stroke-width:1; opacity:.35}
+.il .il-rb{fill:none; stroke:var(--il-stal); stroke-linecap:round; stroke-linejoin:round}
+.il .il-rib{fill:none; stroke:var(--il-stal-d); opacity:.55; stroke-dasharray:1.5 3.5}
+.il .il-shine{fill:none; stroke:#fff; stroke-width:3; stroke-linecap:round; opacity:.45}
+.il .il-pipe{fill:none; stroke-linecap:round; stroke-linejoin:round}
+.il .p-kan{stroke:#C8733F} .il .p-woda{stroke:var(--il-woda)} .il .p-cieplo{stroke:var(--il-bad)} .il .p-rura{stroke:var(--il-blacha)}
+.il .il-cab{fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round}
+.il .il-ghost{opacity:.3}
+
+/* postać i dłoń */
+.il .il-skin{fill:var(--il-skin); stroke:var(--il-skin-d); stroke-width:1}
+.il .il-shirt{fill:var(--il-shirt)}
+.il .il-arm{fill:none; stroke:var(--il-shirt); stroke-width:8; stroke-linecap:round}
+.il .il-leg{fill:none; stroke:var(--il-pants); stroke-width:9; stroke-linecap:round; stroke-linejoin:round}
+.il .il-shoe{fill:none; stroke:var(--il-line); stroke-width:5; stroke-linecap:round}
+.il .il-helmet{fill:var(--il-helmet); stroke:color-mix(in srgb, var(--il-helmet) 60%, var(--il-line)); stroke-width:1}
+.il .il-hair{fill:var(--il-hair)}
+.il .il-eye{fill:var(--il-line)}
+.il .il-cuff{fill:none; stroke:color-mix(in srgb, var(--il-shirt) 70%, #000); stroke-width:2}
+.il .il-fing{fill:none; stroke:var(--il-skin-d); stroke-width:1.4; stroke-linecap:round}
+
+/* opisy: pigułki, liczby, wskaźniki, ✓/✗, dokumenty, droga */
+.il svg text{font-family:var(--vz-f)}
+.il .il-t{font-size:14px; font-weight:500; fill:var(--vz-ink)}
+.il .il-ts{font-size:12.5px; fill:var(--vz-ink-2)}
+.il .il-tb{font-weight:700}
+.il .il-pill rect{fill:var(--vz-sheet); stroke:var(--vz-rule-2); stroke-width:1}
+.il .il-pill text{font-size:15px; font-weight:600; fill:var(--vz-ink)}
+.il .il-pill.acc rect{fill:var(--vz-accent); stroke:none}
+.il .il-pill.acc text{fill:var(--vz-sheet); font-weight:700}
+.il .il-ptr{fill:none; stroke:var(--vz-ink-2); stroke-width:1.5; stroke-linecap:round}
+.il .il-dot{fill:var(--vz-sheet); stroke:var(--vz-ink); stroke-width:2}
+.il .il-meas{fill:none; stroke:var(--vz-accent); stroke-width:2.2; stroke-linecap:round}
+.il .il-arr{fill:none; stroke:var(--vz-accent); stroke-width:3; stroke-linecap:round; stroke-linejoin:round}
+.il .il-mk circle{fill:var(--vz-accent)} .il .il-mk text{font-size:14px; font-weight:700; fill:var(--vz-sheet)}
+.il .il-ok circle{fill:var(--il-ok)} .il .il-bad circle{fill:var(--il-bad)}
+.il .il-ok path,.il .il-bad path{fill:none; stroke:#fff; stroke-width:3.2; stroke-linecap:round; stroke-linejoin:round}
+.il .il-rust{fill:var(--il-stal-d); opacity:.85}
+.il .il-fold{fill:color-mix(in srgb, var(--il-papier) 85%, #000); stroke:color-mix(in srgb, var(--il-papier) 60%, var(--il-line)); stroke-width:1}
+.il .il-docl{fill:none; stroke:var(--vz-ink-3); stroke-width:2; stroke-linecap:round}
+.il .il-stamp{fill:none; stroke:var(--il-bad); stroke-width:2.2; stroke-linecap:round}
+.il .il-road{fill:none; stroke:var(--il-road); stroke-width:26; stroke-linecap:round; stroke-linejoin:round}
+.il .il-road-c{fill:none; stroke:var(--il-bg); stroke-width:2.5; stroke-dasharray:8 9}
+.il .il-stop circle{fill:var(--vz-sheet); stroke:var(--vz-accent); stroke-width:3}
+.il .il-stop text{font-size:16px; font-weight:700; fill:var(--vz-accent)}
+
+/* podświetlanie: najechanie / fokus / dotknięcie */
+.il .il-c{cursor:pointer; transition:opacity .2s}
+.il .il-c:focus{outline:none}
+.il .il-c:focus-visible rect{stroke:var(--vz-accent); stroke-width:2}
+.il .il-focus .il-c:not(.on){opacity:.3}
+.il .il-c.on rect{stroke:var(--vz-accent); stroke-width:2.5}
+.il .il-c.on .il-ptr{stroke:var(--vz-accent); stroke-width:2.5}
+.il [data-k]:not(.il-c){transition:filter .25s}
+.il .il-focus [data-k].on:not(.il-c){filter:drop-shadow(0 0 3px var(--vz-accent)) drop-shadow(0 0 1px var(--vz-accent))}
+
+/* pasek pod rysunkiem: odtwarzanie, kropki klatek, podpis klatki */
+.il .il-ctl{display:flex; align-items:center; gap:6px 10px; padding:10px 4px 2px; flex-wrap:wrap}
+.il .il-play{flex:none; width:38px; height:38px; border-radius:50%; border:0; background:var(--vz-accent); color:var(--vz-sheet); display:grid; place-items:center; cursor:pointer; transition:transform .2s var(--vz-out)}
+.il .il-play:hover{transform:scale(1.07)}
+.il .il-play svg{width:15px; height:15px; fill:currentColor}
+.il .il-dots{display:flex}
+.il .il-dots button{width:24px; height:28px; border:0; background:none; padding:0; cursor:pointer; display:grid; place-items:center}
+.il .il-dots button::before{content:""; width:8px; height:8px; border-radius:50%; box-shadow:inset 0 0 0 1.5px var(--vz-ink-2); transition:background .2s, transform .25s var(--vz-out)}
+.il .il-dots button[aria-current="true"]::before{background:var(--vz-accent); box-shadow:none; transform:scale(1.3)}
+.il .il-fcap{flex:1 1 240px; margin:0; font-size:15px; line-height:1.45; color:var(--vz-ink); min-width:0}
+.il .il-fcap b{color:var(--vz-accent); font-weight:700; margin-right:8px; font-variant-numeric:tabular-nums}
+.il .il-tool{margin-left:auto; flex:none; border:1px solid var(--vz-rule-2); border-radius:999px; background:var(--vz-sheet); padding:5px 13px; font-size:13px; cursor:pointer}
+.il .il-tool:hover{background:var(--vz-accent-soft)}
+.il .il-tool[aria-pressed="true"]{background:var(--vz-ink); color:var(--vz-sheet)}
+.il > figcaption{margin-top:8px; font-size:14px; line-height:1.5; color:var(--vz-ink-3); max-width:70ch}
+
+/* pełny ekran */
+.il.il-full{position:fixed; inset:0; z-index:1000; margin:0; max-width:none; background:var(--vz-paper); padding:12px max(12px,env(safe-area-inset-left,0px)); display:flex; flex-direction:column; overscroll-behavior:contain}
+.il.il-full .il-sheet{flex:1; min-height:0; display:flex; flex-direction:column}
+.il.il-full .il-vp{flex:1; min-height:0}
+.il.il-full .il-stack{height:100%}
+.il.il-full .il-fr{min-height:0}
+.il.il-full .il-fr svg{height:100%}
+
+@media (prefers-reduced-motion:reduce){
+  .il .il-fr,.il .il-fr.on,.il .il-stack{transition:none}
+}

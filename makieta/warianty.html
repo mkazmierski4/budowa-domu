@@ -1,0 +1,746 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Warianty poradnika budowy</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600&family=Archivo:wdth,wght@62..125,300..900&family=Barlow+Semi+Condensed:wght@400;500;600;700&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..800;1,6..96,400..800&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Marcellus&family=Source+Serif+4:ital,opsz,wght@0,8..60,300..700;1,8..60,300..700&display=swap">
+<style>
+/* Jeden ekran (budżet, etapy, karta kroku, wizualizacja) w 4 kierunkach. Każdy kierunek to jeden, świadomie wybrany wygląd (bez przełącznika jasny/ciemny). */
+:root{
+  color-scheme:light;
+  --tx-noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1.1 .78'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
+  --tx-soft:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.05' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.4 0 0 0 -.55'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)'/%3E%3C/svg%3E");
+  --tx-grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.008 .32' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.7 0 0 0 -.6'/%3E%3C/filter%3E%3Crect width='400' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  --bg:#1c1a18; --fg:#efe7da;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body,system-ui,sans-serif);-webkit-font-smoothing:antialiased;transition:background-color .3s}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--swbg,var(--bg))}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ---------- przełącznik kierunków ---------- */
+.sw-bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--swbg);border-bottom:1px solid var(--line2)}
+.sw-in{max-width:1440px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:10px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 24px}
+.sw-tabs{display:flex;gap:4px;overflow-x:auto;max-width:100%}
+.sw-tab{display:flex;align-items:baseline;gap:8px;background:none;border:1px solid transparent;border-radius:999px;padding:9px 14px;cursor:pointer;white-space:nowrap;font-size:14px;color:var(--mut);min-height:40px}
+.sw-tab b{font-weight:600}
+.sw-tab:hover{color:var(--fg)}
+.sw-tab[aria-selected="true"]{color:var(--fg);border-color:var(--line)}
+.sw-desc{margin:0;font-size:13px;color:var(--mut)}
+
+/* ---------- wspólna struktura ---------- */
+.v{font-family:var(--body)}
+.wrap{max-width:1440px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 72px}
+.top{margin-bottom:40px}
+.top-in{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:18px 40px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linejoin:round}
+.brand-t{display:block;line-height:1.1}
+.brand-s{display:block;font-size:13px;color:var(--mut);margin-top:2px}
+.nums{display:flex;flex-wrap:wrap;gap:10px 36px;margin:0}
+.nums div{display:grid;gap:4px}
+.nums dt{font-size:13px;color:var(--mut)}
+.nums dd{margin:0;font-variant-numeric:tabular-nums;white-space:nowrap}
+.nums small{font-size:13px;color:var(--mut);font-family:var(--body);font-weight:400}
+.bar{display:flex;margin-top:20px}
+.seg{position:relative;min-width:0;flex-basis:0}
+.trk{display:block;position:relative;height:100%;overflow:hidden}
+.trk i{position:absolute;top:0;bottom:0;left:0;width:0;transition:width .45s cubic-bezier(.3,.7,.2,1),left .45s cubic-bezier(.3,.7,.2,1)}
+.dim{display:none}
+.leg{list-style:none;margin:12px 0 0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px 18px;font-size:13px}
+.leg li{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:8px;align-items:center}
+.leg .sw{display:none}
+.leg .ln{grid-column:2}
+.leg .la{grid-column:2;color:var(--mut);font-variant-numeric:tabular-nums}
+
+.lay{display:grid;gap:40px;align-items:start}
+.toc{grid-area:toc;min-width:0}
+.step{grid-area:step;min-width:0}
+.viz{grid-area:viz;min-width:0;margin:0}
+.toc-btn{display:none;width:100%;justify-content:space-between;align-items:center;background:none;border:1px solid var(--line);padding:12px 14px;cursor:pointer;min-height:48px;border-radius:var(--r,0)}
+.toc-h{margin:0 0 10px;font-size:14px;font-weight:600;color:var(--mut)}
+.stages,.steps{list-style:none;margin:0;padding:0}
+.st{display:grid;grid-template-columns:2.2em minmax(0,1fr) auto;gap:8px;align-items:baseline;width:100%;text-align:left;background:none;border:0;padding:7px 8px;cursor:pointer;font-size:15px;border-radius:var(--r,0);transition:background-color .15s,color .15s}
+.st-nr{font-variant-numeric:tabular-nums;color:var(--mut);font-size:13px}
+.st-s{font-size:12px;color:var(--mut)}
+.st-done .st-t{color:var(--mut)}
+.steps{margin:2px 0 8px}
+.steps .st{grid-template-columns:3em minmax(0,1fr);font-size:14px;padding:5px 8px}
+.steps .st[aria-current="step"]{font-weight:600}
+.toc-note{font-size:13px;color:var(--mut);margin:12px 8px 0;min-height:1.2em}
+
+.folio{margin:0 0 16px}
+.lead{margin:24px 0 0}
+.facts{display:flex;flex-wrap:wrap;gap:12px 32px;margin:28px 0 0}
+.facts div{display:grid;gap:3px}
+.facts dt{font-size:13px;color:var(--mut)}
+.facts dd{margin:0;font-variant-numeric:tabular-nums}
+.sec{margin-top:52px}
+.sec h2{margin:0 0 18px;text-wrap:balance}
+.prose{max-width:64ch;line-height:1.62}
+.prose p{margin:0 0 1em}
+.prose p:last-child{margin-bottom:0}
+.sec-intro{margin:0 0 18px;max-width:62ch;color:var(--mut);line-height:1.55}
+
+.dec{display:grid}
+.dec-head,.opt{display:grid;grid-template-columns:40px minmax(0,1fr) 130px 82px 150px;gap:14px;align-items:center}
+.dec-head{font-size:13px;color:var(--mut);padding:0 12px 8px}
+.dec-head span:first-child{grid-column:2}
+.opt{position:relative;padding:14px 12px;cursor:pointer;transition:background-color .2s,box-shadow .2s,transform .2s}
+.opt input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.opt:has(input:focus-visible){outline:2px solid var(--acc);outline-offset:2px}
+.opt-sw{display:none}
+.opt-k{display:grid;place-items:center;width:30px;height:30px;transition:all .25s}
+.opt-n{line-height:1.3}
+.opt-c,.opt-t{font-variant-numeric:tabular-nums;white-space:nowrap}
+.opt-d{font-size:14px;line-height:1.3}
+.rec{font-style:normal;font-size:12px;margin-left:8px;padding:2px 8px;white-space:nowrap;display:inline-block;vertical-align:2px}
+.dec-detail{margin-top:22px}
+.pc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.pc h3{margin:0 0 8px;font-size:14px;font-weight:600}
+.pc ul{margin:0;padding-left:18px;line-height:1.5;font-size:15px}
+.why{margin:18px 0 0;max-width:64ch;line-height:1.55}
+.eff{margin:10px 0 0;font-size:14px;color:var(--mut);font-variant-numeric:tabular-nums}
+
+.tips,.warn{list-style:none;padding:0;margin:0;display:grid;gap:14px;max-width:64ch}
+.tips li,.warn li{position:relative;padding-left:28px;line-height:1.55}
+.tips li::before,.warn li::before{content:"";position:absolute;left:0}
+
+.q{margin:0 0 16px;font-size:19px;line-height:1.4;max-width:46ch}
+.ans-list{display:grid;gap:8px;max-width:640px}
+.ans{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:12px;align-items:center;width:100%;text-align:left;background:none;border:1px solid var(--line);padding:11px 14px;cursor:pointer;min-height:50px;border-radius:var(--r,0);transition:all .2s}
+.ans[aria-disabled="true"]{cursor:default}
+.ans-k{display:grid;place-items:center;width:28px;height:28px}
+.ans-r{font-size:13px}
+.ans.off{opacity:.45}
+.explain{margin-top:16px;max-width:64ch;line-height:1.55}
+.explain p{margin:0 0 10px}
+.retry{background:none;border:0;padding:6px 0;text-decoration:underline;text-underline-offset:3px;cursor:pointer;color:var(--mut);min-height:44px}
+.retry:hover{color:var(--fg)}
+
+.house{display:block;width:100%;height:auto}
+.house .p-bg{fill:transparent}
+.house .p-ln{stroke:currentColor;stroke-width:1;fill:none}
+.house .dims,.house .pool{display:none}
+.viz figcaption{margin-top:12px;font-size:13px;color:var(--mut);line-height:1.45}
+.tblock,.samples{display:none}
+
+@media (min-width:961px){.toc-in{position:sticky;top:84px}}
+@media (max-width:960px){
+  .lay{grid-template-columns:minmax(0,1fr)!important;grid-template-areas:"toc" "step" "viz"!important}
+  .toc-btn{display:flex}
+  .toc[data-open="false"] .toc-in{display:none}
+  .toc-in{margin-top:10px}
+  .viz{position:static!important;margin-top:0!important}
+}
+@media (max-width:720px){
+  .leg{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dec-head{display:none}
+  .opt{grid-template-columns:36px minmax(0,1fr);row-gap:4px}
+  .opt-k{grid-row:span 4;align-self:start}
+  .opt-c,.opt-t,.opt-d{grid-column:2;font-size:14px}
+  .opt-c::before,.opt-t::before,.opt-d::before{content:attr(data-l) ": ";color:var(--mut)}
+  .pc{grid-template-columns:minmax(0,1fr)}
+}
+
+/* ================= A. Wieczór ================= */
+body[data-active="a"]{--bg:#1c1a18;--fg:#efe7da;--mut:#ab9f8f;--line:#3d3731;--line2:#2c2925;--surf:#262320;--acc:#e4b66a;--bad:#e3a08f;--swbg:#1c1a18;--r:2px;--body:"Hanken Grotesk",system-ui,sans-serif;--disp:"Bodoni Moda",Didot,"Times New Roman",serif;color-scheme:dark}
+.v-a .brand-t{font-family:var(--disp);font-style:italic;font-size:22px}
+.v-a .brand svg{stroke:var(--acc)}
+.v-a .nums dd{font-family:var(--disp);font-size:30px;font-weight:500}
+.v-a .nums .left dd{color:var(--acc)}
+.v-a .bar{height:4px;gap:6px}
+.v-a .trk{background:#38322c;border-radius:2px}
+.v-a .f{background:#8e7a5d}
+.v-a .c{background:var(--acc);box-shadow:0 0 10px 1px rgba(228,182,106,.75)}
+.v-a .lay{grid-template-columns:250px minmax(0,1fr);grid-template-areas:"toc viz" "toc step";column-gap:64px;row-gap:44px}
+.v-a .step{max-width:800px}
+.v-a .viz svg{border-radius:3px}
+.v-a .st:hover{color:var(--acc);background:var(--surf)}
+.v-a .st-nr{font-family:var(--disp);font-style:italic;font-size:15px}
+.v-a .st-cur>.st{color:var(--fg);font-weight:600}
+.v-a .steps .st[aria-current="step"]{color:var(--acc)}
+.v-a .steps .st[aria-current="step"] .st-nr{color:var(--acc)}
+.v-a .folio{color:var(--acc);font-size:14px;letter-spacing:.02em}
+.v-a h1{font-family:var(--disp);font-weight:400;font-size:clamp(52px,7.4vw,112px);line-height:.95;letter-spacing:-.015em;margin:0;font-variation-settings:"opsz" 96;text-wrap:balance}
+.v-a .lead{font-family:var(--disp);font-style:italic;font-size:clamp(20px,2.2vw,25px);line-height:1.38;color:#dcd2c2;max-width:36ch}
+.v-a .facts dd{font-size:16px}
+.v-a .facts .amt dd{color:var(--acc)}
+.v-a .sec{border-top:1px solid var(--line);padding-top:30px}
+.v-a .sec h2{font-family:var(--disp);font-style:italic;font-weight:400;font-size:31px}
+.v-a .prose{font-size:17px;color:#e3dacb}
+.v-a .opt{border-bottom:1px solid var(--line)}
+.v-a .opt:hover{background:var(--surf)}
+.v-a .opt-k{border-radius:50%;border:1px solid #6d6254;font-family:var(--disp);font-size:15px;color:var(--mut)}
+.v-a .opt.on .opt-k{background:var(--acc);border-color:var(--acc);color:#2a2116;box-shadow:0 0 0 5px rgba(228,182,106,.14),0 0 26px rgba(228,182,106,.6)}
+.v-a .opt.on .opt-n{color:var(--acc)}
+.v-a .rec{border:1px solid rgba(228,182,106,.5);color:var(--acc);border-radius:20px}
+.v-a .why b{color:var(--acc);font-weight:600}
+.v-a .tips li::before{top:.78em;width:14px;height:1px;background:var(--acc)}
+.v-a .sec-warn{background:#26211d;padding:30px;border-top:0;border-radius:3px}
+.v-a .sec-warn h2{color:var(--bad)}
+.v-a .warn li::before{top:.55em;width:7px;height:7px;border:1px solid var(--bad);transform:rotate(45deg)}
+.v-a .ans:hover:not([aria-disabled="true"]){border-color:#7a6d5c;background:var(--surf)}
+.v-a .ans-k{border-radius:50%;border:1px solid #6d6254;font-family:var(--disp)}
+.v-a .ans.ok{border-color:var(--acc);box-shadow:0 0 30px -8px rgba(228,182,106,.55)}
+.v-a .ans.ok .ans-k{background:var(--acc);border-color:var(--acc);color:#2a2116}
+.v-a .ans.ok .ans-r{color:var(--acc)}
+.v-a .ans.bad{border-color:var(--bad);color:var(--bad)}
+.v-a .explain b{color:var(--acc)}
+.v-a .sky{fill:url(#sky-a)}
+.v-a .earth{fill:#151311}
+.v-a .wall{fill:#2c2926}
+.v-a .stone{fill:url(#stones-a)}
+.v-a #stones-a .p-bg{fill:#39352f}.v-a #stones-a .p-ln{stroke:#2a2622}
+.v-a .wood{fill:url(#boards-a)}
+.v-a #boards-a .p-bg{fill:#4d3828}.v-a #boards-a .p-ln{stroke:#3a2a1d}
+.v-a .roof{stroke:#121110;stroke-width:9;fill:none;stroke-linejoin:round}
+.v-a .garage{fill:#272421}.v-a .gslab,.v-a .terr rect{fill:#121110}.v-a .gdoor{fill:#1e1c1a}.v-a .chim{fill:#1b1917}
+.v-a .glass{fill:#f3c472}.v-a .lit{filter:url(#glow-a)}
+.v-a .mull{stroke:#2c2926;stroke-width:2.5}
+.v-a .gl{stroke:#3c352d}
+.v-a .pool{display:inline;fill:url(#pool-a)}
+.v-a .lamp{fill:#f3c472}
+
+/* ================= B. Magazyn ================= */
+body[data-active="b"]{--bg:#f3f3f0;--fg:#1a1a18;--mut:#5c5b55;--line:#cdccc5;--line2:#1a1a18;--surf:#ffffff;--acc:#f2d13c;--bad:#9c2f1c;--swbg:#f3f3f0;--r:0;--body:"Source Serif 4",Georgia,serif;--disp:"Archivo","Arial Narrow",sans-serif;color-scheme:light}
+.v-b .sw-tab{font-family:var(--disp)}
+.v-b .brand-t{font-family:var(--disp);font-stretch:75%;font-weight:800;font-size:22px}
+.v-b .brand-s{font-style:italic}
+.v-b .nums dt{font-family:var(--disp);font-stretch:85%}
+.v-b .nums dd{font-family:var(--disp);font-stretch:68%;font-weight:700;font-size:42px;line-height:1}
+.v-b .bar{height:12px;gap:2px}
+.v-b .trk{background:#dddbd4}
+.v-b .f{background:var(--fg)}
+.v-b .c{background:var(--acc)}
+.v-b .leg{font-family:var(--disp);font-stretch:85%}
+.v-b .lay{grid-template-columns:170px minmax(0,1.6fr) minmax(0,1fr);grid-template-areas:"toc step viz";column-gap:52px}
+.v-b .viz{margin-top:230px;position:sticky;top:84px}
+.v-b .toc-h{font-family:var(--disp);font-stretch:85%;color:var(--fg)}
+.v-b .st{font-family:var(--disp);font-stretch:85%;padding:6px 0;border-bottom:1px solid transparent}
+.v-b .st:hover{border-bottom-color:var(--fg)}
+.v-b .st-cur>.st{font-weight:700}
+.v-b .steps .st{font-family:var(--body);font-stretch:100%}
+.v-b .steps .st[aria-current="step"]{background:var(--acc);padding-inline:6px}
+.v-b .folio{font-family:var(--disp);font-stretch:80%;font-weight:500;font-size:15px}
+.v-b h1{font-family:var(--disp);font-stretch:66%;font-weight:800;font-size:clamp(68px,11vw,176px);line-height:.83;letter-spacing:-.022em;margin:0 0 0 -.04em;text-wrap:balance}
+.v-b .lead{font-size:clamp(21px,2.3vw,27px);line-height:1.28;font-style:italic;font-weight:350;max-width:30ch}
+.v-b .facts{border-top:1.5px solid var(--fg);padding-top:12px;max-width:760px}
+.v-b .facts dt{font-family:var(--disp);font-stretch:85%}
+.v-b .facts dd{font-family:var(--disp);font-stretch:80%;font-weight:600;font-size:18px}
+.v-b .sec{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.7fr);column-gap:32px;margin-top:72px}
+.v-b .sec>h2{font-family:var(--disp);font-stretch:78%;font-weight:700;font-size:18px;line-height:1.2;margin:5px 0 12px}
+.v-b .sec>:not(h2){grid-column:2}
+.v-b .prose{font-size:18px}
+.v-b .prose p:first-child::first-letter{font-family:var(--disp);font-stretch:66%;font-weight:800;float:left;font-size:5.3em;line-height:.8;margin:.04em .08em 0 0}
+.v-b .dec-head{font-family:var(--disp);font-stretch:85%}
+.v-b .opt{border-top:1px solid var(--fg)}
+.v-b .opt:last-child{border-bottom:1px solid var(--fg)}
+.v-b .opt:hover{background:var(--surf)}
+.v-b .opt.on{background:var(--acc)}
+.v-b .opt-k{font-family:var(--disp);font-stretch:66%;font-weight:800;font-size:30px}
+.v-b .opt-n{font-size:17px}
+.v-b .opt-c,.v-b .opt-t{font-family:var(--disp);font-stretch:85%;font-weight:600}
+.v-b .rec{font-family:var(--disp);font-stretch:85%;background:var(--fg);color:var(--bg);padding:3px 8px}
+.v-b .pc h3{font-family:var(--disp);font-stretch:85%}
+.v-b .why{font-style:italic}
+.v-b .eff{font-family:var(--disp);font-stretch:85%}
+.v-b .tips{font-size:17px}
+.v-b .tips li::before{top:.6em;width:7px;height:7px;background:var(--fg)}
+.v-b .sec-warn>h2{color:var(--bad)}
+.v-b .warn{font-size:17px}
+.v-b .warn li::before{top:.15em;content:"!";font-family:var(--disp);font-weight:800;color:var(--bad);font-size:18px}
+.v-b .q{font-size:22px;font-style:italic}
+.v-b .ans{border:0;border-top:1px solid var(--fg);font-size:18px}
+.v-b .ans:last-child{border-bottom:1px solid var(--fg)}
+.v-b .ans:hover:not([aria-disabled="true"]){background:var(--surf)}
+.v-b .ans-k{font-family:var(--disp);font-stretch:66%;font-weight:800;font-size:26px}
+.v-b .ans-r{font-family:var(--disp);font-stretch:85%;font-weight:600}
+.v-b .ans.ok{background:var(--acc)}
+.v-b .ans.bad{text-decoration:line-through;color:var(--bad)}
+.v-b .ans.off{opacity:.4}
+.v-b .viz{background:var(--surf);padding:22px 22px 18px}
+.v-b .viz figcaption{font-style:italic;font-size:14px;color:var(--mut)}
+.v-b .viz figcaption b{font-family:var(--disp);font-style:normal;font-stretch:85%;color:var(--fg);margin-right:6px}
+.v-b .sky,.v-b .earth{fill:#fff}
+.v-b .wall,.v-b .garage,.v-b .gdoor,.v-b .chim,.v-b .terr rect{fill:#fff;stroke:#1a1a18;stroke-width:1.4}
+.v-b .gslab{fill:#1a1a18}
+.v-b .stone{fill:url(#stones-b);stroke:#1a1a18;stroke-width:1.4}
+.v-b .wood{fill:url(#boards-b);stroke:#1a1a18;stroke-width:1.4}
+.v-b .glass{fill:url(#hatch-b);stroke:#1a1a18;stroke-width:1.4}
+.v-b .p-ln{stroke:#1a1a18;stroke-width:.7}
+.v-b .roof{stroke:#1a1a18;stroke-width:4;fill:none;stroke-linejoin:miter}
+.v-b .mull{stroke:#1a1a18;stroke-width:1.4}
+.v-b .gl{stroke:#1a1a18;stroke-width:2}
+
+/* ================= C. Blueprint ================= */
+body[data-active="c"]{--bg:#173a66;--fg:#f2f6fc;--mut:#b2c7e3;--line:rgba(242,246,252,.42);--line2:rgba(242,246,252,.28);--surf:rgba(255,255,255,.07);--acc:#ffbb98;--bad:#ffbb98;--swbg:#173a66;--r:0;--body:"Barlow Semi Condensed","Arial Narrow",sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace;color-scheme:dark;
+  background-image:linear-gradient(rgba(255,255,255,.11) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.11) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+  background-size:50px 50px,50px 50px,10px 10px,10px 10px}
+.v-c .brand-t{font-weight:600;font-size:21px;text-transform:uppercase;letter-spacing:.06em}
+.v-c .brand-s{font-family:var(--mono);font-size:12px}
+.v-c .nums dt{font-family:var(--mono);font-size:12px}
+.v-c .nums dd{font-weight:600;font-size:32px;letter-spacing:.01em}
+.v-c .nums small{font-family:var(--mono);font-size:12px}
+.v-c .nums .left dd{color:var(--acc)}
+.v-c .bar{margin-top:14px}
+.v-c .seg{height:38px;border-left:1px solid var(--line)}
+.v-c .seg:last-child{border-right:1px solid var(--line)}
+.v-c .seg::before{content:"";position:absolute;left:-6px;bottom:9px;width:12px;height:1.5px;background:var(--fg);transform:rotate(-45deg)}
+.v-c .seg:last-child::after{content:"";position:absolute;right:-6px;bottom:9px;width:12px;height:1.5px;background:var(--fg);transform:rotate(-45deg)}
+.v-c .trk{position:absolute;left:0;right:0;bottom:3px;height:7px;border-top:1px solid var(--fg);overflow:hidden}
+.v-c .trk i{top:auto;bottom:0;height:5px}
+.v-c .f{background:var(--fg);opacity:.8}
+.v-c .c{background:repeating-linear-gradient(45deg,var(--acc) 0 2px,transparent 2px 5px)}
+.v-c .dim{display:block;position:absolute;top:2px;left:0;right:0;text-align:center;font-family:var(--mono);font-size:12px;color:var(--fg)}
+.v-c .leg{font-size:14px}
+.v-c .leg .la{font-family:var(--mono);font-size:12px}
+.v-c .lay{grid-template-columns:210px minmax(0,1fr) 420px;grid-template-areas:"toc step viz";column-gap:40px}
+.v-c .viz{position:sticky;top:84px;border:1.5px solid var(--fg);padding:16px;background:rgba(23,58,102,.72)}
+.v-c .toc-h{font-family:var(--mono);font-size:12px;font-weight:400}
+.v-c .st{font-size:16px}
+.v-c .st-nr,.v-c .st-s{font-family:var(--mono);font-size:12px}
+.v-c .st:hover{background:var(--surf)}
+.v-c .st-cur>.st{font-weight:600}
+.v-c .steps .st[aria-current="step"]{color:var(--acc);box-shadow:inset 0 0 0 1px var(--acc)}
+.v-c .steps .st[aria-current="step"] .st-nr{color:var(--acc)}
+.v-c .toc-note{font-family:var(--mono);font-size:12px}
+.v-c .step{border:1.5px solid var(--fg);outline:1px solid var(--line);outline-offset:5px;padding:clamp(20px,3vw,44px);background:rgba(23,58,102,.72)}
+.v-c .folio{font-family:var(--mono);font-size:13px;color:var(--mut)}
+.v-c h1{font-weight:600;font-size:clamp(44px,6vw,86px);text-transform:uppercase;letter-spacing:.035em;line-height:.95;margin:0;text-wrap:balance}
+.v-c .lead{font-size:clamp(19px,2vw,22px);line-height:1.4;max-width:44ch}
+.v-c .facts dt{font-family:var(--mono);font-size:12px}
+.v-c .facts dd{font-size:19px;font-weight:500}
+.v-c .facts .amt dd{color:var(--acc)}
+.v-c .sec h2{display:flex;align-items:center;gap:14px;font-weight:600;font-size:23px;letter-spacing:.01em}
+.v-c .sec h2::after{content:"";flex:1;height:1px;background:var(--line)}
+.v-c .prose{font-size:18px;line-height:1.55}
+.v-c .sec-intro{font-size:17px}
+.v-c .dec{border:1px solid var(--line)}
+.v-c .dec-head{font-family:var(--mono);font-size:12px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.v-c .opt{border-bottom:1px solid var(--line);font-size:17px}
+.v-c .opt:last-child{border-bottom:0}
+.v-c .opt:hover{background:var(--surf)}
+.v-c .opt.on{background:rgba(255,187,152,.08)}
+.v-c .opt-k{font-family:var(--mono);font-size:14px;border:2px solid transparent;border-radius:50%}
+.v-c .opt.on .opt-k{border-color:var(--acc);color:var(--acc);transform:rotate(-10deg) scaleX(1.18)}
+.v-c .opt.on .opt-n{color:var(--acc)}
+.v-c .opt-c,.v-c .opt-t{font-family:var(--mono);font-size:14px}
+.v-c .rec{font-family:var(--mono);font-size:11px;border:1px solid var(--fg);padding:2px 6px}
+.v-c .pc{font-size:16px}
+.v-c .pc h3{font-family:var(--mono);font-size:12px;font-weight:400;color:var(--mut)}
+.v-c .why{font-size:17px}
+.v-c .why b{color:var(--acc)}
+.v-c .eff{font-family:var(--mono);font-size:12px}
+.v-c .tips,.v-c .warn{font-size:17px}
+.v-c .tips li::before{top:.45em;width:9px;height:9px;border:1.5px solid var(--fg);border-radius:50%}
+.v-c .sec-warn h2{color:var(--acc)}
+.v-c .warn li::before{top:.15em;content:"\00D7";font-family:var(--mono);color:var(--acc);font-size:18px;line-height:1}
+.v-c .q{font-size:21px}
+.v-c .ans{font-size:17px}
+.v-c .ans:hover:not([aria-disabled="true"]){background:var(--surf);border-color:var(--fg)}
+.v-c .ans-k{width:24px;height:24px;border:1.5px solid var(--fg);font-family:var(--mono);font-size:12px}
+.v-c .ans-r{font-family:var(--mono);font-size:12px}
+.v-c .ans.ok{border-color:var(--acc)}
+.v-c .ans.ok .ans-k{border-color:var(--acc);color:var(--acc);border-radius:50%;transform:rotate(-8deg) scale(1.15)}
+.v-c .ans.ok .ans-r{color:var(--acc)}
+.v-c .ans.bad{text-decoration:line-through}
+.v-c .explain b{color:var(--acc)}
+.v-c .viz figcaption{font-family:var(--mono);font-size:12px}
+.v-c .tblock{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border:1px solid var(--fg);margin-top:14px}
+.v-c .tblock div{padding:7px 9px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-width:0}
+.v-c .tblock div:nth-child(2n){border-right:0}
+.v-c .tblock div:nth-last-child(-n+2){border-bottom:0}
+.v-c .tblock span{display:block;font-family:var(--mono);font-size:11px;color:var(--mut)}
+.v-c .tblock b{font-weight:500;font-size:15px}
+.v-c .sky,.v-c .earth{fill:none}
+.v-c .wall,.v-c .garage,.v-c .gdoor,.v-c .chim,.v-c .terr rect,.v-c .gslab{fill:none;stroke:#f2f6fc;stroke-width:1.3}
+.v-c .stone{fill:url(#stones-c);stroke:#f2f6fc;stroke-width:1.3}
+.v-c .wood{fill:url(#boards-c);stroke:#f2f6fc;stroke-width:1.3}
+.v-c .glass{fill:url(#hatch-c);stroke:#f2f6fc;stroke-width:1.3}
+.v-c .p-ln{stroke:rgba(242,246,252,.6);stroke-width:.7}
+.v-c .roof{stroke:#f2f6fc;stroke-width:3;fill:none}
+.v-c .mull{stroke:#f2f6fc;stroke-width:1.3}
+.v-c .gl{stroke:#f2f6fc;stroke-width:1.8}
+.v-c .house .dims{display:inline}
+.v-c .dims path{stroke:#b2c7e3;stroke-width:1;fill:none}
+.v-c .dims .tk{stroke:#f2f6fc;stroke-width:1.6}
+.v-c .dims text{fill:#b2c7e3;font-family:"IBM Plex Mono",monospace;font-size:10px}
+.v-c .dims .ang{stroke:#ffbb98}
+.v-c .dims .angt{fill:#ffbb98}
+
+/* ================= D. Materiały ================= */
+body[data-active="d"]{--bg:#e5ded1;--fg:#2c2823;--mut:#5b5348;--line:#c9bdab;--line2:#cbbfad;--surf:#f5f1ea;--acc:#535e41;--bad:#8a3e2b;--swbg:#e9e3d7;--r:4px;--body:"Albert Sans",system-ui,sans-serif;--disp:"Marcellus",Georgia,serif;color-scheme:light;
+  background-image:repeating-linear-gradient(0deg,rgba(92,72,44,.055) 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,rgba(92,72,44,.045) 0 1px,transparent 1px 3px)}
+.v-d{--m-soil:var(--tx-noise),var(--tx-soft),#7c6a50;--m-conc:var(--tx-noise),var(--tx-soft),#aca89f;--m-steel:repeating-linear-gradient(90deg,rgba(255,255,255,.2) 0 1px,transparent 1px 3px),linear-gradient(180deg,#949ea4,#78838a);--m-oak:var(--tx-grain),#a9794c;--m-moss:var(--tx-noise),var(--tx-soft),#5e6948;--m-plaster:var(--tx-noise),#ece6da;--m-stone:var(--tx-soft),var(--tx-noise),#918a7e}
+.v-d .top{position:relative;padding:26px 30px;border-radius:4px;background:var(--tx-noise),var(--tx-soft),#d2cec6;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 1px 0 rgba(0,0,0,.08),0 18px 32px -22px rgba(50,40,30,.55)}
+.v-d .top::before,.v-d .top::after{content:"";position:absolute;width:9px;height:9px;border-radius:50%;background:#7a766e;box-shadow:inset 0 1.5px 2px rgba(0,0,0,.55),0 1px 0 rgba(255,255,255,.6)}
+.v-d .top::before{top:12px;left:12px}
+.v-d .top::after{bottom:12px;right:12px}
+.v-d .brand-t{font-family:var(--disp);font-size:23px}
+.v-d .brand-s,.v-d .nums dt,.v-d .nums small,.v-d .leg .la{color:#4c463e}
+.v-d .nums dd{font-family:var(--disp);font-size:33px}
+.v-d .bar{height:22px;gap:4px}
+.v-d .trk{border-radius:3px;background:rgba(255,255,255,.4);box-shadow:inset 0 1px 2px rgba(0,0,0,.18)}
+.v-d .f,.v-d .c{background:var(--mat)}
+.v-d .c{box-shadow:inset 0 0 0 2px rgba(255,255,255,.75)}
+.v-d .seg-dzialka,.v-d .leg-dzialka{--mat:var(--m-soil)}
+.v-d .seg-surowy,.v-d .leg-surowy{--mat:var(--m-conc)}
+.v-d .seg-instal,.v-d .leg-instal{--mat:var(--m-steel)}
+.v-d .seg-wykoncz,.v-d .leg-wykoncz{--mat:var(--m-oak)}
+.v-d .seg-ogrod,.v-d .leg-ogrod{--mat:var(--m-moss)}
+.v-d .leg .sw{display:block;grid-row:span 2;width:18px;height:18px;border-radius:3px;background:var(--mat);box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+.v-d .lay{grid-template-columns:240px minmax(0,1fr) 360px;grid-template-areas:"toc step viz";gap:32px}
+.v-d .toc-in{background:var(--surf);border-radius:4px;padding:18px 12px;box-shadow:0 1px 0 #c8bba8,0 12px 26px -20px rgba(60,45,30,.5)}
+.v-d .toc-btn{background:var(--surf)}
+.v-d .toc-h{font-family:var(--disp);font-size:20px;font-weight:400;color:var(--fg);padding-inline:8px}
+.v-d .st:hover{background:#ebe4d8}
+.v-d .st-cur>.st{background:var(--tx-grain),#b68c60;color:#24190f;font-weight:600;box-shadow:inset 0 -2px 0 rgba(0,0,0,.12)}
+.v-d .st-cur>.st .st-nr,.v-d .st-cur>.st .st-s{color:#3a2a1a}
+.v-d .steps .st[aria-current="step"]{color:var(--acc)}
+.v-d .steps .st[aria-current="step"]::after{content:"";position:absolute}
+.v-d .step{background:var(--surf);border-radius:4px;padding:clamp(20px,3.5vw,48px);box-shadow:0 1px 0 #c3b6a2,0 22px 40px -28px rgba(60,45,30,.55)}
+.v-d .folio{font-size:14px;color:var(--mut)}
+.v-d h1{font-family:var(--disp);font-weight:400;font-size:clamp(46px,6.2vw,84px);line-height:1;margin:0;text-wrap:balance}
+.v-d .lead{font-size:clamp(18px,1.8vw,21px);line-height:1.45;max-width:42ch;color:#4a443b}
+.v-d .facts dd{font-size:16px;font-weight:500}
+.v-d .sec h2{font-family:var(--disp);font-weight:400;font-size:29px}
+.v-d .prose{font-size:17px}
+.v-d .dec{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.v-d .dec-head{display:none}
+.v-d .opt{display:flex;flex-direction:column;align-items:stretch;gap:8px;padding:0 0 18px;border-radius:4px;background:#fcfaf6;box-shadow:0 1px 0 #cfc4b2,0 8px 16px -12px rgba(60,45,30,.45);overflow:hidden}
+.v-d .opt>span:not(.opt-sw):not(.opt-k){padding-inline:16px}
+.v-d .opt:hover{transform:translateY(-2px);box-shadow:0 1px 0 #cfc4b2,0 14px 22px -12px rgba(60,45,30,.5)}
+.v-d .opt.on{box-shadow:0 0 0 2px var(--acc),0 16px 26px -14px rgba(60,45,30,.55)}
+.v-d .opt-sw{display:block;height:86px;margin-bottom:6px;box-shadow:inset 0 -1px 0 rgba(0,0,0,.12)}
+.v-d .opt[data-id="lawy"] .opt-sw{background:repeating-linear-gradient(0deg,#86827a 0 2px,transparent 2px 22px),repeating-linear-gradient(90deg,#86827a 0 2px,transparent 2px 44px),var(--tx-noise),#b4b0a7}
+.v-d .opt[data-id="plyta"] .opt-sw{background:linear-gradient(105deg,rgba(255,255,255,.3),transparent 55%),var(--tx-noise),var(--tx-soft),#bdb9b0}
+.v-d .opt[data-id="szalunkowe"] .opt-sw{background:radial-gradient(circle at 25% 50%,#6c6861 0 8px,transparent 9px) 0 0/44px 26px,radial-gradient(circle at 75% 50%,#6c6861 0 8px,transparent 9px) 0 0/44px 26px,repeating-linear-gradient(0deg,#86827a 0 2px,transparent 2px 26px),var(--tx-noise),#a8a49b}
+.v-d .opt-k{position:absolute;top:10px;left:10px;width:30px;height:30px;border-radius:50%;background:var(--surf);font-family:var(--disp);font-size:15px;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.v-d .opt.on .opt-k{background:var(--acc);color:#fff}
+.v-d .opt-n{font-weight:600;font-size:16px}
+.v-d .opt-c,.v-d .opt-t,.v-d .opt-d{font-size:14px}
+.v-d .opt-c::before,.v-d .opt-t::before,.v-d .opt-d::before{content:attr(data-l);display:block;font-size:12px;color:var(--mut)}
+.v-d .rec{display:table;margin:6px 0 0;background:var(--acc);color:#fff;border-radius:999px}
+.v-d .why b{color:var(--acc)}
+.v-d .tips li::before{top:.45em;width:11px;height:11px;border-radius:50%;background:var(--m-oak)}
+.v-d .sec-warn{background:var(--tx-noise),#ded4c3;padding:26px 28px;border-radius:4px}
+.v-d .sec-warn h2{color:var(--bad)}
+.v-d .warn li::before{top:.5em;width:9px;height:9px;background:var(--bad);transform:rotate(45deg)}
+.v-d .ans{border-radius:999px;background:#fcfaf6;padding-inline:10px 18px}
+.v-d .ans:hover:not([aria-disabled="true"]){border-color:var(--fg)}
+.v-d .ans-k{border-radius:50%;background:#ebe4d8;font-family:var(--disp)}
+.v-d .ans.ok{background:var(--acc);border-color:var(--acc);color:#fff}
+.v-d .ans.ok .ans-k{background:#fff;color:var(--acc)}
+.v-d .ans.bad{text-decoration:line-through;color:var(--bad)}
+.v-d .explain b{color:var(--acc)}
+.v-d .viz{background:var(--surf);padding:16px;border-radius:4px;box-shadow:0 1px 0 #c3b6a2,0 22px 40px -28px rgba(60,45,30,.55);position:sticky;top:84px}
+.v-d .viz svg{border-radius:2px}
+.v-d .samples{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
+.v-d .smp i{display:block;aspect-ratio:1;max-width:100%;border-radius:3px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.3)}
+.v-d .smp span{display:block;font-size:12px;margin-top:6px;color:var(--mut)}
+.v-d .smp-tynk i{background:var(--m-plaster)}
+.v-d .smp-kamien i{background:var(--m-stone)}
+.v-d .smp-deska i{background:var(--m-oak)}
+.v-d .smp-beton i{background:var(--m-conc)}
+.v-d .sky{fill:#e9e4da}
+.v-d .earth{fill:#7f7058}
+.v-d .wall{fill:#efe9de}
+.v-d .stone{fill:url(#stones-d)}
+.v-d #stones-d .p-bg{fill:#918a7e}.v-d #stones-d .p-ln{stroke:#6e685e}
+.v-d .wood{fill:url(#boards-d)}
+.v-d #boards-d .p-bg{fill:#a9794c}.v-d #boards-d .p-ln{stroke:#7a5534}
+.v-d .glass{fill:#6d7c80}
+.v-d .roof{stroke:#3a3631;stroke-width:8;fill:none;stroke-linejoin:round}
+.v-d .garage{fill:#e7e1d5}.v-d .gdoor{fill:#4a463f}.v-d .gslab,.v-d .terr rect{fill:#3a3631}.v-d .chim{fill:#58534b}
+.v-d .mull{stroke:#efe9de;stroke-width:2.5}
+.v-d .gl{stroke:#5f533f;stroke-width:2}
+@media (max-width:720px){
+  .v-d .dec{grid-template-columns:minmax(0,1fr)}
+  .v-d .opt-sw{height:56px}
+  .v-b .sec{grid-template-columns:minmax(0,1fr)}
+  .v-b .sec>:not(h2){grid-column:1}
+  .v-a .sec-warn,.v-d .sec-warn{padding:22px 18px}
+}
+</style>
+</head>
+<body>
+
+<div class="sw-bar">
+  <div class="sw-in">
+    <div class="sw-tabs" role="tablist" aria-label="Kierunek wizualny" id="tabs"></div>
+    <p class="sw-desc" id="swDesc" aria-live="polite"></p>
+  </div>
+</div>
+
+<div id="views"></div>
+
+<script>
+(function(){
+  var DIRS = [
+    { v:'a', slug:'wieczor',   name:'Wieczór',     desc:'Ciemno i ciepło, jak dom o zmierzchu.' },
+    { v:'b', slug:'magazyn',   name:'Magazyn',     desc:'Redakcyjnie: duża typografia, asymetria, powietrze.' },
+    { v:'c', slug:'blueprint', name:'Blueprint',   desc:'Rysunek techniczny na cyjanotypii.' },
+    { v:'d', slug:'materialy', name:'Materiały',   desc:'Próbki betonu, drewna, kamienia i lnu.' }
+  ];
+  var TOTAL = 2000000;
+  var CATS = [
+    { id:'dzialka', name:'Działka i formalności', plan:330000, spent:314500 },
+    { id:'surowy',  name:'Stan surowy',           plan:640000, spent:0 },
+    { id:'instal',  name:'Instalacje',            plan:310000, spent:0 },
+    { id:'wykoncz', name:'Wykończenie',           plan:500000, spent:0 },
+    { id:'ogrod',   name:'Ogród',                 plan:220000, spent:0 }
+  ];
+  var STAGES = ['Plan i budżet','Działka','Projekt i pozwolenie','Przygotowanie budowy','Fundamenty','Ściany i stropy','Dach','Okna i drzwi','Instalacje','Ogrzewanie i wentylacja','Tynki i wylewki','Elewacja','Wykończenie wnętrz','Kuchnia i łazienki','Odbiór i przeprowadzka','Ogród','Basen i mała architektura'];
+  var STEPS = ['Wytyczenie i wykop','Chudy beton','Szalunki ław','Zbrojenie ław','Betonowanie ław','Ściany fundamentowe','Izolacja przeciwwilgociowa','Ocieplenie fundamentu','Zasypka i podkład pod posadzkę'];
+  var OPTS = [
+    { id:'lawy', k:'A', name:'Ławy + ściany z bloczków betonowych', min:85000, max:110000, time:'4–5 tyg.', dur:'Wysoka', rec:true,
+      pros:['Zna to każda ekipa','Łatwo poprowadzić przepusty instalacji','Dobra cena przy gruncie nośnym'],
+      cons:['Więcej etapów i przerw technologicznych','Mostek termiczny na styku ściany i posadzki'],
+      why:'<b>Dlaczego to rekomendujemy.</b> Dla domu z poddaszem na gruncie nośnym to najtańsza sprawdzona droga. Ekipę łatwo znaleźć w małym mieście, a błędy widać przed zasypaniem.' },
+    { id:'plyta', k:'B', name:'Płyta fundamentowa', min:105000, max:140000, time:'2–3 tyg.', dur:'Wysoka',
+      pros:['Szybko, jedno betonowanie','Ciepła podłoga bez mostków','Dobra na słabszy grunt'],
+      cons:['Wyższy koszt na starcie','Instalacje trzeba zaplanować co do centymetra','Mniej doświadczonych ekip'],
+      why:'<b>Wybrano wariant B.</b> Płyta ma sens przy słabym gruncie albo gdy liczy się czas i cieplejsza podłoga. Zbrojenie jest wtedy siatką na całej powierzchni, a nie koszem w ławie.' },
+    { id:'szalunkowe', k:'C', name:'Ławy + ściany z bloczków szalunkowych', min:95000, max:125000, time:'3–4 tyg.', dur:'Zależy od zagęszczenia betonu',
+      pros:['Ściana zbrojona i zalana betonem','Szybciej niż szalunek tradycyjny'],
+      cons:['Drożej niż bloczki pełne','Łatwo o pustki przy złym zagęszczeniu'],
+      why:'<b>Wybrano wariant C.</b> Bloczki szalunkowe dają ścianę lepiej związaną z ławą. Stosuje się je, gdy projektant przewidział zbrojenie ścian fundamentowych, na przykład przy wysokim poziomie wód gruntowych.' }
+  ];
+  var TIPS = [
+    'Dystanse kup gotowe, betonowe albo plastikowe. Kawałki cegły i kamienie pod prętami to fuszerka, która zostaje w fundamencie na zawsze.',
+    'W narożnikach pręty mają zachodzić na siebie (zakład ok. 50–60 cm albo jak w projekcie). Skrzyżowane na styk nic nie przenoszą.',
+    'Zanim przyjedzie gruszka, wstaw rury osłonowe pod kanalizację, wodę i prąd. Kucie w świeżej ławie jest drogie i ją osłabia.',
+    'Zostaw wypuszczone pręty startowe w miejscach słupów i trzpieni. Sprawdź je z rysunkiem przed betonowaniem.'
+  ];
+  var WARN = [
+    'Kosz leży bezpośrednio na chudym betonie albo w błocie, bez otuliny. Stal rdzewieje, beton odpada.',
+    'Zbrojenie oblepione ziemią po deszczu, którego nikt nie umył przed betonowaniem.',
+    'Zbyt rzadkie strzemiona, bo „i tak się trzyma”. Kosz rozjeżdża się przy wibrowaniu betonu.'
+  ];
+  var QUIZ = { q:'Po co pod koszem zbrojeniowym stawia się dystanse?',
+    a:['Żeby zużyć mniej betonu','Żeby stal była z każdej strony otoczona betonem','Żeby dało się chodzić po zbrojeniu'], correct:1,
+    explain:'<b>Otulina chroni stal.</b> Beton wokół prętów odcina je od wilgoci i tlenu, więc stal nie rdzewieje. Pręt, który dotyka gruntu, zacznie korodować, a rdza rozsadzi beton od środka.' };
+  var CAP = {
+    a:'Dom referencyjny o zmierzchu. To zaślepka: szczegółowa wizualizacja powstaje osobno.',
+    b:'<b>Ryc. 1</b>Dom referencyjny, elewacja frontowa. Zaślepka, szczegółowa wizualizacja powstaje osobno.',
+    c:'Elewacja frontowa, schemat bez skali. Zaślepka: szczegółowa wizualizacja powstaje osobno.',
+    d:'Elewacja z próbkami materiałów. Zaślepka: szczegółowa wizualizacja powstaje osobno.'
+  };
+
+  function num(n){ return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,' '); }
+  function k(n){ return (n/1000).toLocaleString('pl-PL',{maximumFractionDigits:1}); }
+  function mid(o){ return (o.min + o.max) / 2; }
+  function opt(id){ for (var i=0;i<OPTS.length;i++) if (OPTS[i].id===id) return OPTS[i]; }
+  function pad(n){ return (n<10?'0':'') + n; }
+
+  var ICON = '<svg viewBox="0 0 28 28" aria-hidden="true"><path d="M3 13 14 4l11 9M6 11v13h16V11M11.5 24v-6h5v6"/></svg>';
+
+  function house(v){
+    return '<svg class="house" viewBox="0 0 480 270" role="img" aria-label="Sylwetka domu referencyjnego: parter z poddaszem, dach dwuspadowy, garaż w bryle, duże przeszklenia">' +
+    '<defs>' +
+      '<linearGradient id="sky-'+v+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f2536"/><stop offset=".6" stop-color="#3b3240"/><stop offset=".86" stop-color="#7d4f3a"/><stop offset="1" stop-color="#a7683f"/></linearGradient>' +
+      '<radialGradient id="pool-'+v+'"><stop offset="0" stop-color="#f3c472" stop-opacity=".55"/><stop offset="1" stop-color="#f3c472" stop-opacity="0"/></radialGradient>' +
+      '<filter id="glow-'+v+'" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>' +
+      '<pattern id="hatch-'+v+'" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="p-bg" width="6" height="6"/><path class="p-ln" d="M0 0V6"/></pattern>' +
+      '<pattern id="boards-'+v+'" width="7" height="20" patternUnits="userSpaceOnUse"><rect class="p-bg" width="7" height="20"/><path class="p-ln" d="M.5 0V20"/></pattern>' +
+      '<pattern id="stones-'+v+'" width="26" height="18" patternUnits="userSpaceOnUse"><rect class="p-bg" width="26" height="18"/><path class="p-ln" d="M0 9H26M11 0V9M20 9V18M4 9V18"/></pattern>' +
+    '</defs>' +
+    '<rect class="sky" x="0" y="0" width="480" height="270"/>' +
+    '<rect class="earth" x="0" y="220" width="480" height="50"/>' +
+    '<ellipse class="pool" cx="196" cy="228" rx="120" ry="12"/>' +
+    '<g class="terr"><rect x="22" y="152" width="70" height="5"/><rect x="26" y="157" width="4" height="63"/></g>' +
+    '<rect class="chim" x="240" y="50" width="16" height="40"/>' +
+    '<path class="wall" d="M90 220V132L195 44 300 132V220Z"/>' +
+    '<rect class="stone" x="90" y="132" width="40" height="88"/>' +
+    '<path class="roof" d="M78 138 195 40 312 138"/>' +
+    '<rect class="garage" x="300" y="150" width="120" height="70"/>' +
+    '<rect class="wood" x="300" y="152" width="120" height="20"/>' +
+    '<rect class="gslab" x="296" y="145" width="128" height="7"/>' +
+    '<rect class="gdoor" x="318" y="176" width="84" height="44"/>' +
+    '<g class="lit"><rect class="glass" x="142" y="150" width="108" height="70"/><rect class="glass" x="172" y="84" width="46" height="38"/><rect class="glass" x="262" y="158" width="26" height="42"/></g>' +
+    '<path class="mull" d="M178 150V220M214 150V220M195 84V122"/>' +
+    '<line class="gl" x1="0" y1="220.5" x2="480" y2="220.5"/>' +
+    '<g class="dims">' +
+      '<path d="M90 226V252M420 226V252M86 246H424"/><path class="tk" d="M86 250 94 242M416 250 424 242"/>' +
+      '<text x="255" y="241" text-anchor="middle">parter + poddasze, garaż w bryle</text>' +
+      '<path d="M318 40H462M424 220H462M456 36V224"/><path class="tk" d="M452 44 460 36M452 224 460 216"/>' +
+      '<text x="450" y="130" text-anchor="middle" transform="rotate(-90 450 130)">kalenica wg projektu</text>' +
+      '<path class="ang" d="M78 138H130M120 138A42 42 0 0 0 110.2 111"/><text class="angt" x="124" y="128">40°</text>' +
+    '</g>' +
+    '</svg>';
+  }
+
+  function tpl(d){
+    var v = d.v, h = '';
+    h += '<div class="wrap">';
+    h += '<header class="top"><div class="top-in">' +
+      '<div class="brand">'+ICON+'<div><span class="brand-t">Od działki do klucza</span><span class="brand-s">Poradnik budowy domu</span></div></div>' +
+      '<dl class="nums"><div><dt>Budżet</dt><dd>2 000 000 zł</dd></div>' +
+      '<div><dt>Wydano i zaplanowano</dt><dd><span data-spent></span> <small data-delta></small></dd></div>' +
+      '<div class="left"><dt>Zostaje</dt><dd data-left></dd></div></dl></div>' +
+      '<div class="bar" role="img" aria-label="Podział budżetu 2 000 000 zł na kategorie" data-bar>';
+    CATS.forEach(function(c){
+      h += '<div class="seg seg-'+c.id+'" style="flex-grow:'+c.plan+'"><span class="dim">'+k(c.plan)+'</span><span class="trk"><i class="f"></i><i class="c"></i></span></div>';
+    });
+    h += '</div><ul class="leg">';
+    CATS.forEach(function(c){
+      h += '<li class="leg-'+c.id+'"><i class="sw" aria-hidden="true"></i><span class="ln">'+c.name+'</span><span class="la" data-cat="'+c.id+'"></span></li>';
+    });
+    h += '</ul></header>';
+
+    h += '<div class="lay">';
+    h += '<nav class="toc" aria-label="Etapy budowy" data-open="false">' +
+      '<button class="toc-btn" aria-expanded="false" aria-controls="toc-'+v+'"><span>Spis etapów</span><span>Etap 04 z 16</span></button>' +
+      '<div class="toc-in" id="toc-'+v+'"><h2 class="toc-h">Etapy budowy</h2><ol class="stages">';
+    STAGES.forEach(function(s,i){
+      var cls = i<4 ? 'st-done' : (i===4 ? 'st-cur' : '');
+      var st = i<4 ? 'gotowe' : (i===4 ? '3/9' : '');
+      h += '<li class="'+cls+'"><button class="st" data-stage="'+i+'"><span class="st-nr">'+pad(i)+'</span><span class="st-t">'+s+'</span><span class="st-s">'+st+'</span></button>';
+      if (i===4){
+        h += '<ol class="steps">';
+        STEPS.forEach(function(t,j){
+          h += '<li><button class="st" data-step="'+j+'"'+(j===3?' aria-current="step"':'')+'><span class="st-nr">04.'+(j+1)+'</span><span class="st-t">'+t+'</span></button></li>';
+        });
+        h += '</ol>';
+      }
+      h += '</li>';
+    });
+    h += '</ol><p class="toc-note" data-note aria-live="polite"></p></div></nav>';
+
+    h += '<main class="step">' +
+      '<header class="sh"><p class="folio">Fundamenty, krok 4 z 9</p><h1>Zbrojenie ław</h1>' +
+      '<p class="lead">Stalowy szkielet wewnątrz betonu. Po zalaniu nie da się go już obejrzeć, więc sprawdza się go teraz, z miarką w ręku.</p>' +
+      '<dl class="facts"><div><dt>Czas</dt><dd>2–4 dni</dd></div><div><dt>Ekipa</dt><dd>2–3 zbrojarzy</dd></div><div><dt>Stal</dt><dd>ok. 0,6–0,9 t</dd></div><div class="amt"><dt>Koszt kroku</dt><dd>12–18 tys. zł</dd></div></dl></header>' +
+      '<section class="sec sec-opis"><h2>Na czym to polega</h2><div class="prose">' +
+        '<p>Ława fundamentowa rozkłada ciężar domu na grunt. Beton dobrze znosi ściskanie, ale pęka, gdy się go zgina, na przykład kiedy grunt pod jednym narożnikiem osiądzie bardziej niż pod drugim. Stal przejmuje to rozciąganie.</p>' +
+        '<p>W typowym domu jak nasz ława ma ok. <strong>60 × 35 cm</strong>, a w środku leży kosz z <strong>czterech prętów podłużnych Ø12</strong> połączonych <strong>strzemionami Ø6 co 25–30 cm</strong>. To wartości orientacyjne: średnice, liczbę prętów i rozstaw zawsze bierzesz z projektu konstrukcyjnego.</p>' +
+        '<p>Kosz nie może leżeć na ziemi. Stawia się go na dystansach tak, żeby z każdej strony miał co najmniej kilka centymetrów betonu (otulina).</p>' +
+      '</div></section>';
+
+    h += '<section class="sec sec-dec"><h2 id="dec-'+v+'">Wybór fundamentu</h2><div>' +
+      '<p class="sec-intro">Zbrojenie zależy od typu fundamentu, więc ten wybór zapada przed tym krokiem. Wybrany wariant przelicza budżet u góry strony.</p>' +
+      '<div class="dec" role="radiogroup" aria-labelledby="dec-'+v+'">' +
+      '<div class="dec-head" aria-hidden="true"><span>Wariant</span><span>Koszt</span><span>Czas</span><span>Trwałość</span></div>';
+    OPTS.forEach(function(o){
+      h += '<label class="opt" data-id="'+o.id+'"><input type="radio" id="fund-'+v+'-'+o.id+'" name="fund-'+v+'" value="'+o.id+'"'+(o.rec?' checked':'')+'>' +
+        '<span class="opt-sw" aria-hidden="true"></span>' +
+        '<span class="opt-k" aria-hidden="true">'+o.k+'</span>' +
+        '<span class="opt-n">'+o.name+(o.rec?' <em class="rec">Rekomendacja</em>':'')+'</span>' +
+        '<span class="opt-c" data-l="Koszt">'+k(o.min)+'–'+k(o.max)+' tys. zł</span>' +
+        '<span class="opt-t" data-l="Czas">'+o.time+'</span>' +
+        '<span class="opt-d" data-l="Trwałość">'+o.dur+'</span></label>';
+    });
+    h += '</div><div class="dec-detail" data-detail aria-live="polite"></div></div></section>';
+
+    h += '<section class="sec sec-tips"><h2>Porady majstra</h2><ul class="tips">' + TIPS.map(function(t){return '<li>'+t+'</li>';}).join('') + '</ul></section>';
+    h += '<section class="sec sec-warn"><h2>Uwaga: częste błędy</h2><ul class="warn">' + WARN.map(function(t){return '<li>'+t+'</li>';}).join('') + '</ul></section>';
+
+    h += '<section class="sec sec-quiz"><h2>Pytanie kontrolne</h2><div><p class="q">'+QUIZ.q+'</p><div class="ans-list" data-quiz>';
+    QUIZ.a.forEach(function(a,i){
+      h += '<button class="ans" data-i="'+i+'"><span class="ans-k" aria-hidden="true">'+'ABC'[i]+'</span><span>'+a+'</span><span class="ans-r"></span></button>';
+    });
+    h += '</div><div class="explain" data-explain hidden><p>'+QUIZ.explain+'</p><button class="retry" data-retry>Odpowiedz jeszcze raz</button></div></div></section>';
+    h += '</main>';
+
+    h += '<figure class="viz">' + house(v) +
+      '<div class="tblock"><div><span>Obiekt</span><b>Dom referencyjny, ok. 190 m²</b></div><div><span>Rysunek</span><b>Fundamenty, zbrojenie ław</b></div><div><span>Skala</span><b>Schemat, bez skali</b></div><div><span>Arkusz</span><b>04.4</b></div></div>' +
+      '<div class="samples" aria-hidden="true"><div class="smp smp-tynk"><i></i><span>Tynk</span></div><div class="smp smp-kamien"><i></i><span>Kamień</span></div><div class="smp smp-deska"><i></i><span>Deska</span></div><div class="smp smp-beton"><i></i><span>Beton</span></div></div>' +
+      '<figcaption>'+CAP[v]+'</figcaption></figure>';
+    h += '</div></div>';
+    return h;
+  }
+
+  var views = document.getElementById('views'), tabs = document.getElementById('tabs'), desc = document.getElementById('swDesc');
+  var recMid = mid(opt('lawy'));
+
+  function update(root, id){
+    var o = opt(id), cur = mid(o), spentAll = 0;
+    CATS.forEach(function(c){
+      var add = c.id==='surowy' ? cur : 0, sp = c.spent + add;
+      spentAll += sp;
+      var seg = root.querySelector('.seg-'+c.id);
+      seg.querySelector('.f').style.width = (c.spent/c.plan*100)+'%';
+      var ce = seg.querySelector('.c'); ce.style.left = (c.spent/c.plan*100)+'%'; ce.style.width = (add/c.plan*100)+'%';
+      root.querySelector('[data-cat="'+c.id+'"]').textContent = k(sp)+' z '+k(c.plan)+' tys. zł';
+    });
+    root.querySelector('[data-spent]').textContent = num(spentAll)+' zł';
+    root.querySelector('[data-left]').textContent = num(TOTAL-spentAll)+' zł';
+    var dlt = cur - recMid;
+    root.querySelector('[data-delta]').textContent = dlt ? '(+'+num(dlt)+' zł wobec rekomendacji)' : '(wariant rekomendowany)';
+    root.querySelectorAll('.opt').forEach(function(el){ el.classList.toggle('on', el.dataset.id===id); });
+    root.querySelector('[data-detail]').innerHTML =
+      '<div class="pc"><div><h3>Zalety</h3><ul>'+o.pros.map(function(p){return '<li>'+p+'</li>';}).join('')+'</ul></div>' +
+      '<div><h3>Wady</h3><ul>'+o.cons.map(function(p){return '<li>'+p+'</li>';}).join('')+'</ul></div></div>' +
+      '<p class="why">'+o.why+(o.rec?'':' Rekomendacja dla domu referencyjnego: wariant A.')+'</p>' +
+      '<p class="eff">Stan surowy: '+num(cur)+' zł na fundament (środek widełek), '+(dlt?'+'+num(dlt)+' zł wobec wariantu A.':'bez zmian wobec planu.')+'</p>';
+  }
+
+  function quiz(root, i){
+    var btns = root.querySelectorAll('.ans');
+    btns.forEach(function(b){
+      var j = +b.dataset.i, r = b.querySelector('.ans-r');
+      b.classList.remove('ok','bad','off'); r.textContent = '';
+      if (i===null){ b.removeAttribute('aria-disabled'); return; }
+      b.setAttribute('aria-disabled','true');
+      if (j===QUIZ.correct){ b.classList.add('ok'); r.textContent = j===i ? 'Dobrze' : 'Poprawna'; }
+      else if (j===i){ b.classList.add('bad'); r.textContent = 'Nie'; }
+      else b.classList.add('off');
+    });
+    root.querySelector('[data-explain]').hidden = i===null;
+  }
+
+  DIRS.forEach(function(d, idx){
+    var t = document.createElement('button');
+    t.className = 'sw-tab'; t.id = 'tab-'+d.v; t.setAttribute('role','tab'); t.setAttribute('aria-controls','v-'+d.v);
+    t.innerHTML = '<b>'+d.v.toUpperCase()+'</b><span>'+d.name+'</span>';
+    t.onclick = function(){ location.hash = d.slug; };
+    tabs.appendChild(t);
+
+    var root = document.createElement('section');
+    root.className = 'v v-'+d.v; root.id = 'v-'+d.v; root.setAttribute('role','tabpanel'); root.setAttribute('aria-labelledby','tab-'+d.v); root.hidden = true;
+    root.innerHTML = tpl(d);
+    views.appendChild(root);
+
+    root.querySelectorAll('input[type=radio]').forEach(function(r){ r.onchange = function(){ update(root, r.value); }; });
+    root.querySelectorAll('.ans').forEach(function(b){ b.onclick = function(){ if (b.getAttribute('aria-disabled')!=='true') quiz(root, +b.dataset.i); }; });
+    root.querySelector('[data-retry]').onclick = function(){ quiz(root, null); root.querySelector('.ans').focus(); };
+    var nav = root.querySelector('.toc'), tb = root.querySelector('.toc-btn');
+    tb.onclick = function(){ var o = nav.dataset.open!=='true'; nav.dataset.open = o; tb.setAttribute('aria-expanded', o); };
+    var note = root.querySelector('[data-note]');
+    root.querySelectorAll('.st').forEach(function(b){
+      b.onclick = function(){ note.textContent = b.getAttribute('aria-current') ? '' : 'Makieta pokazuje tylko krok 04.4 Zbrojenie ław.'; };
+    });
+    update(root, 'lawy');
+  });
+
+  tabs.addEventListener('keydown', function(e){
+    if (e.key!=='ArrowRight' && e.key!=='ArrowLeft') return;
+    var cur = DIRS.findIndex(function(d){ return d.v===document.body.dataset.active; });
+    var n = (cur + (e.key==='ArrowRight'?1:-1) + DIRS.length) % DIRS.length;
+    location.hash = DIRS[n].slug; document.getElementById('tab-'+DIRS[n].v).focus();
+  });
+
+  function show(){
+    var slug = location.hash.replace('#',''), d = DIRS[0];
+    DIRS.forEach(function(x){ if (x.slug===slug) d = x; });
+    document.body.dataset.active = d.v;
+    DIRS.forEach(function(x){
+      document.getElementById('v-'+x.v).hidden = x!==d;
+      var t = document.getElementById('tab-'+x.v);
+      t.setAttribute('aria-selected', x===d); t.tabIndex = x===d ? 0 : -1;
+    });
+    desc.textContent = d.desc;
+  }
+  window.addEventListener('hashchange', show);
+  show();
+})();
+</script>
+</body>
+</html>

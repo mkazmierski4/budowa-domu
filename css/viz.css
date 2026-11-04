@@ -1,0 +1,229 @@
+/* =====================================================================
+   VIZ — style wizualizacji (js/viz.js). Wszystko pod .viz.
+   Tokeny --vz-* biorą kolory z aplikacji (css/style.css), z wartościami
+   zapasowymi z makieta/wizualizacja.html. Materiały --m-* są własne viz.
+   ===================================================================== */
+.viz{
+  --vz-paper:var(--bg,#E4E7E2); --vz-sheet:var(--pane,#F6F7F3); --vz-rule:var(--line,#C3C9C3); --vz-rule-2:var(--line-2,#A3ABA5);
+  --vz-ink:var(--ink,#1E2A30); --vz-ink-2:var(--ink-2,#4F5C5D); --vz-ink-3:var(--ink-3,#86908E);
+  --vz-accent:var(--wood,#2C5BA6); --vz-accent-soft:var(--wood-soft,#D6E0EF);
+  --vz-safety:var(--lamp,#D9921C); --vz-safety-d:#A86C0E; --vz-focus:var(--vz-accent);
+  --vz-sky-1:var(--sky1,#D9E0E0); --vz-sky-2:var(--sky2,#F1F2EE); --vz-draw:var(--draw,#7a6a55);
+  --vz-lit:var(--lit,#F3C46A); --vz-lit-op:.30; --vz-glow-op:0; --vz-night:0;
+  --vz-out:var(--out,cubic-bezier(.22,1,.36,1));
+  --vz-f:var(--f,"Onest","Archivo","Segoe UI",system-ui,sans-serif);
+  --m-soil:#BCAB8F; --m-soil-d:#97856A; --m-humus:#7B6750; --m-sand:#DCCFAE; --m-gravel:#C2BCAF;
+  --m-lawn:#AEB98F; --m-lawn-d:#869566; --m-crown:#B9C49F; --m-crown-d:#93A276;
+  --m-conc:#C2C0B9; --m-conc-d:#A19E97; --m-conc-t:#D6D4CE;
+  --m-block:#BDBBB3; --m-cer:#CB9E7E; --m-cer-d:#AE8162; --m-cer-t:#DFBBA0;
+  --m-bit:#2E2E2E; --m-xps:#A6BFCF; --m-eps:#B7BCBE; --m-eps-d:#979DA0; --m-wool:#DCCB8E; --m-glue:#D9D6CC;
+  --m-plaster:#F0EEE8; --m-plaster-s:#D9D6CE; --m-stone:#A69E91; --m-stone-d:#857D71;
+  --m-wood:#B48455; --m-wood-d:#8C6239; --m-timber:#DCC195; --m-timber-d:#B8996B; --m-memb:#93A5B2;
+  --m-roof:#4C5157; --m-roof-d:#3A3E43; --m-roof-t:#5E636A; --m-metal:#767C82; --m-metal-d:#5B6167;
+  --m-glass:#A9BCC3; --m-glass-d:#8AA0A9; --m-frame:#30363A; --m-water:#94C4CF; --m-water-d:#6FA6B4;
+  --m-scaff:#80878B; --m-steel:#40464B; --m-pave:#BAB5AB; --m-pave-d:#9D978C; --m-deck:#AE8763;
+  --m-machine:#D9921C; --m-machine-d:#A86C0E; --m-car:#5B6670;
+  --m-void:#2B3034;
+  --vz-maxh:max(260px, calc(100vh - 300px)); --vz-maxh:max(260px, calc(100dvh - 300px));
+  container-type:inline-size;
+  color:var(--vz-ink); font-family:var(--vz-f); font-variant-numeric:tabular-nums;
+}
+/* Ciemny motyw: jawny data-theme="dark" albo systemowy, gdy motyw nie jest wymuszony na jasny */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .viz{
+  --vz-paper:var(--bg,#11161C); --vz-sheet:var(--pane,#18202A); --vz-rule:var(--line,#2C3743); --vz-rule-2:var(--line-2,#3F4C59);
+  --vz-ink:var(--ink,#D9DFE2); --vz-ink-2:var(--ink-2,#A3AEB3); --vz-ink-3:var(--ink-3,#6E7A82);
+  --vz-accent:var(--wood,#86AEEB); --vz-accent-soft:var(--wood-soft,#233452);
+  --vz-safety:var(--lamp,#C8861A); --vz-safety-d:#8E5E10;
+  --vz-sky-1:var(--sky1,#0B121C); --vz-sky-2:var(--sky2,#26303F); --vz-draw:var(--draw,#f3b75d);
+  --vz-lit:var(--lit,#FFC766); --vz-lit-op:.95; --vz-glow-op:.55; --vz-night:1;
+  --m-soil:#4A4236; --m-soil-d:#352F26; --m-humus:#2E271F; --m-sand:#5E5745; --m-gravel:#4D4A45;
+  --m-lawn:#34412F; --m-lawn-d:#273123; --m-crown:#2F3B2C; --m-crown-d:#232C21;
+  --m-conc:#5C5D5B; --m-conc-d:#474846; --m-conc-t:#6A6B68;
+  --m-block:#575854; --m-cer:#6E5242; --m-cer-d:#573F32; --m-cer-t:#7D5F4D;
+  --m-bit:#0E0E0E; --m-xps:#435766; --m-eps:#4E5356; --m-eps-d:#3D4144; --m-wool:#6A6040; --m-glue:#5A5852;
+  --m-plaster:#A7A49C; --m-plaster-s:#827F78; --m-stone:#625D55; --m-stone-d:#4A4640;
+  --m-wood:#6E4E30; --m-wood-d:#523821; --m-timber:#7A6748; --m-timber-d:#5E4F36; --m-memb:#3E4C57;
+  --m-roof:#2A2D31; --m-roof-d:#1F2125; --m-roof-t:#34383D; --m-metal:#4B5056; --m-metal-d:#393D42;
+  --m-glass:#24323B; --m-glass-d:#1B262D; --m-frame:#0F1215; --m-water:#2F7E92; --m-water-d:#22606F;
+  --m-scaff:#59616A; --m-steel:#1E2226; --m-pave:#4E4B46; --m-pave-d:#3D3A36; --m-deck:#5A4431;
+  --m-machine:#9C6A16; --m-machine-d:#704B0E; --m-car:#3B444C; --m-void:#07090B;
+}}
+:root[data-theme="dark"] .viz{
+  --vz-paper:var(--bg,#11161C); --vz-sheet:var(--pane,#18202A); --vz-rule:var(--line,#2C3743); --vz-rule-2:var(--line-2,#3F4C59);
+  --vz-ink:var(--ink,#D9DFE2); --vz-ink-2:var(--ink-2,#A3AEB3); --vz-ink-3:var(--ink-3,#6E7A82);
+  --vz-accent:var(--wood,#86AEEB); --vz-accent-soft:var(--wood-soft,#233452);
+  --vz-safety:var(--lamp,#C8861A); --vz-safety-d:#8E5E10;
+  --vz-sky-1:var(--sky1,#0B121C); --vz-sky-2:var(--sky2,#26303F); --vz-draw:var(--draw,#f3b75d);
+  --vz-lit:var(--lit,#FFC766); --vz-lit-op:.95; --vz-glow-op:.55; --vz-night:1;
+  --m-soil:#4A4236; --m-soil-d:#352F26; --m-humus:#2E271F; --m-sand:#5E5745; --m-gravel:#4D4A45;
+  --m-lawn:#34412F; --m-lawn-d:#273123; --m-crown:#2F3B2C; --m-crown-d:#232C21;
+  --m-conc:#5C5D5B; --m-conc-d:#474846; --m-conc-t:#6A6B68;
+  --m-block:#575854; --m-cer:#6E5242; --m-cer-d:#573F32; --m-cer-t:#7D5F4D;
+  --m-bit:#0E0E0E; --m-xps:#435766; --m-eps:#4E5356; --m-eps-d:#3D4144; --m-wool:#6A6040; --m-glue:#5A5852;
+  --m-plaster:#A7A49C; --m-plaster-s:#827F78; --m-stone:#625D55; --m-stone-d:#4A4640;
+  --m-wood:#6E4E30; --m-wood-d:#523821; --m-timber:#7A6748; --m-timber-d:#5E4F36; --m-memb:#3E4C57;
+  --m-roof:#2A2D31; --m-roof-d:#1F2125; --m-roof-t:#34383D; --m-metal:#4B5056; --m-metal-d:#393D42;
+  --m-glass:#24323B; --m-glass-d:#1B262D; --m-frame:#0F1215; --m-water:#2F7E92; --m-water-d:#22606F;
+  --m-scaff:#59616A; --m-steel:#1E2226; --m-pave:#4E4B46; --m-pave-d:#3D3A36; --m-deck:#5A4431;
+  --m-machine:#9C6A16; --m-machine-d:#704B0E; --m-car:#3B444C; --m-void:#07090B;
+}
+
+/* ===== Interfejs ===== */
+.viz *,.viz *::before,.viz *::after{box-sizing:border-box}
+.viz button,.viz input{font:inherit; color:inherit}
+.viz :focus-visible{outline:2px solid var(--vz-focus); outline-offset:2px}
+.viz .vz-bar{display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:6px 10px; margin-bottom:8px}
+.viz .vz-tools{display:inline-flex; flex-wrap:wrap; gap:4px}
+.viz .vz-tools button{border:1px solid var(--vz-rule-2); background:var(--vz-sheet); padding:5px 11px; font-size:13px; cursor:pointer; min-width:34px;
+  transition:background .2s, color .2s}
+.viz .vz-tools button:hover{background:var(--vz-accent-soft)}
+.viz .vz-tools button[aria-pressed="true"]{background:var(--vz-ink); color:var(--vz-sheet)}
+.viz .vz-seg{display:inline-flex; border:1px solid var(--vz-rule-2); background:var(--vz-sheet)}
+.viz .vz-seg button{border:0; background:none; padding:6px 14px; cursor:pointer; font-size:14px; transition:background .2s, color .2s}
+.viz .vz-seg button[aria-selected="true"]{background:var(--vz-ink); color:var(--vz-sheet)}
+.viz .vz-view[hidden]{display:none}
+
+/* arkusz rysunkowy */
+.viz .vz-sheet{background:var(--vz-sheet); border:1px solid var(--vz-rule-2); padding:10px; position:relative}
+.viz .vz-sheet::before{content:""; position:absolute; inset:5px; border:1px solid var(--vz-rule); pointer-events:none}
+/* Rysunek zawsze w całości: szerokość ogranicza wysokość (--vz-maxh), rysunek wpisany (meet) */
+.viz .vz-canvas{--vz-ar:1.6; position:relative; aspect-ratio:1280/800; width:min(100%, calc(var(--vz-maxh) * var(--vz-ar))); margin:0 auto}
+.viz .vz-canvas.vz-sec{--vz-ar:1.5385; aspect-ratio:1200/780}
+/* okno pan/zoom: przycina i przechwytuje gesty; lupa leży poza nim, więc się nie przesuwa */
+.viz .vz-vp{position:absolute; inset:0; overflow:hidden; touch-action:pan-y; cursor:default; user-select:none; -webkit-user-select:none}
+.viz .vz-vp.vz-zoomed{touch-action:none; cursor:grab}
+.viz .vz-vp.vz-drag{cursor:grabbing}
+.viz .vz-vp > svg{display:block; width:100%; height:100%; transform-origin:0 0; transition:transform .28s var(--vz-out)}
+.viz .vz-vp.vz-drag > svg{transition:none}
+.viz .vz-vp:focus-visible{outline-offset:-2px}
+
+/* lupa detalu */
+.viz .vz-loupe{position:absolute; left:1.5%; top:2%; width:25%; aspect-ratio:1}
+.viz .vz-loupe svg{display:block; width:100%; height:100%; overflow:visible; transform-origin:50% 50%}
+.viz .vz-detail{margin-top:12px; border-top:1px solid var(--vz-rule); padding-top:4px}
+.viz .vz-detail-text{display:flex; gap:10px; align-items:baseline; margin:10px 2px 0; font-size:14px; color:var(--vz-ink-2)}
+.viz .vz-detail-text b{color:var(--vz-accent); font-weight:650; white-space:nowrap}
+.viz .vz-det-list{margin:6px 0 0; padding-left:22px; columns:2 280px; column-gap:28px; font-size:13.5px; color:var(--vz-ink-2)}
+.viz .vz-det-list li{break-inside:avoid; margin-bottom:2px}
+.viz .vz-det-list li::marker{color:var(--vz-accent); font-weight:700}
+
+/* suwak podglądu etapów */
+.viz .vz-ctrl{margin-top:14px; display:grid; grid-template-columns:1fr; gap:6px}
+.viz .vz-ctrl-head{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap}
+.viz .vz-ctrl-head label{font-size:13px; color:var(--vz-ink-2)}
+.viz .vz-ctrl-head output{font-size:22px; font-weight:650; line-height:1}
+.viz .vz-sname{font-size:18px; font-weight:600}
+.viz .vz-back{margin-left:auto; border:1px solid var(--vz-accent); background:var(--vz-accent-soft); color:var(--vz-ink);
+  padding:4px 12px; font-size:13px; cursor:pointer; border-radius:999px; align-self:center}
+.viz .vz-back:not([hidden]){animation:vz-pop .35s var(--vz-out)}
+.viz .vz-back[hidden]{display:none}
+.viz input[type=range]{width:100%; margin:6px 0 0; accent-color:var(--vz-ink); height:28px; cursor:pointer}
+.viz .vz-ticks{display:grid; grid-template-columns:repeat(17,1fr); font-size:11px; color:var(--vz-ink-3); text-align:center; margin:0 -0.5%}
+.viz .vz-ticks span.dn{color:var(--vz-ink-2)}
+.viz .vz-ticks span.on{color:var(--vz-ink); font-weight:650}
+.viz .vz-caption{margin:6px 0 0; max-width:78ch; color:var(--vz-ink-2)}
+@keyframes vz-pop{from{opacity:0; transform:scale(.85)}}
+
+/* tabliczka rysunkowa */
+.viz .vz-tb{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); border:1px solid var(--vz-rule-2); margin-top:14px; background:var(--vz-sheet)}
+.viz .vz-tb div{padding:6px 10px; border-left:1px solid var(--vz-rule)}
+.viz .vz-tb div:first-child{border-left:0}
+.viz .vz-tb span{display:block; font-size:11px; color:var(--vz-ink-3)}
+.viz .vz-tb b{font-weight:600; font-size:14px}
+
+/* przekrój: warstwy */
+.viz .vz-sec-side{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:14px; margin-top:12px; align-items:start}
+.viz .vz-layer-info{border-left:3px solid var(--vz-accent); padding:4px 0 4px 12px; min-height:84px}
+.viz .vz-layer-info h3{margin:0; font-size:17px; font-weight:650}
+.viz .vz-layer-info .thick{font-size:13px; color:var(--vz-accent); font-weight:600}
+.viz .vz-layer-info p{margin:4px 0 0; color:var(--vz-ink-2); font-size:14px; max-width:60ch}
+.viz .vz-chips{display:flex; flex-wrap:wrap; gap:4px}
+.viz .vz-chips button{display:inline-flex; align-items:center; gap:6px; border:1px solid var(--vz-rule); background:var(--vz-sheet);
+  padding:3px 8px; font-size:12.5px; cursor:pointer}
+.viz .vz-chips button i{width:11px; height:11px; border:1px solid var(--vz-ink-2); flex:none}
+.viz .vz-chips button[aria-pressed="true"]{border-color:var(--vz-accent); box-shadow:inset 0 0 0 1px var(--vz-accent)}
+.viz .vz-opt{display:flex; gap:10px; align-items:center; font-size:13px; color:var(--vz-ink-2); margin-top:8px; flex-wrap:wrap}
+
+/* ===== Klasy SVG: kreska i materiały ===== */
+.viz svg text{font-family:var(--vz-f); font-stretch:80%; fill:var(--vz-ink)}
+.viz .e{stroke:var(--vz-ink); stroke-width:.7; stroke-linejoin:round}
+.viz .e0{stroke:none}
+.viz .j{fill:none; stroke:var(--vz-ink); stroke-width:.35; opacity:.5}
+.viz .jj{fill:none; stroke:var(--vz-ink); stroke-width:.25; opacity:.32}
+.viz .ln{fill:none; stroke:var(--vz-ink); stroke-width:.8; stroke-linejoin:round; stroke-linecap:round}
+.viz .thin{fill:none; stroke:var(--vz-ink); stroke-width:.5}
+.viz .dash{fill:none; stroke:var(--vz-ink); stroke-width:.8; stroke-dasharray:6 4}
+.viz .str{fill:none; stroke:var(--vz-accent); stroke-width:.6}
+.viz .bnd{fill:none; stroke:var(--vz-ink); stroke-width:1.1; stroke-dasharray:14 4 2 4}
+.viz .lbl{font-size:12px; fill:var(--vz-ink-2)}
+.viz .lbl-s{font-size:10px; fill:var(--vz-ink-2)}
+.viz .tgt{fill:none; stroke:var(--vz-accent); stroke-width:1.4}
+.viz .tgt-t{font-size:13px; font-weight:700; fill:var(--vz-accent)}
+.viz .leader{fill:none; stroke:var(--vz-accent); stroke-width:.9; stroke-dasharray:4 3}
+.viz .sky{fill:url(#vzSky)}
+.viz .soil{fill:var(--m-soil)} .viz .soil-d{fill:var(--m-soil-d)} .viz .humus{fill:var(--m-humus)} .viz .sand{fill:var(--m-sand)} .viz .gravel{fill:var(--m-gravel)}
+.viz .lawn{fill:var(--m-lawn)} .viz .lawn-d{fill:var(--m-lawn-d)} .viz .crown{fill:var(--m-crown)} .viz .crown-d{fill:var(--m-crown-d)}
+.viz .conc{fill:var(--m-conc)} .viz .conc-d{fill:var(--m-conc-d)} .viz .conc-t{fill:var(--m-conc-t)} .viz .block{fill:var(--m-block)}
+.viz .cer{fill:var(--m-cer)} .viz .cer-d{fill:var(--m-cer-d)} .viz .cer-t{fill:var(--m-cer-t)}
+.viz .bit{fill:var(--m-bit)} .viz .xps{fill:var(--m-xps)} .viz .eps{fill:var(--m-eps)} .viz .eps-d{fill:var(--m-eps-d)} .viz .wool{fill:var(--m-wool)} .viz .glue{fill:var(--m-glue)}
+.viz .pl{fill:var(--m-plaster)} .viz .pl-s{fill:var(--m-plaster-s)} .viz .stone{fill:var(--m-stone)} .viz .stone-d{fill:var(--m-stone-d)}
+.viz .wood{fill:var(--m-wood)} .viz .wood-d{fill:var(--m-wood-d)} .viz .timber{fill:var(--m-timber)} .viz .timber-d{fill:var(--m-timber-d)} .viz .memb{fill:var(--m-memb)}
+.viz .roof{fill:var(--m-roof)} .viz .roof-d{fill:var(--m-roof-d)} .viz .roof-t{fill:var(--m-roof-t)} .viz .metal{fill:var(--m-metal)} .viz .metal-d{fill:var(--m-metal-d)}
+.viz .glass{fill:var(--m-glass)} .viz .glass-d{fill:var(--m-glass-d)} .viz .frame{fill:var(--m-frame)} .viz .water{fill:var(--m-water)} .viz .water-d{fill:var(--m-water-d)}
+.viz .scaff{fill:none; stroke:var(--m-scaff); stroke-width:1.1} .viz .plank{fill:var(--m-timber-d)}
+.viz .steel{fill:none; stroke:var(--m-steel); stroke-width:.7} .viz .steel-f{fill:var(--m-steel)}
+.viz .pave{fill:var(--m-pave)} .viz .pave-d{fill:var(--m-pave-d)} .viz .deck{fill:var(--m-deck)}
+.viz .mach{fill:var(--m-machine)} .viz .mach-d{fill:var(--m-machine-d)} .viz .car{fill:var(--m-car)} .viz .paper{fill:var(--vz-sheet)} .viz .inkf{fill:var(--vz-ink)}
+.viz .white{fill:#F4F4F0} .viz .safety{fill:var(--vz-safety)}
+.viz .lit{fill:var(--vz-lit); opacity:var(--vz-lit-op)}
+.viz .glow{fill:var(--vz-lit); opacity:var(--vz-glow-op); filter:url(#fGlow)}
+.viz .stars{fill:var(--vz-lit); opacity:var(--vz-night)}
+.viz .shadow{fill:#1E2A30; opacity:.12}
+.viz .dayonly{opacity:calc(1 - var(--vz-night))}
+.viz .void{fill:var(--m-void)}
+.viz .pvc{fill:#B9683A} .viz .pvc-l{fill:none; stroke:#B9683A; stroke-width:2.4; stroke-linecap:round}
+.viz .mesh{fill:none; stroke:#7C8B6A; stroke-width:.35; opacity:.8}
+.viz .dowel{fill:var(--vz-sheet); stroke:var(--vz-ink); stroke-width:.4}
+.viz .rope{fill:none; stroke:var(--vz-ink-2); stroke-width:.6}
+.viz .glassT{fill:var(--m-glass); opacity:.28}
+.viz .hl-ring{fill:none; stroke:var(--vz-accent); stroke-width:1; stroke-dasharray:2 2}
+/* noc i dzień przenikają się przy zmianie motywu */
+.viz .stars,.viz .lit,.viz .glow,.viz .dayonly{transition:opacity .5s ease}
+
+/* przekrój */
+.viz .layer{cursor:pointer}
+.viz .layer .hl-o{fill:none; stroke:var(--vz-accent); stroke-width:0; pointer-events:none; transition:stroke-width .15s}
+.viz #vzSec.focus .layer{opacity:.42; transition:opacity .15s}
+.viz #vzSec.focus .layer.on{opacity:1}
+.viz #vzSec.focus .layer.on .hl-o{stroke-width:2.2}
+.viz .dim{fill:none; stroke:var(--vz-ink); stroke-width:.7}
+.viz .dim-t{font-size:12px; fill:var(--vz-ink)}
+.viz .lev{fill:var(--vz-ink)}
+.viz .call{font-size:12.5px; fill:var(--vz-ink)}
+
+/* ===== Wąski kontener (telefon, wąska kolumna) ===== */
+@container (max-width:760px){
+  .viz .vz-canvas{aspect-ratio:auto; width:100%}
+  .viz .vz-vp{position:relative; inset:auto; width:min(100%, calc(var(--vz-maxh) * var(--vz-ar))); margin:0 auto; aspect-ratio:1280/800}
+  .viz .vz-canvas.vz-sec .vz-vp{aspect-ratio:1200/780}
+  .viz .vz-loupe{position:relative; left:auto; top:auto; width:min(100%,360px); margin:10px auto 0}
+  .viz .leader{display:none}
+  .viz .vz-ticks{font-size:9px}
+  .viz .vz-ticks span:nth-child(odd):not(.on){visibility:hidden}
+  .viz .vz-tb{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .viz .vz-tb div:nth-child(3){border-left:0}
+  .viz .vz-tb div:nth-child(n+3){border-top:1px solid var(--vz-rule)}
+  .viz .vz-sec-side{grid-template-columns:1fr}
+}
+
+/* ===== Pełny ekran: nakładka ===== */
+html.vz-lock{overflow:hidden}
+.viz.vz-full{--vz-maxh:calc(100vh - 200px); --vz-maxh:calc(100dvh - 200px); position:fixed; inset:0; z-index:1000; overflow:auto;
+  background:var(--vz-paper); padding:12px max(12px,env(safe-area-inset-left,0px)) 16px; overscroll-behavior:contain}
+.viz.vz-full .vz-detail,.viz.vz-full .vz-tb{display:none}
+.viz.vz-full .vz-sheet{padding:6px}
+.viz.vz-full .vz-bar{position:sticky; top:-12px; z-index:2; padding:4px 0; background:var(--vz-paper)}
+
+@media (prefers-reduced-motion:reduce){
+  .viz *,.viz *::before,.viz *::after{transition:none!important; animation:none!important}
+}

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Test viz.js</title>
+<link rel="stylesheet" href="../css/style.css" id="appCss">
+<link rel="stylesheet" href="../css/viz.css">
+<style>html,body{height:auto!important;overflow:auto!important}</style>
+<style>
+/* Atrapa silnika: tylko to, co potrzebne do sprawdzenia viz.js */
+body{margin:0; background:var(--bg,#ECE6DC); color:var(--ink,#26231f); font:15px/1.5 "Segoe UI",system-ui,sans-serif}
+:root[data-theme="dark"] body{background:var(--bg,#141312); color:var(--ink,#efe8dd)}
+.mock{max-width:1240px; margin:0 auto; padding:16px}
+.mock h1{font-size:20px; margin:0 0 4px}
+.mock p{margin:0 0 10px; opacity:.8; font-size:14px}
+.bar{display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:0 0 8px; font-size:13px}
+.bar b{min-width:110px}
+.bar button{font:inherit; padding:4px 9px; border:1px solid #9a9184; background:transparent; color:inherit; cursor:pointer; border-radius:4px}
+.bar button[aria-pressed="true"]{background:#26231f; color:#faf7f2}
+:root[data-theme="dark"] .bar button[aria-pressed="true"]{background:#efe8dd; color:#1c1b19}
+#log{font:12px ui-monospace,Consolas,monospace; opacity:.7; min-height:1.5em}
+#viz{margin-top:12px}
+</style>
+</head>
+<body>
+<div class="mock">
+  <h1>Test wizualizacji (atrapa silnika)</h1>
+  <p>Przyciski udają silnik: <code>VIZ.setStage(nr)</code>, <code>VIZ.setView()</code>, <code>VIZ.highlight(layerId)</code> i <code>data-theme</code> na &lt;html&gt;. Suwak w wizualizacji to tylko podgląd.</p>
+  <div class="bar" id="stages"><b>Etap (setStage)</b></div>
+  <div class="bar"><b>Postęp</b><button id="prev">← Cofnij etap</button><button id="next">Ukończ etap →</button></div>
+  <div class="bar" id="views"><b>Widok</b><button data-v="dom">dom</button><button data-v="przekroj">przekroj</button></div>
+  <div class="bar" id="layers"><b>highlight</b></div>
+  <div class="bar" id="themes"><b>Motyw</b><button data-t="light">jasny</button><button data-t="dark">ciemny</button><button data-t="">systemowy</button>
+    <label style="margin-left:12px"><input type="checkbox" id="useApp" checked> tokeny z css/style.css</label></div>
+  <div id="log"></div>
+  <div id="viz"></div>
+</div>
+<script src="../js/viz.js"></script>
+<script>
+(function(){
+  const log = t => document.getElementById('log').textContent = t;
+  const sb = document.getElementById('stages');
+  let stage = 4;
+  VIZ.STAGES.forEach((s,i) => { const b = document.createElement('button'); b.textContent = String(i).padStart(2,'0'); b.title = s[0]; b.dataset.n = i; sb.appendChild(b); });
+  function go(n){
+    stage = Math.max(0, Math.min(16, n));
+    VIZ.setStage(stage);
+    sb.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.n === stage));
+    log('VIZ.setStage(' + stage + ')  — ' + VIZ.STAGES[stage][0]);
+  }
+  sb.onclick = e => { if (e.target.dataset.n) go(+e.target.dataset.n); };
+  document.getElementById('prev').onclick = () => go(stage - 1);
+  document.getElementById('next').onclick = () => go(stage + 1);
+  document.getElementById('views').onclick = e => { const v = e.target.dataset.v; if (v){ VIZ.setView(v); log('VIZ.setView("' + v + '")'); } };
+
+  const lb = document.getElementById('layers');
+  ['lawa','xps','ocieplenie','poziom','jastrych','mur'].forEach(id => { const b = document.createElement('button'); b.textContent = id; b.onclick = () => log('VIZ.highlight("' + id + '") → ' + VIZ.highlight(id)); lb.appendChild(b); });
+
+  const tb = document.getElementById('themes');
+  function theme(t){
+    if (t) document.documentElement.dataset.theme = t; else delete document.documentElement.dataset.theme;
+    tb.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.dataset.t === t));
+    log('data-theme = ' + (t || '(brak, systemowy)'));
+  }
+  tb.onclick = e => { if (e.target.dataset.t !== undefined && e.target.tagName === 'BUTTON') theme(e.target.dataset.t); };
+  document.getElementById('useApp').onchange = e => { document.getElementById('appCss').disabled = !e.target.checked; };
+
+  // adres: #etap-12, #ciemny, #przekroj (np. test-viz.html#etap-16-ciemny)
+  const h = location.hash, m = h.match(/etap-(\d+)/);
+  if (m) stage = +m[1];
+  theme(/ciemny/.test(h) ? 'dark' : /system/.test(h) ? '' : 'light');
+  VIZ.setStage(stage);                       // silnik może ustawić etap przed mount
+  VIZ.mount(document.getElementById('viz'));
+  go(stage);
+  if (/przekroj/.test(h)) VIZ.setView('przekroj');
+})();
+</script>
+</body>
+</html>

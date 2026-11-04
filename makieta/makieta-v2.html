@@ -1,0 +1,1120 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Od działki do klucza</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap">
+<style>
+/* Aplikacja w trzech strefach: pasek budżetu u góry, etapy po lewej, krok w środku (porcjami), dom po prawej. */
+:root{
+  color-scheme:light;
+  --bg:#ece6dc; --pane:#faf7f2; --pane-2:#f2ece3; --raise:#ffffff;
+  --ink:#26231f; --ink-2:#575148; --ink-3:#766f64;
+  --line:#e4dccf; --line-2:#d2c8b8;
+  --wood:#8d5d31; --wood-soft:#f1e3d1; --lamp:#df9f3f; --lamp-soft:#f9e7c7;
+  --moss:#4b6a44; --moss-soft:#e0e9da; --rust:#ad442e; --rust-soft:#f7e0d8;
+  --spent:#3b3733; --on-ink:#faf7f2;
+  --shadow:0 1px 2px rgba(70,50,30,.06),0 10px 28px -14px rgba(70,50,30,.22);
+  --shadow-hi:0 2px 4px rgba(70,50,30,.08),0 18px 36px -16px rgba(70,50,30,.32);
+  --draw:#7a6a55; --stars-op:0;
+  --sky1:#CBD6DA; --sky2:#EFE6D6; --ground:#B9A585; --ground-dark:#8C7556; --lawn:#8FA06A; --lawn-dark:#6E8250;
+  --raw:#C38A63; --raw-line:#A06E4D; --concrete:#B4B1AA; --concrete-top:#CFCCC5;
+  --plaster:#F2EEE6; --plaster-side:#DCD5C8; --stone:#9C9387; --stone-line:#7D756B;
+  --cladding:#A9743F; --cladding-line:#80552C; --roof:#3A3D42; --roof-line:#2C2E32;
+  --glass:#6F8792; --frame:#2E3033; --lit:#F6C46E; --lit-op:.45; --glow-op:0; --water:#7FB3C4; --scaff:#7C7F84; --amber:#F0A93C;
+  --f:"Onest","Segoe UI",system-ui,-apple-system,sans-serif;
+  --out:cubic-bezier(.22,1,.36,1); --spring:cubic-bezier(.34,1.45,.64,1);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --bg:#141312; --pane:#1c1b19; --pane-2:#24221f; --raise:#2a2825;
+  --ink:#efe8dd; --ink-2:#bab2a6; --ink-3:#958d81;
+  --line:#2e2b27; --line-2:#403b35;
+  --wood:#d6a16b; --wood-soft:#3a2c1f; --lamp:#f3b75d; --lamp-soft:#3b2f1e;
+  --moss:#98b98a; --moss-soft:#223025; --rust:#ee9076; --rust-soft:#3c2520;
+  --spent:#d9d0c2; --on-ink:#1c1b19;
+  --shadow:0 1px 0 rgba(255,255,255,.03) inset,0 12px 30px -16px rgba(0,0,0,.7);
+  --shadow-hi:0 1px 0 rgba(255,255,255,.05) inset,0 20px 40px -18px rgba(0,0,0,.8);
+  --draw:#f3b75d; --stars-op:1;
+  --sky1:#0F1726; --sky2:#3A3B4A; --ground:#3B3428; --ground-dark:#2A251D; --lawn:#33402C; --lawn-dark:#26301F;
+  --raw:#7A5844; --raw-line:#5E4333; --concrete:#5E5D5A; --concrete-top:#6C6B67;
+  --plaster:#B9B2A6; --plaster-side:#8F897F; --stone:#6C665E; --stone-line:#4F4A44;
+  --cladding:#7A5330; --cladding-line:#5A3C22; --roof:#25272B; --roof-line:#1A1B1E;
+  --glass:#2C3940; --frame:#151618; --lit:#FFC56A; --lit-op:.95; --glow-op:.55; --water:#3E8FA6; --scaff:#8A8D92; --amber:#F4B860;
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#141312; --pane:#1c1b19; --pane-2:#24221f; --raise:#2a2825;
+  --ink:#efe8dd; --ink-2:#bab2a6; --ink-3:#958d81;
+  --line:#2e2b27; --line-2:#403b35;
+  --wood:#d6a16b; --wood-soft:#3a2c1f; --lamp:#f3b75d; --lamp-soft:#3b2f1e;
+  --moss:#98b98a; --moss-soft:#223025; --rust:#ee9076; --rust-soft:#3c2520;
+  --spent:#d9d0c2; --on-ink:#1c1b19;
+  --shadow:0 1px 0 rgba(255,255,255,.03) inset,0 12px 30px -16px rgba(0,0,0,.7);
+  --shadow-hi:0 1px 0 rgba(255,255,255,.05) inset,0 20px 40px -18px rgba(0,0,0,.8);
+  --draw:#f3b75d; --stars-op:1;
+  --sky1:#0F1726; --sky2:#3A3B4A; --ground:#3B3428; --ground-dark:#2A251D; --lawn:#33402C; --lawn-dark:#26301F;
+  --raw:#7A5844; --raw-line:#5E4333; --concrete:#5E5D5A; --concrete-top:#6C6B67;
+  --plaster:#B9B2A6; --plaster-side:#8F897F; --stone:#6C665E; --stone-line:#4F4A44;
+  --cladding:#7A5330; --cladding-line:#5A3C22; --roof:#25272B; --roof-line:#1A1B1E;
+  --glass:#2C3940; --frame:#151618; --lit:#FFC56A; --lit-op:.95; --glow-op:.55; --water:#3E8FA6; --scaff:#8A8D92; --amber:#F4B860;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow:hidden}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--wood);outline-offset:2px;border-radius:6px}
+.ico{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- szkielet aplikacji ---------- */
+.app{height:100%;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr)}
+.top-row,.money{min-width:0}
+.top{background:var(--pane);border-bottom:1px solid var(--line);padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px));padding-block:12px 10px;position:relative;z-index:3}
+.top-row{display:flex;align-items:center;gap:16px 28px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:16px;letter-spacing:-.01em;white-space:nowrap}
+.brand-mark{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--ink);color:var(--on-ink)}
+.brand-mark .ico{width:19px;height:19px}
+.money{display:flex;align-items:baseline;gap:6px 28px;margin-left:auto;flex-wrap:wrap;justify-content:flex-end}
+.money div{display:flex;flex-direction:column;align-items:flex-end;position:relative}
+.money span{font-size:12px;color:var(--ink-3)}
+.money b{font-weight:600;font-size:17px;letter-spacing:-.01em}
+.money .left b{font-size:22px}
+.delta{position:absolute;right:calc(100% + 12px);bottom:1px;padding:3px 9px;border-radius:999px;font-size:13px;font-weight:600;background:var(--lamp-soft);color:var(--wood);white-space:nowrap;opacity:0;pointer-events:none}
+.delta.minus{background:var(--moss-soft);color:var(--moss)}
+.iconbtn{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--pane);transition:background-color .15s,transform .2s var(--spring)}
+.iconbtn:hover{background:var(--pane-2)}
+.iconbtn:active{transform:scale(.94)}
+.menu-btn{display:none}
+.bar{display:flex;gap:3px;margin-top:12px}
+.seg{flex-basis:0;min-width:0}
+.trk{position:relative;display:block;height:8px;border-radius:3px;background:var(--pane-2);overflow:hidden;box-shadow:inset 0 0 0 1px var(--line)}
+.seg:first-child .trk{border-radius:5px 3px 3px 5px}
+.seg:last-child .trk{border-radius:3px 5px 5px 3px}
+.trk i{position:absolute;top:0;bottom:0;left:0;width:0;transition:width .6s var(--spring),left .6s var(--spring)}
+.trk .f{background:var(--spent)}
+.trk .c{background:var(--lamp)}
+.seg.flash .trk{animation:flash .9s var(--out)}
+@keyframes flash{0%{box-shadow:inset 0 0 0 1px var(--line),0 0 0 0 var(--lamp)}30%{box-shadow:inset 0 0 0 1px var(--lamp),0 0 0 4px var(--lamp-soft)}100%{box-shadow:inset 0 0 0 1px var(--line),0 0 0 0 transparent}}
+.seg-l{display:flex;flex-direction:column;gap:0;margin-top:6px;padding-right:8px;font-size:12px;line-height:1.35;color:var(--ink-3);white-space:nowrap;overflow:hidden}
+.seg-l b{font-weight:500;color:var(--ink-2);overflow:hidden;text-overflow:ellipsis}
+.seg-l span{overflow:hidden;text-overflow:ellipsis}
+
+.body{display:grid;grid-template-columns:286px minmax(0,1fr) minmax(360px,32vw);min-height:0}
+
+/* ---------- etapy ---------- */
+.rail{background:var(--pane);border-right:1px solid var(--line);overflow:auto;padding:20px 12px 24px;min-height:0}
+.rail-h{display:flex;justify-content:space-between;align-items:baseline;padding:0 10px 12px}
+.rail-h h2{margin:0;font-size:15px;font-weight:600}
+.rail-h span{font-size:13px;color:var(--ink-3)}
+.stages,.steps{list-style:none;margin:0;padding:0}
+.stg{display:grid;grid-template-columns:24px 26px minmax(0,1fr);align-items:center;gap:8px;width:100%;text-align:left;border:0;background:none;padding:8px 10px;border-radius:10px;font-size:15px;transition:background-color .15s}
+.stg:hover{background:var(--pane-2)}
+.stg .nr{font-size:12px;color:var(--ink-3)}
+.stg.done .t{color:var(--ink-2)}
+.stg.cur{background:var(--pane-2);font-weight:600}
+.stat{width:22px;height:22px;display:block}
+.stat circle{fill:none;stroke:var(--line-2);stroke-width:1.6}
+.stat .ring{stroke:var(--wood);stroke-width:2.2;stroke-linecap:round;transform:rotate(-90deg);transform-origin:center;transition:stroke-dashoffset .6s var(--out)}
+.stat .dot{fill:var(--moss);stroke:none}
+.stat .ck{fill:none;stroke:var(--pane);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.steps{margin:4px 0 8px 34px;border-left:1px solid var(--line);padding-left:8px}
+.stp{display:grid;grid-template-columns:18px minmax(0,1fr);gap:10px;align-items:center;width:100%;text-align:left;border:0;background:none;padding:7px 10px;border-radius:9px;font-size:14px;color:var(--ink-2);transition:background-color .15s,color .15s}
+.stp:hover{background:var(--pane-2);color:var(--ink)}
+.stp[aria-current="step"]{background:var(--wood-soft);color:var(--ink);font-weight:600}
+.mini{width:16px;height:16px;display:block}
+.mini circle{fill:none;stroke:var(--line-2);stroke-width:1.6}
+.mini .on{fill:var(--wood);stroke:none}
+.mini .dn{fill:var(--moss);stroke:none}
+.mini path{fill:none;stroke:var(--pane);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:14;stroke-dashoffset:0}
+.mini.pop path{animation:drawck .45s .1s var(--out) backwards}
+.mini.pop .dn{animation:pop .45s var(--spring) backwards}
+@keyframes drawck{from{stroke-dashoffset:14}}
+@keyframes pop{from{transform:scale(.2);opacity:0}}
+.mini .dn,.stat .dot{transform-origin:center;transform-box:fill-box}
+
+/* ---------- krok ---------- */
+.main{display:flex;flex-direction:column;min-height:0;min-width:0;background:var(--pane)}
+.scroll{flex:1;overflow:auto;overscroll-behavior:contain;touch-action:pan-y}
+.stepwrap{max-width:780px;margin:0 auto;padding-block:36px 40px;padding-inline:clamp(20px,4vw,56px)}
+.sh{position:relative}
+.meta{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center;font-size:14px;color:var(--ink-3)}
+.meta b{font-weight:500;color:var(--wood)}
+.sbar{display:flex;gap:4px;margin:12px 0 20px;max-width:360px}
+.sbar i{flex:1;height:4px;border-radius:2px;background:var(--line);position:relative;overflow:hidden}
+.sbar i::after{content:"";position:absolute;inset:0;background:var(--moss);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--out)}
+.sbar i.dn::after{transform:none}
+.sbar i.on{background:var(--wood-soft);box-shadow:inset 0 0 0 1px var(--wood)}
+h1{margin:0;font-size:clamp(32px,3.6vw,46px);line-height:1.06;font-weight:650;letter-spacing:-.028em;text-wrap:balance;padding-right:130px}
+.stamp{position:absolute;right:0;top:34px;display:grid;place-items:center;gap:0;padding:8px 14px 7px;border:2.5px solid var(--moss);border-radius:8px;color:var(--moss);transform:rotate(-9deg);text-align:center;line-height:1.1;opacity:0;pointer-events:none}
+.stamp::before{content:"";position:absolute;inset:3px;border:1px solid var(--moss);border-radius:5px;opacity:.6}
+.stamp b{font-size:15px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.stamp span{font-size:11px;letter-spacing:.04em}
+.stamp.on{opacity:.92}
+.stamp.hit{animation:stamp .5s var(--spring)}
+@keyframes stamp{0%{opacity:0;transform:rotate(-20deg) scale(1.9)}55%{opacity:1}100%{opacity:.92;transform:rotate(-9deg) scale(1)}}
+
+.ptabs{position:relative;display:flex;gap:4px;margin:26px 0 0;padding:4px;border-radius:14px;background:var(--pane-2);width:max-content;max-width:100%;overflow-x:auto}
+.ptab{position:relative;z-index:1;display:flex;align-items:center;gap:7px;border:0;background:none;padding:9px 14px;border-radius:10px;font-size:14px;font-weight:500;color:var(--ink-2);white-space:nowrap;transition:color .2s}
+.ptab .ico{width:17px;height:17px}
+.ptab:hover{color:var(--ink)}
+.ptab[aria-selected="true"]{color:var(--ink)}
+.ptab .okdot{width:6px;height:6px;border-radius:50%;background:var(--moss)}
+.pind{position:absolute;z-index:0;top:4px;bottom:4px;left:0;width:0;border-radius:10px;background:var(--raise);box-shadow:var(--shadow);transition:transform .42s var(--spring),width .42s var(--spring)}
+
+.panel{margin-top:28px}
+.lead{margin:0;font-size:clamp(19px,1.7vw,22px);line-height:1.5;color:var(--ink);max-width:40em;letter-spacing:-.005em}
+.facts{display:flex;flex-wrap:wrap;gap:10px 26px;list-style:none;margin:22px 0 0;padding:0}
+.facts li{display:flex;align-items:center;gap:9px;font-size:15px}
+.facts .ico{color:var(--wood)}
+.facts span{color:var(--ink-3);margin-right:2px}
+.prose{margin-top:24px;font-size:17.5px;line-height:1.68;color:var(--ink-2);max-width:62ch}
+.prose p{margin:0 0 .9em}
+.prose strong{color:var(--ink);font-weight:600}
+
+.acc{margin-top:28px;border-top:1px solid var(--line)}
+.acc-i{border-bottom:1px solid var(--line)}
+.acc-b{display:grid;grid-template-columns:38px minmax(0,1fr) auto 22px;align-items:center;gap:10px;width:100%;border:0;background:none;padding:14px 4px;text-align:left;font-size:17px;font-weight:600;border-radius:10px;transition:background-color .15s}
+.acc-b:hover{background:var(--pane-2)}
+.acc-ic{display:grid;place-items:center;width:38px;height:38px;border-radius:11px;background:var(--wood-soft);color:var(--wood)}
+.acc-i.warn .acc-ic{background:var(--rust-soft);color:var(--rust)}
+.acc-i.formal .acc-ic{background:var(--moss-soft);color:var(--moss)}
+.acc-n{font-size:13px;font-weight:500;color:var(--ink-3)}
+.acc-b .chev{transition:transform .35s var(--spring);color:var(--ink-3)}
+.acc-b[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.acc-p{display:grid;grid-template-rows:0fr;transition:grid-template-rows .38s var(--out)}
+.acc-p>div{overflow:hidden}
+.acc-b[aria-expanded="true"]+.acc-p{grid-template-rows:1fr}
+.acc-p ul{list-style:none;margin:0;padding:2px 4px 18px 52px;display:grid;gap:12px;font-size:16.5px;line-height:1.6;color:var(--ink-2);max-width:64ch}
+.acc-p li{position:relative}
+.acc-p li::before{content:"";position:absolute;left:-18px;top:.68em;width:6px;height:6px;border-radius:50%;background:var(--wood-2,var(--wood));opacity:.7}
+.acc-i.warn li::before{background:var(--rust)}
+.acc-i.formal li::before{background:var(--moss)}
+.fm{display:block;font-size:14px;color:var(--ink-3);margin-top:2px}
+
+/* wybór */
+.intro{margin:0 0 20px;font-size:17px;line-height:1.6;color:var(--ink-2);max-width:60ch}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.card{position:relative;display:flex;flex-direction:column;gap:10px;padding:18px 18px 16px;border-radius:16px;background:var(--raise);box-shadow:var(--shadow),inset 0 0 0 1px var(--line);cursor:pointer;transition:transform .3s var(--spring),box-shadow .25s var(--out)}
+.card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hi),inset 0 0 0 1px var(--line-2)}
+.card:active{transform:translateY(-1px) scale(.99)}
+.card input{position:absolute;opacity:0;pointer-events:none}
+.card:has(input:focus-visible){outline:2px solid var(--wood);outline-offset:3px}
+.card.on{box-shadow:var(--shadow-hi),inset 0 0 0 2px var(--wood);transform:translateY(-3px)}
+.card-top{display:flex;align-items:center;gap:8px;min-height:28px}
+.card-k{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--pane-2);font-size:13px;font-weight:600;color:var(--ink-2);transition:background-color .25s,color .25s}
+.card.on .card-k{background:var(--wood);color:var(--on-ink)}
+.rec{font-size:12px;font-weight:600;color:var(--moss);background:var(--moss-soft);padding:3px 9px;border-radius:999px}
+.tick{position:absolute;top:14px;right:14px;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--wood);color:var(--on-ink);transform:scale(0);transition:transform .4s var(--spring)}
+.tick .ico{width:15px;height:15px;stroke-width:2.4}
+.card.on .tick{transform:scale(1)}
+.card-n{font-size:16px;font-weight:600;line-height:1.3;letter-spacing:-.005em;min-height:2.6em}
+.card-c{font-size:22px;font-weight:600;letter-spacing:-.02em}
+.card-c small{font-size:14px;font-weight:500;color:var(--ink-3)}
+.card-m{display:grid;gap:6px;font-size:14px;color:var(--ink-2);padding-top:10px;border-top:1px solid var(--line)}
+.card-m span{display:flex;gap:8px;align-items:flex-start}
+.card-m .ico{width:16px;height:16px;color:var(--ink-3);margin-top:2px}
+.detail{margin-top:24px}
+.pc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 32px}
+.pc h3{margin:0 0 10px;font-size:14px;font-weight:600;color:var(--ink-3)}
+.pc ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:16px}
+.pc li{display:flex;gap:10px;align-items:flex-start}
+.pc .ico{width:18px;height:18px;margin-top:3px;stroke-width:2}
+.pc .pro .ico{color:var(--moss)}
+.pc .con .ico{color:var(--rust)}
+.why{margin:20px 0 0;padding:16px 18px;border-radius:14px;background:var(--pane-2);font-size:16px;line-height:1.6;color:var(--ink-2);max-width:66ch}
+.why b{color:var(--ink);font-weight:600}
+
+/* pytanie */
+.q{margin:0 0 20px;font-size:clamp(21px,2vw,25px);line-height:1.35;font-weight:600;letter-spacing:-.015em;max-width:30em}
+.answers{display:grid;gap:10px;max-width:620px}
+.ans{display:grid;grid-template-columns:32px minmax(0,1fr) 26px;gap:14px;align-items:center;width:100%;text-align:left;padding:14px 16px;border-radius:14px;border:0;background:var(--raise);box-shadow:var(--shadow),inset 0 0 0 1px var(--line);font-size:17px;transition:transform .25s var(--spring),box-shadow .2s,background-color .2s,opacity .2s}
+.ans:hover:not(:disabled){transform:translateY(-2px);box-shadow:var(--shadow-hi),inset 0 0 0 1px var(--line-2)}
+.ans:active:not(:disabled){transform:scale(.985)}
+.ans:disabled{cursor:default}
+.ans-k{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--pane-2);font-size:13px;font-weight:600;color:var(--ink-2)}
+.ans-r{width:26px;height:26px}
+.ans-r path{fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.ans.ok{background:var(--moss-soft);box-shadow:inset 0 0 0 2px var(--moss)}
+.ans.ok .ans-k{background:var(--moss);color:var(--pane)}
+.ans.ok .ans-r path{stroke:var(--moss);stroke-dasharray:24;animation:drawq .5s .05s var(--out) backwards}
+@keyframes drawq{from{stroke-dashoffset:24}}
+.ans.bad{background:var(--rust-soft);box-shadow:inset 0 0 0 1px var(--rust);color:var(--ink-2)}
+.ans.bad .ans-k{background:var(--rust);color:var(--pane)}
+.ans.bad .ans-r path{stroke:var(--rust)}
+.ans.dim{opacity:.5}
+.shake{animation:shake .38s cubic-bezier(.36,.07,.19,.97)}
+@keyframes shake{20%{transform:translateX(-7px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(2px)}}
+.qfb{margin-top:18px;max-width:62ch;font-size:16.5px;line-height:1.6;color:var(--ink-2)}
+.qfb b{color:var(--ink)}
+.qfb.try{color:var(--rust)}
+
+/* odbiór */
+.prog{display:flex;align-items:center;gap:14px;margin-bottom:18px;max-width:560px}
+.prog-t{flex:1;height:8px;border-radius:4px;background:var(--pane-2);box-shadow:inset 0 0 0 1px var(--line);overflow:hidden}
+.prog-t i{display:block;height:100%;width:0;background:var(--moss);border-radius:4px;transition:width .5s var(--spring)}
+.prog b{font-size:14px;font-weight:600;color:var(--ink-2);min-width:3.5em;text-align:right}
+.checks{list-style:none;margin:0;padding:0;display:grid;gap:6px;max-width:640px}
+.chk{display:grid;grid-template-columns:28px minmax(0,1fr);gap:14px;align-items:center;padding:11px 12px;border-radius:12px;cursor:pointer;font-size:16.5px;line-height:1.45;transition:background-color .15s,color .2s}
+.chk:hover{background:var(--pane-2)}
+.chk input{position:absolute;opacity:0;pointer-events:none}
+.chk:has(input:focus-visible){outline:2px solid var(--wood);outline-offset:1px}
+.box{display:grid;place-items:center;width:26px;height:26px;border-radius:8px;box-shadow:inset 0 0 0 1.8px var(--line-2);transition:background-color .2s,box-shadow .2s,transform .3s var(--spring)}
+.box svg{width:16px;height:16px}
+.box path{fill:none;stroke:var(--pane);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:20;stroke-dashoffset:20;transition:stroke-dashoffset .3s .05s var(--out)}
+.chk input:checked+.box{background:var(--moss);box-shadow:none;transform:scale(1.06)}
+.chk input:checked+.box path{stroke-dashoffset:0}
+.chk input:checked~.ct{color:var(--ink-3)}
+.chk input:disabled~*{cursor:default}
+.done-row{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;margin-top:24px}
+.btn{display:inline-flex;align-items:center;gap:9px;border:0;border-radius:12px;padding:12px 18px;min-height:46px;font-size:15px;font-weight:600;background:var(--ink);color:var(--on-ink);transition:transform .25s var(--spring),opacity .2s,background-color .2s}
+.btn:hover:not(:disabled){transform:translateY(-1px)}
+.btn:active:not(:disabled){transform:scale(.97)}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn.ghost{background:none;color:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line-2)}
+.btn.ghost:hover{color:var(--ink)}
+.link{border:0;background:none;padding:8px 2px;font-size:14px;color:var(--ink-3);text-decoration:underline;text-underline-offset:3px}
+.link:hover{color:var(--ink)}
+.hint{font-size:14px;color:var(--ink-3)}
+
+/* stopka kroku */
+.foot{display:flex;align-items:center;gap:12px;padding-block:12px;padding-inline:clamp(16px,3vw,32px);border-top:1px solid var(--line);background:var(--pane)}
+.nav{display:inline-flex;align-items:center;gap:8px;border:0;background:none;padding:10px 14px;border-radius:12px;min-height:46px;font-size:15px;font-weight:500;color:var(--ink-2);transition:background-color .15s,transform .2s var(--spring);max-width:42%;min-width:0}
+.nav span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nav:hover:not(:disabled){background:var(--pane-2);color:var(--ink)}
+.nav:active:not(:disabled){transform:scale(.97)}
+.nav:disabled{opacity:.35;cursor:default}
+.nav.next{margin-left:auto;background:var(--ink);color:var(--on-ink);font-weight:600}
+.nav.next:hover:not(:disabled){background:var(--ink);color:var(--on-ink);transform:translateX(2px)}
+.dots{display:flex;gap:6px;margin-inline:auto}
+.dots i{width:7px;height:7px;border-radius:4px;background:var(--line-2);transition:width .35s var(--spring),background-color .2s}
+.dots i.on{width:22px;background:var(--wood)}
+.keys{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-3)}
+.keys kbd{display:grid;place-items:center;width:24px;height:22px;border-radius:6px;box-shadow:inset 0 0 0 1px var(--line-2),0 1px 0 var(--line-2);font:inherit}
+.keys .ico{width:13px;height:13px}
+
+/* ---------- wizualizacja ---------- */
+.viz{background:var(--bg);border-left:1px solid var(--line);overflow:auto;padding:22px clamp(16px,2vw,28px) 24px;display:flex;flex-direction:column;gap:16px;min-height:0}
+.viz-h{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.viz-h h2{margin:0;font-size:15px;font-weight:600}
+.viz-h p{margin:2px 0 0;font-size:13px;color:var(--ink-3)}
+.pct{text-align:right}
+.pct b{display:block;font-size:22px;font-weight:600;letter-spacing:-.02em}
+.pct span{font-size:12px;color:var(--ink-3);white-space:nowrap}
+.hp{height:6px;border-radius:3px;background:var(--pane-2);box-shadow:inset 0 0 0 1px var(--line);overflow:hidden}
+.hp i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--wood),var(--lamp));border-radius:3px;transition:width .8s var(--spring)}
+.frame{position:relative;border-radius:16px;overflow:hidden;box-shadow:var(--shadow),inset 0 0 0 1px var(--line)}
+#house{display:block;width:100%;height:auto}
+#house .hide{display:none}
+#house .glow{fill:var(--lit);filter:url(#glow);opacity:var(--glow-op)}
+#house .lit{fill:var(--lit);opacity:var(--lit-op)}
+#house .stars{opacity:var(--stars-op)}
+#house .svg-label{font:500 11px var(--f);fill:var(--ink-2)}
+.stagechip{position:absolute;left:12px;top:12px;padding:5px 11px;border-radius:999px;background:var(--pane);box-shadow:var(--shadow);font-size:13px;font-weight:600;color:var(--ink)}
+.scrub{display:grid;gap:8px}
+.scrub-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.scrub label{font-size:13px;color:var(--ink-3)}
+.scrub output{font-size:14px;font-weight:600}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:28px;background:none;margin:0;cursor:pointer;--p:25%}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:linear-gradient(90deg,var(--wood) var(--p),var(--line-2) var(--p))}
+input[type=range]::-moz-range-track{height:6px;border-radius:3px;background:linear-gradient(90deg,var(--wood) var(--p),var(--line-2) var(--p))}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;margin-top:-8px;border-radius:50%;background:var(--raise);box-shadow:0 1px 3px rgba(0,0,0,.25),inset 0 0 0 2px var(--wood);transition:transform .2s var(--spring)}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border:0;border-radius:50%;background:var(--raise);box-shadow:0 1px 3px rgba(0,0,0,.25),inset 0 0 0 2px var(--wood)}
+input[type=range]:active::-webkit-slider-thumb{transform:scale(1.15)}
+.ticks{display:flex;justify-content:space-between;padding:0 8px;margin-top:-6px}
+.ticks i{width:1px;height:5px;background:var(--line-2)}
+.ticks i.dn{background:var(--wood)}
+.cap{margin:0;font-size:15px;line-height:1.55;color:var(--ink-2);min-height:3.1em}
+.back{align-self:flex-start}
+
+/* toast, szuflada, dolne zakładki */
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);display:flex;align-items:center;gap:10px;padding:12px 18px;border-radius:14px;background:var(--ink);color:var(--on-ink);font-size:15px;font-weight:500;box-shadow:var(--shadow-hi);opacity:0;pointer-events:none;z-index:20;transition:opacity .25s,transform .4s var(--spring);max-width:calc(100% - 32px)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.toast .ico{color:var(--lamp)}
+.scrim{position:fixed;inset:0;background:rgba(20,18,15,.38);opacity:0;pointer-events:none;transition:opacity .25s;z-index:8}
+.tabbar{display:none}
+
+@media (max-width:1180px){
+  .body{grid-template-columns:minmax(0,1fr) minmax(320px,38vw)}
+  .menu-btn{display:grid}
+  .rail{position:fixed;z-index:9;top:0;bottom:0;left:0;width:min(320px,86vw);border-right:1px solid var(--line);box-shadow:var(--shadow-hi);transform:translateX(-102%);transition:transform .4s var(--out);padding-top:calc(20px + env(safe-area-inset-top,0px));padding-left:max(12px,env(safe-area-inset-left,0px))}
+  body.drawer .rail{transform:none}
+  body.drawer .scrim{opacity:1;pointer-events:auto}
+}
+@media (max-width:760px){
+  .app{grid-template-rows:auto minmax(0,1fr) auto}
+  .top{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:10px 10px}
+  .top-row{gap:10px}
+  .brand-t{display:none}
+  .money{gap:4px 16px}
+  .money .spent,.money .total{display:none}
+  .money .left b{font-size:19px}
+  .seg-l{display:none}
+  .bar{margin-top:10px}
+  .body{grid-template-columns:minmax(0,1fr)}
+  .viz{display:none;border-left:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .app[data-view="dom"] .main{display:none}
+  .app[data-view="dom"] .viz{display:flex}
+  .stepwrap{padding-inline:max(18px,env(safe-area-inset-left,0px)) max(18px,env(safe-area-inset-right,0px));padding-block:24px 28px}
+  h1{padding-right:0}
+  .stamp{top:-6px;right:0;padding:5px 10px 4px}
+  .stamp b{font-size:12px}
+  .ptabs{width:100%}
+  .ptab{flex:1;justify-content:center;padding:9px 8px}
+  .ptab .ico{display:none}
+  .cards{grid-template-columns:minmax(0,1fr)}
+  .card-n{min-height:0}
+  .pc{grid-template-columns:minmax(0,1fr)}
+  .keys{display:none}
+  .foot{padding-inline:max(12px,env(safe-area-inset-left,0px)) max(12px,env(safe-area-inset-right,0px))}
+  .nav{max-width:48%}
+  .nav.prev span{display:none}
+  .acc-p ul{padding-left:20px}
+  .tabbar{display:flex;border-top:1px solid var(--line);background:var(--pane);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+  .tabbar button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:none;padding:9px 0 8px;font-size:12px;font-weight:500;color:var(--ink-3);min-height:54px}
+  .tabbar button[aria-selected="true"]{color:var(--wood)}
+  .toast{bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-house" viewBox="0 0 24 24"><path d="M3 11 12 4l9 7M5.5 9.5V20h13V9.5M10 20v-5.5h4V20"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="M14.5 6 8.5 12l6 6"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="m9.5 6 6 6-6 6"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9.5 6 6 6-6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5 10 17.5 19 7"/></symbol>
+  <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0 0 12 3z"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3.5 21.5 20h-19zM12 10v4.5M12 17.3v.2"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H7a1.5 1.5 0 0 0-1.5 1.5v15A1.5 1.5 0 0 0 7 21h10a1.5 1.5 0 0 0 1.5-1.5V7.5zM14 3v4.5h4.5M9 12.5h6M9 16h6"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.2"/><path d="M3.5 19c.6-3 2.8-4.8 5.5-4.8s4.9 1.8 5.5 4.8M16 5.5a3 3 0 0 1 0 6M17.5 14.5c1.6.6 2.7 2.2 3 4.5"/></symbol>
+  <symbol id="i-rebar" viewBox="0 0 24 24"><path d="M7 4v16M12 4v16M17 4v16M4 8.5h16M4 15.5h16"/></symbol>
+  <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M4 7.5A1.5 1.5 0 0 1 5.5 6h12A1.5 1.5 0 0 1 19 7.5V9M4 7.5v10A1.5 1.5 0 0 0 5.5 19h13a1.5 1.5 0 0 0 1.5-1.5v-7A1.5 1.5 0 0 0 18.5 9h-13A1.5 1.5 0 0 1 4 7.5zM16 14h.5"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 19 6v5.5c0 4.4-3 8-7 9.5-4-1.5-7-5.1-7-9.5V6z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5zM20 5.5A1.5 1.5 0 0 0 18.5 4H13v16h5.5a1.5 1.5 0 0 0 1.5-1.5z"/></symbol>
+  <symbol id="i-compare" viewBox="0 0 24 24"><rect x="3.5" y="4" width="7" height="16" rx="1.5"/><rect x="13.5" y="4" width="7" height="16" rx="1.5"/></symbol>
+  <symbol id="i-question" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.5a2.5 2.5 0 1 1 3.4 2.3c-.6.3-1 .8-1 1.5v.4M12 16.6v.2"/></symbol>
+  <symbol id="i-listcheck" viewBox="0 0 24 24"><path d="M11 6h9M11 12h9M11 18h9M3.5 6l1.5 1.5L7.5 5M3.5 12l1.5 1.5 2.5-2.5M3.5 18l1.5 1.5 2.5-2.5"/></symbol>
+  <symbol id="i-stamp" viewBox="0 0 24 24"><path d="M9.5 3.5h5l-1 6.5h-3zM5 13.5c0-1.9 1.6-3.5 3.5-3.5h7c1.9 0 3.5 1.6 3.5 3.5V16H5zM4 20h16"/></symbol>
+</svg>
+
+<div class="app" id="app" data-view="krok">
+  <header class="top">
+    <div class="top-row">
+      <button class="iconbtn menu-btn" id="menuBtn" aria-label="Pokaż etapy budowy" aria-expanded="false"><svg class="ico"><use href="#i-menu"/></svg></button>
+      <div class="brand"><span class="brand-mark"><svg class="ico"><use href="#i-house"/></svg></span><span class="brand-t">Od działki do klucza</span></div>
+      <div class="money" aria-live="polite">
+        <div class="total"><span>Budżet</span><b class="num">2 000 000 zł</b></div>
+        <div class="spent"><span>Wydano i zaplanowano</span><b class="num" id="mSpent">0 zł</b></div>
+        <div class="left"><span>Zostaje</span><b class="num" id="mLeft">0 zł</b><em class="delta num" id="delta"></em></div>
+      </div>
+      <button class="iconbtn" id="themeBtn" aria-label="Przełącz motyw"><svg class="ico"><use id="themeIco" href="#i-moon"/></svg></button>
+    </div>
+    <div class="bar" id="bar" role="img" aria-label="Podział budżetu na kategorie"></div>
+  </header>
+
+  <div class="body">
+    <nav class="rail" id="rail" aria-label="Etapy budowy"></nav>
+
+    <main class="main" id="main">
+      <div class="scroll" id="scroll"><div class="stepwrap" id="stepwrap"></div></div>
+      <div class="foot">
+        <button class="nav prev" id="prev"><svg class="ico"><use href="#i-left"/></svg><span id="prevT">Wstecz</span></button>
+        <div class="dots" id="dots" aria-hidden="true"></div>
+        <div class="keys" aria-hidden="true"><kbd><svg class="ico"><use href="#i-left"/></svg></kbd><kbd><svg class="ico"><use href="#i-right"/></svg></kbd></div>
+        <button class="nav next" id="next"><span id="nextT">Dalej</span><svg class="ico"><use href="#i-right"/></svg></button>
+      </div>
+    </main>
+
+    <aside class="viz" id="viz" aria-label="Wizualizacja domu">
+      <div class="viz-h">
+        <div><h2>Twój dom</h2><p>Dom referencyjny, ok. 190 m², poddasze, garaż w bryle</p></div>
+        <div class="pct"><b class="num" id="pct">0%</b><span>postęp budowy</span></div>
+      </div>
+      <div class="hp"><i id="hp"></i></div>
+      <div class="frame">
+        <span class="stagechip" id="vizChip">Etap 04</span>
+        <svg id="house" viewBox="0 0 640 420" role="img" aria-label="Dom referencyjny na wybranym etapie budowy">
+          <defs>
+            <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--sky1)"/><stop offset="1" style="stop-color:var(--sky2)"/></linearGradient>
+            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter>
+            <pattern id="pBlock" width="20" height="10" patternUnits="userSpaceOnUse"><rect width="20" height="10" style="fill:var(--raw)"/><path d="M0 10H20M10 0V5M0 5H20M0 5V10M20 5V10" style="stroke:var(--raw-line)" stroke-width=".8" fill="none"/></pattern>
+            <pattern id="pStone" width="36" height="22" patternUnits="userSpaceOnUse"><rect width="36" height="22" style="fill:var(--stone)"/><path d="M0 7H14L16 0M14 7l3 4H36M17 11V22M0 15H9L11 22M9 15l-2-8M26 11l2 11M28 0l-2 11" style="stroke:var(--stone-line)" stroke-width="1.2" fill="none"/></pattern>
+            <pattern id="pWood" width="8" height="10" patternUnits="userSpaceOnUse"><rect width="8" height="10" style="fill:var(--cladding)"/><path d="M7.5 0V10" style="stroke:var(--cladding-line)" stroke-width="1"/></pattern>
+            <pattern id="pWoodH" width="10" height="7" patternUnits="userSpaceOnUse"><rect width="10" height="7" style="fill:var(--cladding)"/><path d="M0 6.5H10" style="stroke:var(--cladding-line)" stroke-width="1"/></pattern>
+            <pattern id="pRoof" width="11" height="10" patternUnits="userSpaceOnUse" patternTransform="skewX(-18.7)"><rect width="11" height="10" style="fill:var(--roof)"/><path d="M10.5 0V10" style="stroke:var(--roof-line)" stroke-width="1.2"/></pattern>
+          </defs>
+          <rect width="640" height="420" fill="url(#sky)"/>
+          <g class="stars" style="fill:var(--lit)"><circle cx="60" cy="40" r="1"/><circle cx="160" cy="22" r="1.2"/><circle cx="420" cy="30" r=".9"/><circle cx="560" cy="58" r="1.1"/><circle cx="610" cy="20" r=".8"/><circle cx="300" cy="18" r=".8"/></g>
+          <g transform="translate(0,10)">
+            <g data-min="0">
+              <polygon points="0,240 640,240 640,410 0,410" style="fill:var(--ground)"/>
+              <path d="M0 240H640" style="stroke:var(--ground-dark)" stroke-width="1"/>
+            </g>
+            <polygon data-min="15" points="0,240 640,240 640,410 0,410" style="fill:var(--lawn)"/>
+            <g data-min="0"><rect x="20" y="190" width="6" height="56" style="fill:var(--ground-dark)"/><ellipse cx="23" cy="176" rx="30" ry="40" style="fill:var(--lawn-dark)"/></g>
+            <g data-min="1" data-max="3" style="fill:var(--ink)">
+              <rect x="38" y="306" width="3" height="16"/><rect x="468" y="306" width="3" height="16"/><rect x="568" y="250" width="3" height="16"/><rect x="138" y="250" width="3" height="16"/>
+              <rect x="37" y="302" width="5" height="5" style="fill:var(--amber)"/><rect x="467" y="302" width="5" height="5" style="fill:var(--amber)"/><rect x="567" y="246" width="5" height="5" style="fill:var(--amber)"/><rect x="137" y="246" width="5" height="5" style="fill:var(--amber)"/>
+            </g>
+            <g data-min="2" data-max="2">
+              <polygon points="40,320 470,320 570,264 140,264" fill="none" style="stroke:var(--ink)" stroke-width="1.5" stroke-dasharray="6 4"/>
+              <path d="M190 320 L290 264" fill="none" style="stroke:var(--ink)" stroke-width="1" stroke-dasharray="3 3"/>
+              <text x="250" y="300" class="svg-label">obrys budynku z projektu</text>
+              <text x="70" y="314" class="svg-label">garaż</text>
+            </g>
+            <g data-min="3" data-max="3">
+              <polygon points="34,323 476,323 578,266 136,266" style="fill:var(--ground-dark)"/>
+              <polygon points="136,266 578,266 570,276 146,276" style="fill:var(--ground)" opacity=".6"/>
+            </g>
+            <g data-min="3" data-max="4">
+              <path d="M585 330 Q605 290 632 330Z" style="fill:var(--ground-dark)"/>
+              <rect x="-2" y="268" width="34" height="20" style="fill:var(--concrete)"/><rect x="4" y="273" width="8" height="6" style="fill:var(--glass)"/>
+            </g>
+            <g data-min="4">
+              <polygon points="40,306 470,306 570,250 140,250" style="fill:var(--concrete-top)"/>
+              <rect x="40" y="306" width="430" height="14" style="fill:var(--concrete)"/>
+              <polygon points="470,320 570,264 570,250 470,306" style="fill:var(--concrete)" opacity=".85"/>
+            </g>
+            <g data-min="4" data-max="4" style="stroke:var(--raw-line)" stroke-width="1.6" fill="none">
+              <path d="M48 306v-14M120 306v-14M190 306v-14M260 306v-14M330 306v-14M400 306v-14M462 306v-14M520 278v-14M562 255v-14"/>
+            </g>
+            <g data-min="5" data-max="10">
+              <rect x="40" y="240" width="150" height="66" fill="url(#pBlock)"/>
+              <rect x="190" y="200" width="280" height="106" fill="url(#pBlock)"/>
+              <polygon points="470,306 570,250 570,144 470,200" fill="url(#pBlock)"/>
+              <polygon points="470,306 570,250 570,144 470,200" fill="#000" opacity=".12"/>
+              <polygon points="470,200 520,72 570,144" fill="url(#pBlock)"/>
+              <polygon points="470,200 520,72 570,144" fill="#000" opacity=".12"/>
+              <rect x="40" y="236" width="150" height="5" style="fill:var(--concrete)"/>
+              <rect x="190" y="196" width="280" height="5" style="fill:var(--concrete)"/>
+            </g>
+            <g data-min="5" data-max="6" style="fill:var(--frame)" opacity=".85">
+              <rect x="55" y="262" width="125" height="44"/><rect x="268" y="248" width="26" height="58"/><rect x="300" y="228" width="155" height="78"/>
+              <polygon points="495,262 530,242 530,190 495,210"/><polygon points="505,160 535,143 535,108 505,125"/>
+            </g>
+            <g data-min="11">
+              <rect x="40" y="240" width="150" height="66" fill="url(#pWood)"/>
+              <rect x="190" y="200" width="280" height="106" style="fill:var(--plaster)"/>
+              <rect x="190" y="200" width="72" height="106" fill="url(#pStone)"/>
+              <polygon points="470,306 570,250 570,144 470,200" style="fill:var(--plaster-side)"/>
+              <polygon points="470,200 520,72 570,144" fill="url(#pWood)"/>
+              <polygon points="470,200 520,72 570,144" fill="#000" opacity=".1"/>
+              <rect x="40" y="306" width="430" height="14" style="fill:var(--roof)"/>
+              <polygon points="470,320 570,264 570,250 470,306" style="fill:var(--roof-line)"/>
+            </g>
+            <g data-min="6">
+              <polygon points="32,246 196,246 246,160 84,160" fill="url(#pRoof)"/>
+              <path d="M32 246 L84 160" fill="none" style="stroke:var(--roof-line)" stroke-width="4"/>
+              <rect x="296" y="48" width="22" height="50" style="fill:var(--concrete)"/>
+              <polygon points="182,206 478,206 526,70 232,70" fill="url(#pRoof)"/>
+              <path d="M478 206 L526 70 L578 142" fill="none" style="stroke:var(--roof-line)" stroke-width="5" stroke-linejoin="round"/>
+              <path d="M182 206 H478" fill="none" style="stroke:var(--roof-line)" stroke-width="3"/>
+              <rect x="293" y="44" width="28" height="6" style="fill:var(--roof-line)"/>
+            </g>
+            <g data-min="5" data-max="10" style="stroke:var(--scaff)" stroke-width="1.6" opacity=".85" fill="none">
+              <path d="M200 324V188M260 324V188M320 324V188M380 324V188M440 324V188"/>
+              <path d="M196 290H444M196 252H444M196 214H444"/>
+              <path d="M200 290L260 252M320 290L380 252M260 214L320 252"/>
+            </g>
+            <g data-min="7">
+              <g style="fill:var(--glass); stroke:var(--frame)" stroke-width="3">
+                <rect x="300" y="228" width="155" height="78"/>
+                <polygon points="495,262 530,242 530,190 495,210"/><polygon points="505,160 535,143 535,108 505,125"/>
+                <polygon points="266,158 302,158 314,124 278,124"/><polygon points="376,158 412,158 424,124 388,124"/>
+              </g>
+              <path d="M339 228V306M378 228V306M417 228V306" fill="none" style="stroke:var(--frame)" stroke-width="3"/>
+              <path d="M512.5 236V200M520 147V117" fill="none" style="stroke:var(--frame)" stroke-width="2"/>
+              <rect x="268" y="248" width="26" height="58" fill="url(#pWood)" style="stroke:var(--frame)" stroke-width="2"/>
+              <rect x="272" y="254" width="5" height="46" style="fill:var(--glass)"/>
+              <rect x="55" y="262" width="125" height="44" fill="url(#pWoodH)" style="stroke:var(--frame)" stroke-width="2"/>
+            </g>
+            <g data-min="11">
+              <polygon points="290,320 470,320 450,331 270,331" fill="url(#pWood)"/>
+              <polygon points="290,222 474,222 454,233 270,233" style="fill:var(--roof)"/>
+              <rect x="270" y="233" width="184" height="5" style="fill:var(--roof-line)"/>
+              <rect x="272" y="238" width="4" height="93" style="fill:var(--frame)"/><rect x="448" y="238" width="4" height="93" style="fill:var(--frame)"/>
+            </g>
+            <g data-min="12">
+              <g class="glow"><rect x="296" y="226" width="163" height="86"/><polygon points="495,262 530,242 530,190 495,210"/><polygon points="505,160 535,143 535,108 505,125"/></g>
+              <g class="lit">
+                <rect x="301.5" y="229.5" width="36" height="75"/><rect x="340.5" y="229.5" width="36" height="75"/><rect x="379.5" y="229.5" width="36" height="75"/><rect x="418.5" y="229.5" width="35" height="75"/>
+                <polygon points="497,259 511,251 511,201 497,209"/><polygon points="514,249 528,241 528,193 514,199"/>
+                <polygon points="507,157 518,151 518,121 507,127"/><polygon points="522,148 533,142 533,112 522,118"/>
+                <polygon points="269,156 300,156 310,126 279,126"/><polygon points="379,156 410,156 420,126 389,126"/>
+                <rect x="272" y="254" width="5" height="46"/>
+              </g>
+              <g class="lit" style="opacity:1"><circle cx="300" cy="236" r="2"/><circle cx="362" cy="236" r="2"/><circle cx="424" cy="236" r="2"/><rect x="46" y="268" width="4" height="7"/><rect x="184" y="268" width="4" height="7"/></g>
+              <g class="glow" style="opacity:calc(var(--glow-op) * .8)"><circle cx="48" cy="272" r="9"/><circle cx="186" cy="272" r="9"/></g>
+            </g>
+            <g data-min="15">
+              <polygon points="268,331 296,331 250,410 196,410" style="fill:var(--concrete-top)"/>
+              <polygon points="40,320 190,320 150,410 0,410" style="fill:var(--concrete-top)" opacity=".7"/>
+              <g style="fill:var(--lawn-dark)"><rect x="606" y="210" width="6" height="60" style="fill:var(--ground-dark)"/><ellipse cx="609" cy="196" rx="26" ry="36"/><ellipse cx="592" cy="270" rx="30" ry="12"/></g>
+              <g style="fill:var(--frame)"><rect x="236" y="364" width="3" height="16"/><rect x="214" y="394" width="3" height="16"/><rect x="330" y="372" width="3" height="16"/></g>
+              <g class="lit" style="opacity:1"><rect x="235" y="362" width="5" height="3"/><rect x="213" y="392" width="5" height="3"/><rect x="329" y="370" width="5" height="3"/></g>
+              <g class="glow" style="opacity:calc(var(--glow-op) * .9)"><circle cx="237" cy="376" r="10"/><circle cx="215" cy="404" r="10"/><circle cx="331" cy="384" r="10"/></g>
+            </g>
+            <g data-min="16">
+              <polygon points="360,378 560,378 610,350 410,350" style="fill:var(--concrete-top)"/>
+              <polygon points="372,374 552,374 596,353 416,353" style="fill:var(--water)"/>
+              <path d="M400 366h40M470 360h50M430 370h30" fill="none" style="stroke:#fff" stroke-width="1.2" opacity=".5"/>
+              <g style="fill:var(--cladding-line)"><rect x="60" y="340" width="4" height="56"/><rect x="150" y="340" width="4" height="56"/><rect x="88" y="326" width="3" height="40" opacity=".7"/><rect x="178" y="326" width="3" height="40" opacity=".7"/></g>
+              <g style="stroke:var(--cladding)" stroke-width="4" fill="none"><path d="M54 340H160M82 326H186"/><path d="M62 340L90 326M152 340L180 326" stroke-width="3"/></g>
+              <g style="stroke:var(--cladding-line)" stroke-width="2" fill="none"><path d="M74 340l28-14M98 340l28-14M122 340l28-14"/></g>
+              <g>
+                <rect x="590" y="300" width="30" height="24" style="fill:var(--plaster)"/>
+                <polygon points="620,324 634,316 634,294 620,300" style="fill:var(--plaster-side)"/>
+                <polygon points="586,302 605,284 624,302" style="fill:var(--amber)"/>
+                <polygon points="605,284 624,302 638,294 619,277" style="fill:var(--amber)" opacity=".75"/>
+                <rect x="601" y="310" width="8" height="14" style="fill:var(--cladding)"/>
+              </g>
+            </g>
+          </g>
+        </svg>
+      </div>
+      <div class="scrub">
+        <div class="scrub-h"><label for="range">Podgląd etapu</label><output id="rangeOut" for="range">04 Fundamenty</output></div>
+        <input type="range" id="range" min="0" max="16" step="1" value="4">
+        <div class="ticks" id="ticks" aria-hidden="true"></div>
+      </div>
+      <p class="cap" id="cap"></p>
+      <button class="btn ghost back" id="backBtn" hidden>Wróć do bieżącego etapu</button>
+    </aside>
+  </div>
+
+  <nav class="tabbar" role="tablist" aria-label="Widok">
+    <button role="tab" aria-selected="true" data-view="krok"><svg class="ico"><use href="#i-book"/></svg>Krok</button>
+    <button role="tab" aria-selected="false" data-view="dom"><svg class="ico"><use href="#i-house"/></svg>Dom</button>
+  </nav>
+</div>
+<div class="scrim" id="scrim"></div>
+<div class="toast" id="toast" role="status"><svg class="ico"><use href="#i-stamp"/></svg><span id="toastT"></span></div>
+
+<script>
+(function(){
+  var $ = function(s, r){ return (r||document).querySelector(s); };
+  var $$ = function(s, r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var OUT = 'cubic-bezier(.22,1,.36,1)', SPRING = 'cubic-bezier(.34,1.45,.64,1)';
+  function ic(n, cls){ return '<svg class="ico'+(cls?' '+cls:'')+'" aria-hidden="true"><use href="#i-'+n+'"/></svg>'; }
+  function num(n){ return String(Math.round(Math.abs(n))).replace(/\B(?=(\d{3})+(?!\d))/g,' '); }
+  function k(n){ return (n/1000).toLocaleString('pl-PL',{maximumFractionDigits:1}); }
+  function pad(n){ return (n<10?'0':'')+n; }
+
+  /* ---------- dane ---------- */
+  var TOTAL = 2000000;
+  var CATS = [
+    { id:'dzialka', name:'Działka i formalności', plan:330000, spent:314500 },
+    { id:'surowy',  name:'Stan surowy',           plan:640000, spent:0 },
+    { id:'instal',  name:'Instalacje',            plan:310000, spent:0 },
+    { id:'wykoncz', name:'Wykończenie',           plan:500000, spent:0 },
+    { id:'ogrod',   name:'Ogród',                 plan:220000, spent:0 }
+  ];
+  var STAGES = [
+    ['Plan i budżet','Pusta działka. Na tym etapie dom istnieje tylko w arkuszu kalkulacyjnym.'],
+    ['Działka','Geodeta wbija paliki w narożnikach przyszłego domu.'],
+    ['Projekt i pozwolenie','Obrys budynku z projektu: dom i garaż w jednej bryle.'],
+    ['Przygotowanie budowy','Wykop pod fundamenty, hałda ziemi i zaplecze budowy.'],
+    ['Fundamenty','Ławy i ściany fundamentowe gotowe, z wypuszczonymi prętami startowymi.'],
+    ['Ściany i stropy','Ściany z ceramiki, szczyt pod dach, wieńce i rusztowanie.'],
+    ['Dach','Więźba i pokrycie, dach dwuspadowy ok. 40°, komin od kominka.'],
+    ['Okna i drzwi','Duże przeszklenie od tarasu, okna dachowe, brama garażowa.'],
+    ['Instalacje','Z zewnątrz bez zmian: elektryka, woda i kanalizacja w środku.'],
+    ['Ogrzewanie i wentylacja','Pompa ciepła i rekuperacja montowane we wnętrzu.'],
+    ['Tynki i wylewki','Mokre prace w środku, rusztowanie wciąż stoi.'],
+    ['Elewacja','Tynk, kamień przy wejściu, deska na szczycie i bramie, zadaszony taras.'],
+    ['Wykończenie wnętrz','Wieczorem w oknach pali się już światło.'],
+    ['Kuchnia i łazienki','Kuchnia z wyspą i łazienka z wanną wolnostojącą, widać je tylko w środku.'],
+    ['Odbiór i przeprowadzka','Dom odebrany, można się wprowadzać.'],
+    ['Ogród','Trawnik, ścieżka, drzewa i oświetlenie ogrodowe.'],
+    ['Basen i mała architektura','Basen, pergola i domek dla dzieci. Dom gotowy.']
+  ];
+  var CUR_STAGE = 4;
+  var OPTS = [
+    { id:'lawy', k:'A', name:'Ławy + ściany z bloczków betonowych', min:85000, max:110000, time:'4–5 tyg.', dur:'Wysoka trwałość', rec:true,
+      pros:['Zna to każda ekipa','Łatwo poprowadzić przepusty instalacji','Dobra cena przy gruncie nośnym'],
+      cons:['Więcej etapów i przerw technologicznych','Mostek termiczny na styku ściany i posadzki'],
+      why:'<b>Dlaczego to rekomendujemy.</b> Dla domu z poddaszem na gruncie nośnym to najtańsza sprawdzona droga. Ekipę łatwo znaleźć w małym mieście, a błędy widać przed zasypaniem.' },
+    { id:'plyta', k:'B', name:'Płyta fundamentowa', min:105000, max:140000, time:'2–3 tyg.', dur:'Wysoka trwałość',
+      pros:['Szybko, jedno betonowanie','Ciepła podłoga bez mostków','Dobra na słabszy grunt'],
+      cons:['Wyższy koszt na starcie','Instalacje trzeba zaplanować co do centymetra','Mniej doświadczonych ekip'],
+      why:'<b>Kiedy płyta ma sens.</b> Przy słabym gruncie albo gdy liczy się czas i cieplejsza podłoga. Zbrojenie jest wtedy siatką na całej powierzchni, a nie koszem w ławie. Dla domu referencyjnego rekomendujemy wariant A.' },
+    { id:'szalunkowe', k:'C', name:'Ławy + ściany z bloczków szalunkowych', min:95000, max:125000, time:'3–4 tyg.', dur:'Zależy od zagęszczenia betonu',
+      pros:['Ściana zbrojona i zalana betonem','Szybciej niż szalunek tradycyjny'],
+      cons:['Drożej niż bloczki pełne','Łatwo o pustki przy złym zagęszczeniu'],
+      why:'<b>Kiedy bloczki szalunkowe.</b> Gdy projektant przewidział zbrojenie ścian fundamentowych, na przykład przy wysokim poziomie wód gruntowych. Dla domu referencyjnego rekomendujemy wariant A.' }
+  ];
+  var S = [
+    { t:'Wytyczenie i wykop', cost:'4–9 tys. zł', time:'1–3 dni', team:'geodeta + operator koparki',
+      lead:'Geodeta przenosi obrys domu z projektu na teren, a koparka kopie rowy pod ławy.',
+      body:['Wytyczenie robi geodeta z uprawnieniami. Wbija paliki w narożnikach i zostawia szkic, który trafia do dokumentacji budowy.','Wykop sięga do gruntu nośnego i poniżej strefy przemarzania. Głębokość podaje projekt.'],
+      tips:['Ławy ciesielskie ustaw ok. 1 m poza obrysem, żeby przetrwały pracę koparki.','Nie kop głębiej niż trzeba. Przekopany grunt uzupełnia się chudym betonem, a nie ziemią.'],
+      warn:['Wykop stoi tygodniami otwarty i zalewa go deszcz. Rozmiękły grunt traci nośność.'],
+      formal:[['Wytyczenie budynku z wpisem do dziennika budowy','geodeta, kierownik budowy']],
+      check:['Geodeta wytyczył budynek i zostawił szkic','Dno wykopu na głębokości z projektu','Kierownik budowy ocenił grunt w dnie wykopu'] },
+    { t:'Chudy beton', cost:'3–5 tys. zł', time:'1 dzień', team:'2 osoby',
+      lead:'Cienka warstwa betonu na dnie wykopu daje równe i czyste podłoże pod zbrojenie.',
+      body:['Zwykle ok. 10 cm betonu niskiej klasy. Nie przenosi obciążeń domu, ale chroni dno wykopu przed rozmiękaniem.'],
+      tips:['Wylej go zaraz po wykopie, zanim grunt zmoknie.','Sprawdź poziom łatą. Nierówności przeniosą się na ławę.'],
+      warn:['Chudy beton pominięty „dla oszczędności”. Zbrojenie ląduje w błocie.'],
+      formal:[['Wpis o wykonaniu do dziennika budowy','kierownik budowy']],
+      check:['Warstwa równa, ok. 10 cm','W wykopie nie ma błota ani wody'] },
+    { t:'Szalunki ław', cost:'4–8 tys. zł', time:'1–2 dni', team:'2–3 cieśli',
+      lead:'Deski lub płyty szalunkowe wyznaczają dokładny kształt ławy.',
+      body:['Przy stabilnym gruncie ławę czasem betonuje się prosto w wykopie, bez szalunku. Decyduje kierownik budowy.'],
+      tips:['Szalunek musi być sztywny i podparty co 50–70 cm, inaczej beton go rozepchnie.','Górną krawędź wyznacz sznurkiem albo niwelatorem.'],
+      warn:['Szalunek bez rozpór. Ława wychodzi szersza i krzywa.'],
+      formal:[],
+      check:['Wymiary ławy zgodne z projektem','Szalunek prosty i dobrze podparty'] },
+    { t:'Zbrojenie ław', cost:'12–18 tys. zł', time:'2–4 dni', team:'2–3 zbrojarzy', steel:'ok. 0,6–0,9 t',
+      lead:'Stalowy szkielet wewnątrz betonu. Po zalaniu nie da się go już obejrzeć, więc sprawdza się go teraz, z miarką w ręku.',
+      body:['Beton dobrze znosi ściskanie, ale pęka, gdy się go zgina, na przykład kiedy grunt pod jednym narożnikiem osiądzie bardziej niż pod drugim. Stal przejmuje to rozciąganie.','W typowym domu jak nasz ława ma ok. <strong>60 × 35 cm</strong>, a w środku leży kosz z <strong>czterech prętów Ø12</strong> i <strong>strzemion Ø6 co 25–30 cm</strong>. To wartości orientacyjne: wiążący jest projekt konstrukcyjny.'],
+      tips:['Dystanse kup gotowe, betonowe albo plastikowe. Kawałki cegły pod prętami to fuszerka, która zostaje w fundamencie na zawsze.','W narożnikach pręty mają zachodzić na siebie (zakład ok. 50–60 cm albo jak w projekcie). Skrzyżowane na styk nic nie przenoszą.','Zanim przyjedzie gruszka, wstaw rury osłonowe pod kanalizację, wodę i prąd. Kucie w świeżej ławie jest drogie i ją osłabia.','Zostaw pręty startowe w miejscach słupów i trzpieni. Sprawdź je z rysunkiem przed betonowaniem.'],
+      warn:['Kosz leży bezpośrednio na chudym betonie albo w błocie, bez otuliny. Stal rdzewieje, beton odpada.','Zbrojenie oblepione ziemią po deszczu, którego nikt nie umył przed betonowaniem.','Zbyt rzadkie strzemiona, bo „i tak się trzyma”. Kosz rozjeżdża się przy wibrowaniu betonu.'],
+      formal:[['Odbiór zbrojenia i wpis do dziennika budowy','kierownik budowy, przed betonowaniem'],['Deklaracja właściwości użytkowych stali','dostawca stali, z dostawą'],['Zdjęcia zbrojenia z przyłożoną miarką','inwestor, ok. 30 min']],
+      check:['Średnice i liczba prętów zgodne z projektem','Strzemiona w rozstawie z projektu, dobrze związane','Kosz stoi na dystansach, otulina z każdej strony','Zakłady prętów w narożnikach mają właściwą długość','Rury osłonowe pod przyłącza są na miejscu','Zbrojenie i wykop czyste, bez błota i wody','Kierownik budowy zrobił wpis do dziennika'],
+      decision:true,
+      quiz:{ q:'Po co pod koszem zbrojeniowym stawia się dystanse?', a:['Żeby zużyć mniej betonu','Żeby stal była z każdej strony otoczona betonem','Żeby dało się chodzić po zbrojeniu'], correct:1,
+        explain:'<b>Otulina chroni stal.</b> Beton wokół prętów odcina je od wilgoci i tlenu, więc stal nie rdzewieje. Pręt, który dotyka gruntu, zacznie korodować, a rdza rozsadzi beton od środka.' } },
+    { t:'Betonowanie ław', cost:'14–22 tys. zł', time:'1 dzień + pielęgnacja', team:'3–4 osoby',
+      lead:'Beton z betoniarni wypełnia szalunek, a wibrator usuwa z niego pęcherze powietrza.',
+      body:['Klasę betonu podaje projekt. Ławy betonuje się najlepiej za jednym razem, bez przerw roboczych.','Świeży beton trzeba pielęgnować: kilka dni polewać wodą albo przykryć folią.'],
+      tips:['Zamów pompę, jeśli gruszka nie podjedzie blisko wykopu.','W upał polewaj ławę wodą przez pierwsze dni, w mróz nie betonuj bez dodatków.'],
+      warn:['Beton dolewany wodą na budowie, „żeby lepiej płynął”. Traci wytrzymałość.'],
+      formal:[['Dokument dostawy betonu (WZ) z klasą betonu','betoniarnia, z dostawą']],
+      check:['Klasa betonu na dokumencie dostawy zgodna z projektem','Beton zagęszczony wibratorem','Ustalony plan pielęgnacji'] },
+    { t:'Ściany fundamentowe', cost:'18–28 tys. zł', time:'3–5 dni', team:'2–3 murarzy',
+      lead:'Bloczki betonowe na zaprawie wynoszą dom ponad grunt i niosą ściany parteru.',
+      body:['Ściany muruje się na ławach, zaczynając od narożników. Wysokość wynika z projektu i poziomu terenu.'],
+      tips:['Pierwszą warstwę ułóż bardzo starannie w poziomie. Kolejne powtórzą każdy błąd.','Zostaw otwory na przyłącza zgodnie z rysunkiem.'],
+      warn:['Spoiny niewypełnione zaprawą. Ściana przepuszcza wilgoć i jest słabsza.'],
+      formal:[],
+      check:['Ściany w pionie i w poziomie','Otwory na przyłącza w miejscach z projektu'] },
+    { t:'Izolacja przeciwwilgociowa', cost:'3–6 tys. zł', time:'1–2 dni', team:'2 osoby',
+      lead:'Masa bitumiczna na ścianie i izolacja pozioma chronią fundament przed wodą z gruntu.',
+      body:['Izolacja pionowa idzie po zewnętrznej stronie ściany fundamentowej. Pozioma leży na jej koronie i blokuje podciąganie wilgoci w górę.'],
+      tips:['Nakładaj masę na suchą, oczyszczoną ścianę, zwykle w dwóch warstwach.'],
+      warn:['Przerwy w izolacji na narożnikach i przy przepustach.'],
+      formal:[],
+      check:['Izolacja ciągła, bez przerw','Izolacja pozioma połączona z pionową'] },
+    { t:'Ocieplenie fundamentu', cost:'6–10 tys. zł', time:'1–2 dni', team:'2 osoby',
+      lead:'Płyty XPS na ścianie fundamentowej ograniczają ucieczkę ciepła przez cokół.',
+      body:['XPS nie chłonie wody, więc nadaje się do gruntu. Grubość ocieplenia podaje projekt, zwykle kilkanaście centymetrów.'],
+      tips:['Płyty klej na masę zgodną z izolacją, bez kołkowania poniżej terenu.'],
+      warn:['Zwykły styropian zamiast XPS w gruncie. Nasiąka i przestaje izolować.'],
+      formal:[],
+      check:['Płyty dociśnięte, bez szczelin','Rodzaj i grubość zgodne z projektem'] },
+    { t:'Zasypka i podkład pod posadzkę', cost:'10–16 tys. zł', time:'2–4 dni', team:'2–3 osoby + zagęszczarka',
+      lead:'Wnętrze między ścianami fundamentowymi zasypuje się piaskiem i zagęszcza warstwami.',
+      body:['Na zagęszczonej podsypce wylewa się podkład betonowy, na którym później leży izolacja i ocieplenie podłogi.'],
+      tips:['Zagęszczaj warstwami po ok. 20–30 cm. Jedna gruba warstwa osiądzie.'],
+      warn:['Podsypka wsypana i niezagęszczona. Po roku pęka posadzka.'],
+      formal:[['Wpis o odbiorze robót zanikających','kierownik budowy']],
+      check:['Podsypka zagęszczona warstwami','Podkład betonowy wylany w poziomie'] }
+  ];
+
+  /* ---------- stan ---------- */
+  var st = { done:[0,1,2], fund:'lawy' };
+  try { var sv = JSON.parse(localStorage.getItem('budowa-v2')||'null'); if (sv && sv.done) st = sv; } catch(e){}
+  function save(){ try { localStorage.setItem('budowa-v2', JSON.stringify(st)); } catch(e){} }
+  var cur = { step:3, panel:0 };
+  var checks = S.map(function(s, i){ return s.check.map(function(){ return st.done.indexOf(i)>-1; }); });
+  var quiz = { ok:false, wrong:[] };
+  var view = { stage: null };
+  function isDone(i){ return st.done.indexOf(i) > -1; }
+  function stageDone(){ return st.done.length === S.length; }
+  function opt(id){ return OPTS.filter(function(o){ return o.id===id; })[0]; }
+  function mid(o){ return (o.min+o.max)/2; }
+  function panelsOf(i){
+    var s = S[i], p = [{id:'opis',label:'Opis',icon:'book'}];
+    if (s.decision) p.push({id:'wybor',label:'Wybór',icon:'compare'});
+    if (s.quiz) p.push({id:'pytanie',label:'Pytanie',icon:'question'});
+    p.push({id:'odbior',label:'Odbiór',icon:'listcheck'});
+    return p;
+  }
+
+  /* ---------- animacje pomocnicze ---------- */
+  function anim(el, kf, o){ if (reduce || !el.animate) return null; return el.animate(kf, o); }
+  function enter(root, dir){
+    $$('[data-in]', root).forEach(function(el, i){
+      anim(el, [{opacity:0, transform:'translate('+(dir*26)+'px,'+(dir?0:10)+'px)'},{opacity:1, transform:'none'}], {duration:380, delay:Math.min(i,10)*45, easing:OUT, fill:'backwards'});
+    });
+  }
+  var busy = false;
+  function swap(el, dir, build){
+    if (reduce || !el.animate){ build(); return; }
+    busy = true;
+    var a = el.animate([{opacity:1, transform:'none'},{opacity:0, transform:'translateX('+(-dir*22)+'px)'}], {duration:150, easing:'cubic-bezier(.4,0,1,1)', fill:'forwards'});
+    a.onfinish = function(){ build(); enter(el, dir); a.cancel(); busy = false; };
+  }
+  function countTo(el, to){
+    var from = el._v || 0; el._v = to;
+    if (reduce || from === to){ el.textContent = num(to)+' zł'; return; }
+    var t0 = performance.now(), d = 700;
+    (function f(t){ var p = Math.min(1,(t-t0)/d), e = 1-Math.pow(1-p,4); el.textContent = num(from+(to-from)*e)+' zł'; if (p<1) requestAnimationFrame(f); })(t0);
+  }
+
+  /* ---------- budżet ---------- */
+  var bar = $('#bar');
+  bar.innerHTML = CATS.map(function(c){
+    return '<div class="seg seg-'+c.id+'" style="flex-grow:'+c.plan+'"><span class="trk"><i class="f"></i><i class="c"></i></span><div class="seg-l"><b>'+c.name+'</b><span class="num" data-cat="'+c.id+'"></span></div></div>';
+  }).join('');
+  var lastMid = null, deltaAnim = null;
+  function budget(){
+    var m = mid(opt(st.fund)), all = 0;
+    CATS.forEach(function(c){
+      var add = c.id==='surowy' ? m : 0, sp = c.spent + add; all += sp;
+      var seg = $('.seg-'+c.id, bar);
+      $('.f', seg).style.width = (c.spent/c.plan*100)+'%';
+      $('.c', seg).style.left = (c.spent/c.plan*100)+'%';
+      $('.c', seg).style.width = (add/c.plan*100)+'%';
+      $('[data-cat="'+c.id+'"]', bar).textContent = k(sp)+' / '+k(c.plan)+' tys.';
+    });
+    countTo($('#mSpent'), all); countTo($('#mLeft'), TOTAL-all);
+    if (lastMid !== null && lastMid !== m){
+      var d = m - lastMid, el = $('#delta');
+      el.textContent = (d>0?'+':'−')+num(d)+' zł';
+      el.classList.toggle('minus', d<0);
+      if (deltaAnim) deltaAnim.cancel();
+      deltaAnim = anim(el, [{opacity:0, transform:'translateY(8px) scale(.9)'},{opacity:1, transform:'none', offset:.14},{opacity:1, transform:'none', offset:.8},{opacity:0, transform:'translateY(-8px)'}], {duration:2200, easing:OUT}); if (!deltaAnim){ el.style.opacity = 1; setTimeout(function(){ el.style.opacity = ''; }, 2000); }
+      var seg = $('.seg-surowy', bar); seg.classList.remove('flash'); void seg.offsetWidth; seg.classList.add('flash');
+    }
+    lastMid = m;
+  }
+
+  /* ---------- etapy (lewa kolumna) ---------- */
+  var rail = $('#rail'), justDone = -1;
+  function stageStat(i){
+    var cs = CUR_STAGE + (stageDone()?1:0);
+    if (i < cs) return '<svg class="stat" viewBox="0 0 22 22"><circle class="dot" cx="11" cy="11" r="10"/><path class="ck" d="M6.5 11.3 9.6 14.3 15.5 8"/></svg>';
+    if (i === cs){
+      var p = i===CUR_STAGE ? st.done.length/S.length : 0, C = 2*Math.PI*9;
+      return '<svg class="stat" viewBox="0 0 22 22"><circle cx="11" cy="11" r="9"/><circle class="ring" cx="11" cy="11" r="9" stroke-dasharray="'+C.toFixed(2)+'" stroke-dashoffset="'+(C*(1-p)).toFixed(2)+'"/></svg>';
+    }
+    return '<svg class="stat" viewBox="0 0 22 22"><circle cx="11" cy="11" r="9"/></svg>';
+  }
+  function renderRail(){
+    var cs = CUR_STAGE + (stageDone()?1:0);
+    var h = '<div class="rail-h"><h2>Etapy budowy</h2><span class="num">'+cs+' z 17 gotowe</span></div><ol class="stages">';
+    STAGES.forEach(function(s, i){
+      var cls = i<cs ? 'done' : (i===cs ? 'cur' : '');
+      h += '<li><button class="stg '+cls+'" data-stage="'+i+'">'+stageStat(i)+'<span class="nr num">'+pad(i)+'</span><span class="t">'+s[0]+'</span></button>';
+      if (i === CUR_STAGE){
+        h += '<ol class="steps">';
+        S.forEach(function(x, j){
+          var dn = isDone(j), on = j===cur.step;
+          var m = dn ? '<svg class="mini'+(j===justDone?' pop':'')+'" viewBox="0 0 16 16"><circle class="dn" cx="8" cy="8" r="8"/><path d="M4.6 8.2 7 10.6 11.6 5.8"/></svg>'
+                     : '<svg class="mini" viewBox="0 0 16 16">'+(on?'<circle class="on" cx="8" cy="8" r="5"/>':'<circle cx="8" cy="8" r="6.5"/>')+'</svg>';
+          h += '<li><button class="stp" data-step="'+j+'"'+(on?' aria-current="step"':'')+'>'+m+'<span>'+x.t+'</span></button></li>';
+        });
+        h += '</ol>';
+      }
+      h += '</li>';
+    });
+    rail.innerHTML = h + '</ol>';
+    justDone = -1;
+  }
+  rail.addEventListener('click', function(e){
+    var b = e.target.closest('[data-step]');
+    if (b){ go(+b.dataset.step, 0); drawer(false); return; }
+    var g = e.target.closest('[data-stage]');
+    if (g){
+      var i = +g.dataset.stage;
+      setViz(i); range.value = i; rangeUI();
+      if (i !== CUR_STAGE) toast('Treść ma na razie tylko etap 04 Fundamenty. Na wizualizacji widać etap '+pad(i)+'.');
+      drawer(false); if (isPhone()) setView('dom');
+    }
+  });
+
+  /* ---------- krok ---------- */
+  var wrap = $('#stepwrap'), scroller = $('#scroll');
+  function stamp(i){ return '<div class="stamp'+(isDone(i)?' on':'')+'" id="stamp" aria-hidden="'+(isDone(i)?'false':'true')+'"><b>Odebrano</b><span>krok '+pad(CUR_STAGE)+'.'+(i+1)+'</span></div>'; }
+  function header(i){
+    var s = S[i], sb = S.map(function(_, j){ return '<i class="'+(isDone(j)?'dn':'')+(j===i?' on':'')+'"></i>'; }).join('');
+    var tabs = panelsOf(i).map(function(p, j){
+      var ok = (p.id==='pytanie' && quiz.ok) || (p.id==='odbior' && isDone(i));
+      return '<button class="ptab" role="tab" data-panel="'+j+'" aria-selected="'+(j===cur.panel)+'">'+ic(p.icon)+p.label+(ok?'<i class="okdot" aria-label="ukończone"></i>':'')+'</button>';
+    }).join('');
+    return '<header class="sh">' +
+      '<div class="meta" data-in><b>Etap '+pad(CUR_STAGE)+' Fundamenty</b><span>Krok '+(i+1)+' z '+S.length+'</span><span class="num">'+st.done.length+' z '+S.length+' odebrane</span></div>' +
+      '<div class="sbar" data-in aria-hidden="true">'+sb+'</div>' +
+      '<h1 data-in>'+s.t+'</h1>' + stamp(i) +
+      '<div class="ptabs" role="tablist" aria-label="Części kroku" data-in><span class="pind" id="pind"></span>'+tabs+'</div>' +
+      '</header><div class="panel" id="panel" role="tabpanel"></div>';
+  }
+  function list(items){ return items.map(function(t){ return '<li>'+t+'</li>'; }).join(''); }
+  function accRow(cls, icon, title, items){
+    if (!items.length) return '';
+    var id = 'acc-'+cls;
+    return '<div class="acc-i '+cls+'" data-in><button class="acc-b" aria-expanded="false" aria-controls="'+id+'"><span class="acc-ic">'+ic(icon)+'</span><span>'+title+'</span><span class="acc-n num">'+items.length+'</span>'+ic('down','chev')+'</button>' +
+      '<div class="acc-p" id="'+id+'"><div><ul>'+items.join('')+'</ul></div></div></div>';
+  }
+  function pOpis(i){
+    var s = S[i];
+    var f = '<li>'+ic('clock')+'<span>Czas</span>'+s.time+'</li><li>'+ic('users')+'<span>Ekipa</span>'+s.team+'</li>' + (s.steel?'<li>'+ic('rebar')+'<span>Stal</span>'+s.steel+'</li>':'') + '<li>'+ic('wallet')+'<span>Koszt</span>'+s.cost+'</li>';
+    return '<p class="lead" data-in>'+s.lead+'</p><ul class="facts" data-in>'+f+'</ul>' +
+      '<div class="prose" data-in>'+s.body.map(function(p){ return '<p>'+p+'</p>'; }).join('')+'</div>' +
+      '<div class="acc">' +
+        accRow('tips','bulb','Porady majstra', s.tips.map(function(t){ return '<li>'+t+'</li>'; })) +
+        accRow('warn','alert','Częste błędy', s.warn.map(function(t){ return '<li>'+t+'</li>'; })) +
+        accRow('formal','file','Formalności', s.formal.map(function(t){ return '<li>'+t[0]+'<span class="fm">'+t[1]+'</span></li>'; })) +
+      '</div>';
+  }
+  function detail(){
+    var o = opt(st.fund);
+    return '<div class="pc"><div class="pro"><h3>Zalety</h3><ul>'+o.pros.map(function(p){ return '<li>'+ic('plus')+'<span>'+p+'</span></li>'; }).join('')+'</ul></div>' +
+      '<div class="con"><h3>Wady</h3><ul>'+o.cons.map(function(p){ return '<li>'+ic('minus')+'<span>'+p+'</span></li>'; }).join('')+'</ul></div></div>' +
+      '<p class="why">'+o.why+'</p>';
+  }
+  function pWybor(){
+    return '<p class="intro" data-in>Zbrojenie zależy od typu fundamentu, więc ten wybór zapada przed tym krokiem. Wybrany wariant od razu przelicza budżet.</p>' +
+      '<div class="cards" role="radiogroup" aria-label="Wariant fundamentu">' + OPTS.map(function(o){
+        return '<label class="card'+(o.id===st.fund?' on':'')+'" data-id="'+o.id+'" data-in><input type="radio" name="fund" id="fund-'+o.id+'" value="'+o.id+'"'+(o.id===st.fund?' checked':'')+'>' +
+          '<span class="card-top"><span class="card-k">'+o.k+'</span>'+(o.rec?'<span class="rec">Rekomendacja</span>':'')+'</span>' +
+          '<span class="tick">'+ic('check')+'</span>' +
+          '<span class="card-n">'+o.name+'</span>' +
+          '<span class="card-c num">'+k(o.min)+'–'+k(o.max)+' <small>tys. zł</small></span>' +
+          '<span class="card-m"><span>'+ic('clock')+o.time+'</span><span>'+ic('shield')+o.dur+'</span></span></label>';
+      }).join('') + '</div><div class="detail" id="detail" data-in>'+detail()+'</div>';
+  }
+  var CK = '<svg viewBox="0 0 26 26"><path d="M6.5 13.5 11 18 19.5 8.5"/></svg>', XX = '<svg viewBox="0 0 26 26"><path d="M8 8l10 10M18 8 8 18"/></svg>';
+  function pPytanie(i){
+    var q = S[i].quiz;
+    return '<p class="q" data-in>'+q.q+'</p><div class="answers">' + q.a.map(function(a, j){
+      var c = quiz.ok ? (j===q.correct ? 'ok' : 'dim') : (quiz.wrong.indexOf(j)>-1 ? 'bad' : '');
+      var r = c==='ok' ? CK : (c==='bad' ? XX : '');
+      return '<button class="ans '+c+'" data-ans="'+j+'" data-in'+(quiz.ok||c==='bad'?' disabled':'')+'><span class="ans-k">'+'ABC'[j]+'</span><span>'+a+'</span><span class="ans-r" aria-hidden="true">'+r+'</span></button>';
+    }).join('') + '</div><div class="qfb" id="qfb" aria-live="polite">'+(quiz.ok?'<p>'+q.explain+'</p>':'')+'</div>';
+  }
+  function pOdbior(i){
+    var s = S[i], dn = isDone(i);
+    return '<p class="intro" data-in>Przejdź listę na budowie i odhacz to, co się zgadza. Odebrany krok zalicza się do postępu etapu i domu.</p>' +
+      '<div class="prog" data-in><span class="prog-t"><i id="progI"></i></span><b class="num" id="progN"></b></div>' +
+      '<ul class="checks">' + s.check.map(function(c, j){
+        return '<li data-in><label class="chk"><input type="checkbox" id="ck-'+i+'-'+j+'" data-ck="'+j+'"'+(checks[i][j]?' checked':'')+(dn?' disabled':'')+'><span class="box">'+CK+'</span><span class="ct">'+c+'</span></label></li>';
+      }).join('') + '</ul><div class="done-row" data-in id="doneRow"></div>';
+  }
+  function doneRow(i){
+    var dn = isDone(i), all = checks[i].every(Boolean), el = $('#doneRow'); if (!el) return;
+    if (dn) el.innerHTML = (i<S.length-1 ? '<button class="btn" data-act="nextstep">Następny krok: '+S[i+1].t+ic('right')+'</button>' : '<span class="hint">Wszystkie kroki etapu są odebrane.</span>') + '<button class="link" data-act="undo">Cofnij odbiór</button>';
+    else el.innerHTML = '<button class="btn" data-act="complete"'+(all?'':' disabled')+'>'+ic('stamp')+'Odbierz krok</button>' + (all?'':'<span class="hint">Odhacz wszystkie punkty, żeby odebrać krok.</span>');
+    var n = checks[i].filter(Boolean).length;
+    $('#progI').style.width = (n/checks[i].length*100)+'%';
+    $('#progN').textContent = n+' z '+checks[i].length;
+  }
+  function renderPanel(){
+    var p = panelsOf(cur.step)[cur.panel].id, el = $('#panel');
+    el.innerHTML = p==='opis' ? pOpis(cur.step) : p==='wybor' ? pWybor() : p==='pytanie' ? pPytanie(cur.step) : pOdbior(cur.step);
+    if (p==='odbior') doneRow(cur.step);
+    $$('.ptab', wrap).forEach(function(t, j){ t.setAttribute('aria-selected', j===cur.panel); });
+    moveInd(); foot();
+  }
+  function moveInd(){
+    var t = $('.ptab[aria-selected="true"]', wrap), ind = $('#pind'); if (!t || !ind) return;
+    ind.style.width = t.offsetWidth+'px'; ind.style.transform = 'translateX('+t.offsetLeft+'px)';
+  }
+  function renderStep(){ wrap.innerHTML = header(cur.step); renderPanel(); scroller.scrollTop = 0; }
+
+  function foot(){
+    var ps = panelsOf(cur.step), last = cur.panel===ps.length-1;
+    var nxt = !last ? ps[cur.panel+1].label : (cur.step<S.length-1 ? S[cur.step+1].t : null);
+    var prv = cur.panel>0 ? ps[cur.panel-1].label : (cur.step>0 ? S[cur.step-1].t : null);
+    $('#next').disabled = !nxt; $('#nextT').textContent = nxt ? (last ? 'Dalej: '+nxt : nxt) : 'Koniec etapu';
+    $('#prev').disabled = !prv; $('#prevT').textContent = prv || 'Wstecz';
+    $('#dots').innerHTML = ps.map(function(_, j){ return '<i class="'+(j===cur.panel?'on':'')+'"></i>'; }).join('');
+  }
+  function go(step, panel){
+    if (busy) return;
+    if (step===cur.step && panel===cur.panel) return;
+    var dir = step!==cur.step ? (step>cur.step?1:-1) : (panel>cur.panel?1:-1);
+    var same = step===cur.step;
+    cur.step = step; cur.panel = panel;
+    if (same) swap($('#panel'), dir, function(){ renderPanel(); });
+    else { swap(wrap, dir, function(){ renderStep(); renderRail(); }); }
+  }
+  function next(){ var ps = panelsOf(cur.step); if (cur.panel<ps.length-1) go(cur.step, cur.panel+1); else if (cur.step<S.length-1) go(cur.step+1, 0); }
+  function prev(){ if (cur.panel>0) go(cur.step, cur.panel-1); else if (cur.step>0) go(cur.step-1, panelsOf(cur.step-1).length-1); }
+  $('#next').onclick = next; $('#prev').onclick = prev;
+
+  wrap.addEventListener('click', function(e){
+    var t;
+    if ((t = e.target.closest('.ptab'))) { go(cur.step, +t.dataset.panel); return; }
+    if ((t = e.target.closest('.acc-b'))) { t.setAttribute('aria-expanded', t.getAttribute('aria-expanded')!=='true'); return; }
+    if ((t = e.target.closest('.ans'))) { answer(t); return; }
+    if ((t = e.target.closest('[data-act]'))) {
+      var a = t.dataset.act;
+      if (a==='complete') complete(cur.step);
+      if (a==='undo') undo(cur.step);
+      if (a==='nextstep') go(cur.step+1, 0);
+    }
+  });
+  wrap.addEventListener('change', function(e){
+    var t = e.target;
+    if (t.name==='fund'){
+      st.fund = t.value; save(); budget();
+      $$('.card', wrap).forEach(function(c){ c.classList.toggle('on', c.dataset.id===st.fund); });
+      var d = $('#detail'); swap(d, 1, function(){ d.innerHTML = detail(); d.querySelectorAll('.pc > div, .why').forEach(function(x){ x.setAttribute('data-in',''); }); });
+    }
+    if (t.dataset.ck !== undefined){ checks[cur.step][+t.dataset.ck] = t.checked; doneRow(cur.step); }
+  });
+
+  function answer(b){
+    var q = S[cur.step].quiz, j = +b.dataset.ans;
+    if (j===q.correct){
+      quiz.ok = true;
+      $$('.ans', wrap).forEach(function(x, n){ x.disabled = true; x.classList.remove('bad'); x.classList.toggle('ok', n===j); x.classList.toggle('dim', n!==j); $('.ans-r', x).innerHTML = n===j ? CK : ''; });
+      var fb = $('#qfb'); fb.classList.remove('try'); fb.innerHTML = '<p data-in>'+q.explain+'</p>'; enter(fb, 0);
+      var tab = $$('.ptab', wrap)[cur.panel]; if (tab && !$('.okdot', tab)) tab.insertAdjacentHTML('beforeend','<i class="okdot" aria-label="ukończone"></i>');
+    } else {
+      quiz.wrong.push(j); b.classList.add('bad'); b.disabled = true; $('.ans-r', b).innerHTML = XX;
+      b.classList.remove('shake'); void b.offsetWidth; if (!reduce) b.classList.add('shake');
+      var fb2 = $('#qfb'); fb2.classList.add('try'); fb2.innerHTML = '<p>Nie tym razem. Spróbuj jeszcze raz.</p>';
+    }
+  }
+
+  function complete(i){
+    if (isDone(i)) return;
+    st.done.push(i); save(); justDone = i;
+    var s = $('#stamp'); s.classList.add('on','hit'); s.setAttribute('aria-hidden','false');
+    $$('.chk input', wrap).forEach(function(x){ x.disabled = true; });
+    var tab = $$('.ptab', wrap)[cur.panel]; if (tab && !$('.okdot', tab)) tab.insertAdjacentHTML('beforeend','<i class="okdot" aria-label="ukończone"></i>');
+    $$('.sbar i', wrap)[i].classList.add('dn');
+    $('.meta .num', wrap).textContent = st.done.length+' z '+S.length+' odebrane';
+    doneRow(i); renderRail(); progress();
+    if (stageDone()){
+      setTimeout(function(){
+        toast('Etap 04 Fundamenty odebrany. Na wizualizacji rosną ściany.');
+        setViz(CUR_STAGE+1); range.value = CUR_STAGE+1; rangeUI(); renderRail(); progress();
+      }, 650);
+    } else toast('Krok „'+S[i].t+'” odebrany.');
+  }
+  function undo(i){
+    var was = stageDone();
+    st.done = st.done.filter(function(x){ return x!==i; }); save();
+    checks[i] = checks[i].map(function(){ return false; });
+    renderStep(); renderRail(); progress();
+    if (was){ setViz(CUR_STAGE); range.value = CUR_STAGE; rangeUI(); }
+  }
+
+  /* ---------- wizualizacja ---------- */
+  var house = $('#house'), groups = $$('#house [data-min]'), range = $('#range');
+  $('#ticks').innerHTML = STAGES.map(function(){ return '<i></i>'; }).join('');
+  function curVizStage(){ return CUR_STAGE + (stageDone()?1:0); }
+  function drawIn(g, base){
+    g.classList.remove('hide');
+    if (reduce || !g.animate) return;
+    anim(g, [{opacity:0, transform:'translateY(12px)'},{opacity:1, transform:'none'}], {duration:420, delay:base, easing:SPRING, fill:'backwards'});
+    var n = 0;
+    $$('rect,polygon,path,ellipse,circle', g).forEach(function(el){
+      if (el.closest('.glow,.lit,.stars')) return;
+      var len = 0; try { len = el.getTotalLength(); } catch(e){}
+      if (!len || !isFinite(len)) return;
+      if (el._css !== undefined){ el.getAnimations().forEach(function(a){ a.cancel(); }); el.style.cssText = el._css; }
+      el._css = el.style.cssText;
+      var cs = getComputedStyle(el), stroked = cs.stroke !== 'none', filled = cs.fill !== 'none' && el.tagName !== 'path';
+      var delay = base + Math.min(n++, 26)*24;
+      if (!stroked){ el.style.stroke = 'var(--draw)'; el.style.strokeWidth = '1.3'; }
+      el.style.strokeDasharray = len; el.style.strokeDashoffset = len;
+      var a = el.animate([{strokeDashoffset:len},{strokeDashoffset:0}], {duration:420, delay:delay, easing:OUT, fill:'forwards'});
+      var b = filled ? el.animate([{fillOpacity:0},{fillOpacity:0, offset:.45},{fillOpacity:1}], {duration:620, delay:delay, easing:'ease-out', fill:'backwards'}) : null;
+      var last = b || a;
+      last.onfinish = function(){ a.cancel(); if (b) b.cancel(); el.style.cssText = el._css; delete el._css; };
+    });
+  }
+  function setViz(n, first){
+    var prevS = view.stage; view.stage = n;
+    var base = 0;
+    groups.forEach(function(g){
+      var mn = +g.dataset.min, mx = g.dataset.max ? +g.dataset.max : 99, show = n>=mn && n<=mx;
+      var was = prevS!==null && prevS>=mn && prevS<=mx;
+      if (show && (!was || first)){ drawIn(g, base); base += first ? 120 : 90; }
+      else if (!show && !g.classList.contains('hide')){
+        var a = anim(g, [{opacity:1},{opacity:0}], {duration:200, easing:'ease-in'});
+        if (a) a.onfinish = function(){ g.classList.add('hide'); }; else g.classList.add('hide');
+      } else if (show) g.classList.remove('hide');
+    });
+    $('#vizChip').textContent = 'Etap '+pad(n)+' '+STAGES[n][0];
+    var cap = $('#cap'); cap.textContent = STAGES[n][1]; anim(cap, [{opacity:0, transform:'translateY(4px)'},{opacity:1, transform:'none'}], {duration:300, easing:OUT});
+    $('#backBtn').hidden = n === curVizStage();
+  }
+  function rangeUI(){
+    var v = +range.value, cs = curVizStage();
+    range.style.setProperty('--p', (v/16*100)+'%');
+    $('#rangeOut').textContent = pad(v)+' '+STAGES[v][0];
+    $$('#ticks i').forEach(function(t, i){ t.classList.toggle('dn', i<=cs); });
+  }
+  range.addEventListener('input', function(){ setViz(+range.value); rangeUI(); });
+  $('#backBtn').onclick = function(){ var c = curVizStage(); range.value = c; rangeUI(); setViz(c); };
+  function progress(){
+    var p = (CUR_STAGE + st.done.length/S.length) / 17;
+    $('#hp').style.width = (p*100)+'%';
+    var el = $('#pct'), to = Math.round(p*100), from = el._v||0; el._v = to;
+    if (reduce){ el.textContent = to+'%'; return; }
+    var t0 = performance.now();
+    (function f(t){ var q = Math.min(1,(t-t0)/700), e = 1-Math.pow(1-q,4); el.textContent = Math.round(from+(to-from)*e)+'%'; if (q<1) requestAnimationFrame(f); })(t0);
+  }
+
+  /* ---------- motyw, szuflada, widoki, toast ---------- */
+  var root = document.documentElement;
+  try { var th = localStorage.getItem('budowa-v2-theme'); if (th) root.dataset.theme = th; } catch(e){}
+  function isDark(){ return root.dataset.theme ? root.dataset.theme==='dark' : matchMedia('(prefers-color-scheme: dark)').matches; }
+  function themeIco(){ $('#themeIco').setAttribute('href', isDark() ? '#i-sun' : '#i-moon'); $('#themeBtn').setAttribute('aria-label', isDark() ? 'Włącz jasny motyw' : 'Włącz ciemny motyw'); }
+  $('#themeBtn').onclick = function(){ root.dataset.theme = isDark() ? 'light' : 'dark'; try { localStorage.setItem('budowa-v2-theme', root.dataset.theme); } catch(e){} themeIco(); };
+  themeIco();
+  function drawer(o){ document.body.classList.toggle('drawer', o); $('#menuBtn').setAttribute('aria-expanded', o); }
+  $('#menuBtn').onclick = function(){ drawer(!document.body.classList.contains('drawer')); };
+  $('#scrim').onclick = function(){ drawer(false); };
+  function isPhone(){ return matchMedia('(max-width:760px)').matches; }
+  var vizShown = false;
+  function setView(v){
+    $('#app').dataset.view = v;
+    $$('.tabbar button').forEach(function(b){ b.setAttribute('aria-selected', b.dataset.view===v); });
+    if (v==='dom'){ if (!vizShown){ vizShown = true; setViz(view.stage, true); } else anim($('#viz'), [{opacity:0},{opacity:1}], {duration:250}); }
+    else { anim($('#main'), [{opacity:0},{opacity:1}], {duration:250}); moveInd(); }
+  }
+  $$('.tabbar button').forEach(function(b){ b.onclick = function(){ setView(b.dataset.view); }; });
+  var tt;
+  function toast(m){ var t = $('#toast'); $('#toastT').textContent = m; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(function(){ t.classList.remove('on'); }, 3200); }
+
+  /* ---------- klawiatura i gest ---------- */
+  document.addEventListener('keydown', function(e){
+    if (e.key==='Escape') drawer(false);
+    if (e.target.matches && e.target.matches('input,textarea,select')) return;
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.key==='ArrowRight'){ e.preventDefault(); next(); }
+    if (e.key==='ArrowLeft'){ e.preventDefault(); prev(); }
+  });
+  var sx = null, sy = 0;
+  scroller.addEventListener('touchstart', function(e){ var t = e.touches[0]; sx = t.clientX; sy = t.clientY; }, {passive:true});
+  scroller.addEventListener('touchend', function(e){
+    if (sx===null) return; var t = e.changedTouches[0], dx = t.clientX-sx, dy = t.clientY-sy; sx = null;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)*1.6){ if (dx<0) next(); else prev(); }
+  }, {passive:true});
+  window.addEventListener('resize', moveInd);
+
+  /* ---------- start ---------- */
+  renderRail(); renderStep(); enter(wrap, 0); budget(); progress();
+  var vs = curVizStage(); range.value = vs; rangeUI();
+  if (isPhone()){ view.stage = vs; groups.forEach(function(g){ var mn=+g.dataset.min, mx=g.dataset.max?+g.dataset.max:99; g.classList.toggle('hide', vs<mn||vs>mx); }); setViz(vs); }
+  else { vizShown = true; setViz(vs, true); }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(moveInd);
+})();
+</script>
+</body>
+</html>
