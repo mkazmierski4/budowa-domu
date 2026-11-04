@@ -28,9 +28,9 @@ Pliki etapów (wpięte w `index.html`; brakujące silnik pomija). Treść: `cont
 - ✅ 04 Fundamenty (stan zero), izolacje, kanalizacja podposadzkowa (15 kroków, 4 decyzje, 9 quizów, widget `kalkulator-betonu`; `content/04-fundamenty.js`, `js/widgets/04-fundamenty.js`)
 - ✅ 05 Ściany, nadproża, wieńce, stropy, rusztowania, komin (14 kroków, 7 decyzji, 16 quizów, widget `kalkulator-scian`; `content/05-sciany.js`, `js/widgets/05-sciany.js`)
 - ✅ 06 Więźba, pokrycie dachu, okna dachowe, rynny (13 kroków, 4 decyzje, 15 quizów, widget `kalkulator-dachu`; `content/06-dach.js`, `js/widgets/06-dach.js`)
-- ⬜ 07 Okna, drzwi zewnętrzne, bramy garażowe (SSZ)
-- ⬜ 08 Elektryka, niskoprądowe, oświetlenie
-- ⬜ 09 Woda, kanalizacja, ogrzewanie (pompa ciepła, podłogówka)
+- ✅ 07 Okna, drzwi zewnętrzne, bramy garażowe (SSZ) (12 kroków, 6 decyzji, 12 quizów, widget `kalkulator-okien`; `content/07-okna.js`, `js/widgets/07-okna.js`; etap 125–196 tys., śr. ok. 161 tys. zł, ok. 5 tys. ponad resztę limitu „surowy”)
+- ✅ 08 Elektryka, niskoprądowe, oświetlenie (13 kroków, 7 decyzji, 10 quizów, widget `kalkulator-punktow`; `content/08-elektryka.js`, `js/widgets/08-elektryka.js`; etap 42,3–65 tys., śr. ok. 54 tys. zł z limitu „instal” 270 tys. dla 08–10)
+- ✅ 09 Woda, kanalizacja, ogrzewanie (15 kroków, 6 decyzji, 12 quizów, widget `kalkulator-ogrzewania`; `content/09-woda-ogrzewanie.js`, `js/widgets/09-woda-ogrzewanie.js`; 15 ilustracji, 8 sekwencji w `js/illus/09-woda-ogrzewanie.js`, przegląd 0 błędów, oba motywy i telefon)
 - ⬜ 10 Rekuperacja, fotowoltaika, smart home
 - ⬜ 11 Tynki, wylewki, sucha zabudowa, ocieplenie poddasza
 - ⬜ 12 Elewacja: ocieplenie ścian, tynk, kamień, drewno
@@ -53,5 +53,7 @@ Pliki etapów (wpięte w `index.html`; brakujące silnik pomija). Treść: `cont
 - 🔄 04 Fundamenty (gotowe: `zbrojenie-law`, `izolacja-przeciwwilgociowa`, `ocieplenie-fundamentu`)
 - ✅ 04 Fundamenty (15 ilustracji: 3 wzorce + 12 nowych, 8 sekwencji w sumie; zrzut w jasnym motywie, bez ciemnego i telefonu)
 - ✅ 05 Ściany i stropy (14 ilustracji, 12 sekwencji; `js/illus/05-sciany.js`)
-- ⬜ 06 Dach
-- ⬜ 07–16: po napisaniu treści etapu (F3)
+- ✅ 06 Dach (13 ilustracji, 12 sekwencji (4 po 3 klatki), 3 porównania ✓/✗; `js/illus/06-dach.js`; przegląd 0 błędów w obu motywach i na telefonie)
+- ✅ 07 Okna, drzwi i brama (12 ilustracji, 7 sekwencji; przegląd 0 błędów w pełnej szerokości i na telefonie, zrzuty w jasnym i ciemnym motywie; `js/illus/07-okna.js`)
+- ✅ 08 Elektryka (13 ilustracji, 6 sekwencji; przegląd 0 błędów, zrzuty w ciemnym i jasnym motywie oraz na telefonie; `js/illus/08-elektryka.js`)
+- ⬜ 09–16: po napisaniu treści etapu (F3)

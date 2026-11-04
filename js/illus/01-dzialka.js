@@ -23,7 +23,7 @@ BUDOWA.addIllus('01-dzialka/mpzp-wz', function(a){
 });
 
 BUDOWA.addIllus('01-dzialka/media', function(a){
-  let s = a.rect(40,96,400,196,'trawa',{r:10}) + a.road('M-10 50H490') +
+  let s = a.rect(40,96,400,196,'trawa',{r:10}) + a.road('M0 50H480') +
     a.cable([[180,64],[180,200]],'var(--il-poziomica)') + a.pipe([[230,64],[230,200]],8,'woda') + a.pipe([[280,64],[280,200]],6,'rura') +
     a.rect(150,200,180,60,'bloczek',{r:3}) + a.poly([[142,200],[240,162],[338,200]],'dachowka') +
     a.pipe([[330,236],[380,236]],8,'kan') + a.fresh('<ellipse cx="412" cy="236" rx="30" ry="18" class="il-m c-beton"/><ellipse cx="412" cy="230" rx="22" ry="8" class="il-m c-kmb"/>',{d:500}) +

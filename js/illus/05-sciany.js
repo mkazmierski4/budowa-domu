@@ -214,7 +214,7 @@
 
   /* 13 ---------- Komin ---------- */
   BUDOWA.addIllus('05-sciany/komin', function(a){
-    const house = a.ground(0,274,480,50) + a.rect(30,156,28,118,'ceramika') + a.rect(342,156,28,118,'ceramika') + a.rect(58,156,284,8,'beton',{r:1}) + a.rect(58,266,284,8,'beton',{r:1}) +
+    const house = a.ground(0,274,480,46) + a.rect(30,156,28,118,'ceramika') + a.rect(342,156,28,118,'ceramika') + a.rect(58,156,284,8,'beton',{r:1}) + a.rect(58,266,284,8,'beton',{r:1}) +
       a.poly([[20,160],[200,70],[380,160],[380,172],[200,82],[20,172]],'dachowka');
     const f1 = house + a.rect(235,262,60,12,'beton',{k:'pod'}) + a.rect(255,40,30,224,'ceramika',{k:'kom'}) + a.rect(250,34,40,8,'beton',{r:2}) +
       a.rect(190,214,66,50,'blacha',{r:3}) + a.rect(198,224,40,28,'szklo',{r:2}) +

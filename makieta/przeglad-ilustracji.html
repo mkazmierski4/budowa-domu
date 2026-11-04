@@ -228,7 +228,7 @@ function check(svg){
     if (e.closest('.qa-ov') || e.classList.contains('il-sh')) return;
     const b = B(e); if (!b.w && !b.h) return;
     const o = Math.max(vb.x - b.x, vb.y - b.y, b.x + b.w - vb.x - vb.width, b.y + b.h - vb.y - vb.height);
-    if (o <= 2) return;
+    if (o <= 4) return; // do 4 px to obrys kreski, ucięty przez viewBox i niewidoczny
     let top = e; while (top.parentNode && top.parentNode !== svg) top = top.parentNode;
     if (seen.has(top)) return; seen.add(top);
     const x = Math.max(vb.x, b.x), y = Math.max(vb.y, b.y);
