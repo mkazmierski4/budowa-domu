@@ -133,12 +133,20 @@ BUDOWA.addIllus('00-finanse/umowy', function(a){
 });
 
 BUDOWA.addIllus('00-finanse/ubezpieczenie', function(a){
-  const P = a.iso(210,150,1.15);
-  let s = a.ground(40,236,400,50) + P.box(20,0,0,110,90,70,'bloczek') + P.box(10,-4,70,130,98,6,'drewno') +
-    a.drops(80,28,5) + a.drops(300,24,4) +
-    a.fresh('<path d="M240 30q40 4 70 -10q0 54 -35 76q-35 -22 -35 -76z" class="il-m c-woda"/><path class="il-ok" d="M258 62l12 13 22 -26"/>',{d:300}) +
-    a.pill(100,110,'Szkody') + a.pill(380,150,'Kradzież') + a.pill(90,206,'OC') + a.num(240,288,'3–8 tys. zł') +
-    a.pill(240,262,'z cesją na bank, przed wykopem');
-  return { caption:'Polisa budowlana kosztuje niewiele, a chroni materiały i niedokończony dom.', svg:V(s,'Dom w budowie pod tarczą ubezpieczenia')};
+  // jeden temat: budowa na działce pod kloszem polisy (klosz stoi na działce, tarcza na jego szczycie)
+  const P = a.iso(240,176,.82), win = (x1,x2,z1,z2,y) => P.face([[x1,y,z1],[x2,y,z1],[x2,y,z2],[x1,y,z2]],'kmb');
+  const site = P.box(-100,-75,-6,200,150,6,'trawa') +
+    P.shadow(-30,-35,80,60) + P.box(-30,-35,0,80,60,46,'bloczek') + win(-18,2,14,34,25) + win(16,30,0,30,25) +
+    P.face([[50,-22,14],[50,-4,14],[50,-4,34],[50,-22,34]],'kmb') +
+    P.box(-85,30,0,34,30,4,'drewno') + P.box(-83,32,4,30,26,22,'bloczek') +
+    a.person(292,222,{s:.72,kask:false,arms:[10,60],hold:a.doc(-2,-20,20,26,{stamp:1,lines:2})});
+  const dome = a.fresh('<path class="il-zone" d="M116 176A124 130 0 0 1 364 176A124 72 0 0 1 116 176Z"/>' + a.shield(240,46,.8), {d:200});
+  const rain = '<path class="il-m c-zwir" d="M138 50h64a13 13 0 0 0 -6 -25a17 17 0 0 0 -31 -6a14 14 0 0 0 -27 31z"/>' + a.drops(160,52,3);
+  const s = a.layout.scene(site + dome + rain + a.num(240,292,'3–8 tys. zł'), [
+    {t:'Wichura', at:[160,56], k:'w'},
+    {t:'Kradzież', at:[160,146], k:'k'},
+    {t:'Pełna polisa', sub:'szkody, kradzież, OC', at:[258,40], k:'p', hot:1},
+    {t:'Cesja na bank', at:[318,166], k:'c'} ]);
+  return { caption:'Polisę kupujesz przed pierwszym wykopem: chroni niedokończony dom i materiały od szkód, kradzieży i OC, a cesja zabezpiecza bank.', svg:V(s,'Budowa na działce pod kloszem polisy: wichura, kradzież, OC i cesja na bank')};
 });
 })();

@@ -105,7 +105,21 @@ Biblioteka `a` (zwraca string SVG; `o.k` = klucz podświetlania wspólny dla pod
 - opisy: `callout(k,ax,ay,tx,ty,t,{hot})`, `pill(x,y,t,{k,acc})`, `num(x,y,t)`, `dim/measure(x1,y1,x2,y2,t,{dx,dy})`, `arrow(pts)`, `marker(x,y,n)`, `ok(x,y,r)`, `bad(x,y,r)`, `doc(x,y,w,h,{stamp,lines,icon})`
 - procesy: `road(d)`, `stop(x,y,n,{icon,k})`, `icon('mapa'|'projekt'|'prad'|'urzad'|'kask'|'kalendarz',x,y,s)`
 
-Wzorce: `js/illus/04-fundamenty.js` (sekwencja z ruchem, ✓/✗), `js/illus/02-projekt.js` (droga z przystankami).
+- tekst w kształcie: `label(x,y,w,h,t,mat)` (pasek, tabliczka): za długi napis sam się zmniejsza (min. 11 px), łamie na dwie linie albo wychodzi pod kształt z linią. Nie rysuj `rect` + `text` ręcznie.
+- obiekty (x,y = środek podstawy, mają cień): `house`, `excavator`, `mixerTruck`, `crane`, `tripod`, `container`, `toilet` (x,y,s); `table/desk(x,y,w,h,{panel})`, `laptop`, `shield`, `magnifier` (x,y,s), `circle(cx,cy,r)` (przerywany obszar, klasa `il-zone`); postać siedząca: `person(x,y,{sit:1})` (z krzesłem).
+- szablony `a.layout.*` (zwracają zawartość 480 × 320): `scene(main, [{t, at:[x,y], side, y, sub, hot, k}])` (podpisy w kolumnach przy krawędziach, linie same się dociągają), `compare(okSvg, badSvg, [tytuł✓, tytuł✗])` (pola 222 × 244), `timeline([{t, len}], {x,y,w,title,end})`, `steps([{icon, t}])`, `table([{at:'l'|'c'|'r', t}], przedmiot)` (ludzie siedzą przy stole w skali).
+- po wstawieniu SVG biblioteka sama rozsuwa pigułki i callouty (omijają siebie, napisy i postacie/dłonie z `data-guard`) i przelicza linie odniesienia. To siatka bezpieczeństwa, nie zwalnia z układania.
+
+Wzorce: `js/illus/04-fundamenty.js` (sekwencja z ruchem, ✓/✗), `js/illus/02-projekt.js` (droga z przystankami, `compare`, `timeline`), `js/illus/00-finanse.js` → `ubezpieczenie` (`scene`), `js/illus/01-dzialka.js` → `akt-notarialny` (`table`).
+
+**Zasady kompozycji:**
+- Jeden wyraźny temat na klatkę. Wszystko inne go wspiera albo znika.
+- Podpisy przy krawędziach (kolumny `scene`, góra, dół), nie na obiektach. Nigdy na głowie, twarzy ani dłoni.
+- Skala: człowiek stojący ok. 100 jedn. przy `s=1`, stół do ok. połowy jego wzrostu, drzwi trochę wyższe od człowieka. Ludzie stoją lub siedzą **przy** meblach i na ziemi, nie na nich.
+- Nic nie wisi w powietrzu: każdy przedmiot stoi na gruncie, płycie, stole albo ścianie i ma cień. Wyjątki to chmura, deszcz i znaczek przyczepiony do obiektu.
+- Układ z siatki (kolumny, rzędy, szablony), a nie rozrzucony po rysunku.
+
+**Obowiązek przed oddaniem:** otwórz `makieta/przeglad-ilustracji.html?etap=NN-slug` (jedna ilustracja: `&id=NN-slug/krok`), popraw wszystkie czerwone błędy (licznik etapu ma być 0) i obejrzyj zrzut w obu motywach (przełącznik Jasny/Ciemny) oraz w szerokości „Telefon”.
 
 ## Warstwy przekroju
 Link „zobacz w przekroju” w treści: `BUDOWA.showSection("<layerId>")` (→ `VIZ.highlight`), przełącza wizualizację na przekrój i podświetla warstwę. Lista jest też w `VIZ.LAYERS`.

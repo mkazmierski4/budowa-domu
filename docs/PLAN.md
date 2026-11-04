@@ -45,6 +45,7 @@ Pliki etapów (wpięte w `index.html`; brakujące silnik pomija). Treść: `cont
 ## Faza 5 — Ilustracje kroków (1 sesja = 1 etap, pliki `js/illus/NN-slug.js`, tagi już są w `index.html`)
 - ✅ F5a: system ilustracji `js/illus.js` + `css/illus.css`, wpięcie w silnik (`BUDOWA.addIllus`), wzorce: `04-fundamenty` (zbrojenie ław 3 klatki, izolacje, XPS), `02-projekt` (droga do pozwolenia) → `prompts/F5a-ilustracje.md`
 - ✅ F5b: zmiana stylu na „instrukcję obrazkową” (aksonometria, postacie, kolory, ruch), przerobione 3 wzorce i zasady w `CLAUDE.md`
+- ✅ F5c: jakość ilustracji: `makieta/przeglad-ilustracji.html` (kontrole automatyczne, ocena ✓/✗ z komentarzem, kopiowanie listy), w `js/illus.js` rozsuwanie podpisów, dopasowanie tekstu (`label`), szablony `a.layout.*`, nowe obiekty; przerobione `00-finanse/ubezpieczenie`, `01-dzialka/akt-notarialny`, `02-projekt/terminy-i-uprawomocnienie` i `pozwolenie-czy-zgloszenie`. Błędy automatyczne przed: 00: 4, 01: 5, 02: 4, 03: 4, 04: 4, 05: 1 (razem 22); po: 2 (`01-dzialka/media`, `05-sciany/komin`: wyjście poza kadr) → `prompts/F5c-jakosc-ilustracji.md`
 - ✅ 00 Finanse (10 ilustracji, 4 sekwencje; infografiki; zrzuty sprawdzone w ciemnym motywie)
 - ✅ 01 Działka (11 ilustracji, 2 sekwencje 2-klatkowe; infografiki; zrzuty sprawdzone w ciemnym motywie)
 - ✅ 02 Projekt i pozwolenie (13 ilustracji, 1 sekwencja 3-klatkowa; infografiki)

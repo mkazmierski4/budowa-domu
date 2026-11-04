@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Przegląd ilustracji</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../css/viz.css">
+<link rel="stylesheet" href="../css/illus.css">
+<script>
+/* motyw: ?motyw=dark|light albo zapamiętany wybór */
+(function(){ var m = (location.search.match(/[?&]motyw=(dark|light)/) || [])[1];
+  try { m = m || localStorage.getItem('budowa-przeglad-motyw'); } catch(e){}
+  if (m) document.documentElement.dataset.theme = m; })();
+</script>
+<style>
+/* Stół korektorski: odbitki ilustracji na neutralnym blacie, błędy jak czerwone znaki korekty */
+:root{
+  --bench:#D8DCD5; --sheet:#F8F8F4; --ink:#1C2320; --ink-2:#56615B; --rule:#BCC4BB;
+  --red:#C3352B; --red-soft:#F4DAD5; --green:#2E7649; --green-soft:#D7EADC;
+  --f:"Onest","Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bench:#181B19; --sheet:#222623; --ink:#E5E9E3; --ink-2:#A2ACA5; --rule:#353C37;
+  --red:#E35B4D; --red-soft:#3F2320; --green:#5DB07B; --green-soft:#1F3427; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bench:#181B19; --sheet:#222623; --ink:#E5E9E3; --ink-2:#A2ACA5; --rule:#353C37;
+  --red:#E35B4D; --red-soft:#3F2320; --green:#5DB07B; --green-soft:#1F3427; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--bench); color:var(--ink); font:15px/1.5 var(--f); font-variant-numeric:tabular-nums; -webkit-font-smoothing:antialiased}
+button,input,textarea{font:inherit; color:inherit}
+:focus-visible{outline:2px solid var(--red); outline-offset:2px}
+
+.top{position:sticky; top:0; z-index:20; background:var(--bench); border-bottom:1px solid var(--rule); padding:14px 16px 10px}
+.top-in{max-width:1500px; margin:0 auto; display:grid; gap:10px}
+.head{display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px 24px}
+h1{margin:0; font-size:26px; line-height:1.15; font-weight:700; letter-spacing:-.01em}
+.head p{margin:0; color:var(--ink-2); font-size:14px; max-width:62ch}
+.ctl{display:flex; flex-wrap:wrap; align-items:center; gap:8px 14px}
+.seg{display:inline-flex; border:1px solid var(--rule); border-radius:8px; overflow:hidden; background:var(--sheet)}
+.seg button{border:0; background:none; padding:5px 12px; cursor:pointer; font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--ink); color:var(--sheet)}
+.ctl label{display:inline-flex; align-items:center; gap:6px; font-size:14px; cursor:pointer}
+.ctl input[type=checkbox]{accent-color:var(--red); width:16px; height:16px}
+.copy{border:0; border-radius:8px; background:var(--red); color:#fff; padding:7px 14px; font-weight:600; cursor:pointer}
+.copy:hover{filter:brightness(1.08)}
+#status{font-size:13px; color:var(--ink-2); min-height:1.2em}
+
+/* tabela wyników: etap i liczba błędów */
+.tally{display:flex; flex-wrap:wrap; gap:6px}
+.tally button{display:inline-flex; align-items:baseline; gap:8px; border:1px solid var(--rule); background:var(--sheet); border-radius:8px; padding:4px 10px 5px; cursor:pointer; font-size:14px}
+.tally button[aria-pressed="true"]{border-color:var(--ink); box-shadow:inset 0 0 0 1px var(--ink)}
+.tally b{font-size:17px; font-weight:700; color:var(--red)}
+.tally b.zero{color:var(--green)}
+
+main{max-width:1500px; margin:0 auto; padding:16px 16px 80px}
+.stage{margin:0 0 36px}
+.stage > h2{display:flex; align-items:baseline; gap:12px; margin:0 0 12px; font-size:20px; font-weight:700}
+.stage > h2 span{font-size:14px; font-weight:500; color:var(--ink-2)}
+.ill{background:var(--sheet); border:1px solid var(--rule); border-radius:12px; padding:14px; margin:0 0 14px}
+.ill.is-bad{box-shadow:inset 4px 0 0 var(--red)}
+.ill.is-ok{box-shadow:inset 4px 0 0 var(--green)}
+.ill > header{display:flex; flex-wrap:wrap; align-items:center; gap:6px 12px; margin-bottom:10px}
+.ill h3{margin:0; font-size:16px; font-weight:600}
+.ill code{font:13px/1.3 var(--f); color:var(--ink-2); user-select:all}
+.badge{font-size:13px; font-weight:700; border-radius:6px; padding:1px 8px; background:var(--red-soft); color:var(--red)}
+.badge.zero{background:var(--green-soft); color:var(--green)}
+.rate{margin-left:auto; display:inline-flex; gap:6px}
+.rate button{width:40px; height:34px; border-radius:8px; border:1px solid var(--rule); background:var(--sheet); font-size:17px; font-weight:700; cursor:pointer}
+.rate button[data-r="ok"][aria-pressed="true"]{background:var(--green); border-color:var(--green); color:#fff}
+.rate button[data-r="bad"][aria-pressed="true"]{background:var(--red); border-color:var(--red); color:#fff}
+.frames{display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 430px), 1fr)); gap:14px}
+.frame .il{margin:0; max-width:none}
+.frame .il .il-tool{display:none}
+.issues{margin:6px 0 0; padding:0; list-style:none; font-size:13.5px; line-height:1.4}
+.issues li{display:flex; gap:8px; padding:2px 0; color:var(--red)}
+.issues li i{flex:none; font-style:normal; font-weight:700; width:20px; height:20px; border-radius:50%; background:var(--red); color:#fff; display:grid; place-items:center; font-size:12px}
+.issues li.none{color:var(--green)}
+.ill textarea{display:block; width:100%; margin-top:10px; min-height:40px; resize:vertical; border:1px solid var(--rule); border-radius:8px; background:var(--bench); padding:7px 10px; font-size:14px}
+.err{color:var(--red); font-weight:600}
+
+/* znaki korekty w rysunku */
+.qa-ov rect{fill:none; stroke:var(--red); stroke-width:2; stroke-dasharray:5 3}
+.qa-ov circle{fill:var(--red)}
+.qa-ov text{fill:#fff; font:700 11px var(--f)}
+body.no-marks .qa-ov{display:none}
+
+/* szerokość telefonu: rysunek tak szeroki jak w aplikacji na telefonie */
+body.phone .frames{grid-template-columns:repeat(auto-fill, 340px)}
+body.phone .frame{width:340px}
+@media (max-width:600px){ .rate{margin-left:0} h1{font-size:22px} }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <div class="head">
+      <h1>Przegląd ilustracji</h1>
+      <p>Każda klatka osobno. Na czerwono: tekst poza kształtem, nachodzące podpisy, zasłonięta postać lub dłoń, rysunek poza kadrem.</p>
+    </div>
+    <div class="ctl">
+      <span class="seg" role="group" aria-label="Motyw"><button type="button" data-theme="light">Jasny</button><button type="button" data-theme="dark">Ciemny</button></span>
+      <span class="seg" role="group" aria-label="Szerokość"><button type="button" data-w="full">Pełna</button><button type="button" data-w="phone">Telefon</button></span>
+      <label><input type="checkbox" id="marks" checked> Znaki błędów</label>
+      <label title="Wyłącza dopasowanie tekstu i rozsuwanie podpisów z js/illus.js"><input type="checkbox" id="raw"> Bez automatycznych poprawek</label>
+      <label><input type="checkbox" id="withAuto"> Dołącz błędy automatyczne</label>
+      <button type="button" class="copy" id="copy">Kopiuj listę do poprawy</button>
+      <span id="status" aria-live="polite"></span>
+    </div>
+    <nav class="tally" id="tally" aria-label="Etapy i liczba błędów"></nav>
+  </div>
+</header>
+<main id="list"><p>Ładowanie ilustracji…</p></main>
+<pre id="qa-report" hidden></pre>
+
+<script>
+/* Atrapa silnika: zbiera ilustracje i nazwy kroków */
+window.BUDOWA = { _il: [], _st: {}, _stages: {},
+  addIllus: function(k, d){ this._il.push([k, d]); },
+  addStage: function(def){ this._stages[def.id] = def.title; (def.steps || []).forEach(s => { this._st[def.id + '/' + s.id] = s.title; }); },
+  addWidget: function(){} };
+</script>
+<script src="../js/illus.js"></script>
+<script>ILLUS.auto = !/[?&]surowe=1/.test(location.search);</script>
+<script src="../js/illus/00-finanse.js"></script>
+<script src="../js/illus/01-dzialka.js"></script>
+<script src="../js/illus/02-projekt.js"></script>
+<script src="../js/illus/03-przygotowanie.js"></script>
+<script src="../js/illus/04-fundamenty.js"></script>
+<script src="../js/illus/05-sciany.js"></script>
+<script src="../js/illus/06-dach.js"></script>
+<script src="../js/illus/07-okna.js"></script>
+<script src="../js/illus/08-elektryka.js"></script>
+<script src="../js/illus/09-woda-ogrzewanie.js"></script>
+<script src="../js/illus/10-rekuperacja-pv.js"></script>
+<script src="../js/illus/11-tynki-wylewki.js"></script>
+<script src="../js/illus/12-elewacja.js"></script>
+<script src="../js/illus/13-wykonczenie.js"></script>
+<script src="../js/illus/14-umeblowanie.js"></script>
+<script src="../js/illus/15-ogrod.js"></script>
+<script src="../js/illus/16-odbiory.js"></script>
+<script src="../content/00-finanse.js"></script>
+<script src="../content/01-dzialka.js"></script>
+<script src="../content/02-projekt.js"></script>
+<script src="../content/03-przygotowanie.js"></script>
+<script src="../content/04-fundamenty.js"></script>
+<script src="../content/05-sciany.js"></script>
+<script src="../content/06-dach.js"></script>
+<script src="../content/07-okna.js"></script>
+<script src="../content/08-elektryka.js"></script>
+<script src="../content/09-woda-ogrzewanie.js"></script>
+<script src="../content/10-rekuperacja-pv.js"></script>
+<script src="../content/11-tynki-wylewki.js"></script>
+<script src="../content/12-elewacja.js"></script>
+<script src="../content/13-wykonczenie.js"></script>
+<script src="../content/14-umeblowanie.js"></script>
+<script src="../content/15-ogrod.js"></script>
+<script src="../content/16-odbiory.js"></script>
+<script>
+(function(){
+'use strict';
+const $ = s => document.querySelector(s), $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+const Q = new URLSearchParams(location.search), KEY = 'budowa-przeglad-ilustracji';
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
+let notes = {};
+try { notes = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch(e){ notes = {}; }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(notes)); } catch(e){} };
+const plural = n => n === 1 ? 'błąd' : (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)) ? 'błędy' : 'błędów';
+
+/* ---------- kontrole w przeglądarce ---------- */
+function check(svg){
+  const vb = svg.viewBox.baseVal, R = svg.getBoundingClientRect(), k = vb.width / R.width, out = [];
+  const B = el => { const b = el.getBoundingClientRect(); return {x:(b.left-R.left)*k + vb.x, y:(b.top-R.top)*k + vb.y, w:b.width*k, h:b.height*k}; };
+  const area = b => b.w*b.h;
+  const inter = (p,q) => { const x = Math.max(p.x,q.x), y = Math.max(p.y,q.y), w = Math.min(p.x+p.w, q.x+q.w) - x, h = Math.min(p.y+p.h, q.y+q.h) - y; return w > 1.5 && h > 1.5 ? {x,y,w,h} : null; };
+  const nm = el => '„' + el.textContent.trim().slice(0, 38) + '”';
+  const add = (b, msg) => { if (!out.some(o => o.msg === msg)) out.push({b, msg}); };
+
+  const pills = $$('.il-pill', svg).map(g => ({el:g, t:g.querySelector('text'), b:B(g.querySelector('rect'))}));
+  const texts = $$('text', svg).filter(t => !t.closest('.il-pill, .qa-ov') && t.textContent.trim());
+
+  // 1. tekst poza swoim kształtem (pigułka; pasek, tabliczka lub koło, na którym stoi napis)
+  pills.forEach(p => { const tb = B(p.t); if (tb.w && (tb.x < p.b.x - 1 || tb.x + tb.w > p.b.x + p.b.w + 1)) add(tb, `Tekst ${nm(p.t)} wychodzi poza pigułkę`); });
+  const shapes = $$('rect.il-m, path.il-m, circle.il-m, ellipse.il-m, path.ft, path.fl, path.fr, .il-stop circle, .il-mk circle', svg)
+    .filter(e => !e.closest('.il-pill') && !e.classList.contains('il-panel')).map(e => ({e, b:B(e)}));
+  texts.forEach(t => {
+    if (t.classList.contains('il-out')) return;
+    const tb = B(t); if (!tb.w) return;
+    const cx = tb.x + tb.w/2, cy = tb.y + tb.h/2; let best = null;
+    shapes.forEach(s => { const b = s.b;
+      if (cx < b.x || cx > b.x + b.w || cy < b.y || cy > b.y + b.h || area(b) > 8*area(tb)) return;
+      if (!(s.e.compareDocumentPosition(t) & Node.DOCUMENT_POSITION_FOLLOWING)) return;
+      if (!best || area(b) < area(best.b)) best = s; });
+    if (!best) return;
+    const b = best.b, o = Math.max(b.x - tb.x, tb.x + tb.w - b.x - b.w, b.y - tb.y - 3, tb.y + tb.h - b.y - b.h - 3);
+    if (o > 1.5) add(tb, `Tekst ${nm(t)} wychodzi poza swój kształt o ${Math.round(o)} px`);
+  });
+
+  // 2. podpisy nachodzą na siebie (pigułki i wolne napisy)
+  const labels = pills.map(p => ({el:p.el, b:p.b, n:nm(p.t)})).concat(texts.map(t => ({el:t, b:B(t), n:nm(t)}))).filter(l => l.b.w);
+  for (let i = 0; i < labels.length; i++) for (let j = i+1; j < labels.length; j++){
+    const a = labels[i], c = labels[j]; if (a.el.contains(c.el) || c.el.contains(a.el)) continue;
+    const x = inter(a.b, c.b); if (x) add(x, `Podpisy ${a.n} i ${c.n} nachodzą na siebie`);
+  }
+
+  // 3. podpis zasłania postać, głowę lub dłoń ([data-guard] z js/illus.js)
+  const parts = [];
+  $$('[data-guard]', svg).forEach(g => $$('circle, rect, path', g).forEach(e => {
+    if (e.closest('.il-pill')) return;
+    const c = e.getAttribute('class') || '', r = +e.getAttribute('r') || 0;
+    const what = g.dataset.guard === 'dłoń' ? 'dłoń' : /il-hair|il-helmet/.test(c) || (e.tagName === 'circle' && /il-skin/.test(c) && r > 8) ? 'głowę' : e.tagName === 'circle' && /il-skin/.test(c) ? 'dłoń' : 'postać';
+    parts.push({g, b:B(e), what});
+  }));
+  const RANK = {'głowę':3, 'dłoń':2, 'postać':1};
+  labels.forEach(l => { const hits = new Map();   // na postać jeden wpis: najważniejsza zasłonięta część
+    parts.forEach(p => { if (p.g.contains(l.el)) return; const x = inter(l.b, p.b), h = hits.get(p.g);
+      if (x && (!h || RANK[p.what] > RANK[h.what])) hits.set(p.g, {x, what:p.what}); });
+    hits.forEach(h => add(h.x, `Podpis ${l.n} zasłania ${h.what}`)); });
+
+  // 4. coś wychodzi poza rysunek (jeden wpis na grupę najwyższego poziomu)
+  const seen = new Set();
+  $$('path, rect, circle, ellipse, text, line, polygon, polyline', svg).forEach(e => {
+    if (e.closest('.qa-ov') || e.classList.contains('il-sh')) return;
+    const b = B(e); if (!b.w && !b.h) return;
+    const o = Math.max(vb.x - b.x, vb.y - b.y, b.x + b.w - vb.x - vb.width, b.y + b.h - vb.y - vb.height);
+    if (o <= 2) return;
+    let top = e; while (top.parentNode && top.parentNode !== svg) top = top.parentNode;
+    if (seen.has(top)) return; seen.add(top);
+    const x = Math.max(vb.x, b.x), y = Math.max(vb.y, b.y);
+    add({x, y, w:Math.max(6, Math.min(vb.x + vb.width, b.x + b.w) - x), h:Math.max(6, Math.min(vb.y + vb.height, b.y + b.h) - y)},
+      `${e.tagName === 'text' ? 'Tekst ' + nm(e) : 'Rysunek'} wychodzi poza kadr o ${Math.round(o)} px`);
+  });
+
+  // znaki korekty
+  const old = svg.querySelector('.qa-ov'); if (old) old.remove();
+  if (out.length) svg.insertAdjacentHTML('beforeend', '<g class="qa-ov" aria-hidden="true">' + out.map((o,i) => {
+    const b = o.b, cx = Math.max(vb.x + 9, b.x), cy = Math.max(vb.y + 9, b.y);
+    return `<rect x="${b.x.toFixed(1)}" y="${b.y.toFixed(1)}" width="${b.w.toFixed(1)}" height="${b.h.toFixed(1)}" rx="2"/><circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="8"/><text x="${cx.toFixed(1)}" y="${(cy+4).toFixed(1)}" text-anchor="middle">${i+1}</text>`;
+  }).join('') + '</g>');
+  return out.map(o => o.msg);
+}
+
+/* ---------- budowa listy ---------- */
+const items = [], byStage = {};
+function build(){
+  const list = $('#list'); list.innerHTML = '';
+  BUDOWA._il.forEach(([id, def]) => {
+    const st = id.split('/')[0];
+    let d = null, error = '';
+    try { d = ILLUS.resolve(def); } catch(e){ error = e.message; }
+    if (!byStage[st]){
+      const sec = document.createElement('section'); sec.className = 'stage'; sec.dataset.stage = st;
+      sec.innerHTML = `<h2>${esc(st.slice(0,2))} ${esc(BUDOWA._stages[st] || st.slice(3))} <span></span></h2>`;
+      list.appendChild(sec); byStage[st] = {sec, items:[]};
+    }
+    const n = notes[id] || {}, art = document.createElement('article');
+    art.className = 'ill'; art.dataset.id = id;
+    art.innerHTML = `<header><h3>${esc(BUDOWA._st[id] || id.split('/')[1])}</h3><code>${esc(id)}</code><span class="badge"></span>
+      <span class="rate" role="group" aria-label="Ocena"><button type="button" data-r="ok" aria-label="Dobra" title="Dobra">✓</button><button type="button" data-r="bad" aria-label="Do poprawy" title="Do poprawy">✗</button></span></header>
+      <div class="frames"></div>
+      <textarea placeholder="Komentarz: co poprawić" aria-label="Komentarz do ${esc(id)}">${esc(n.c || '')}</textarea>`;
+    byStage[st].sec.appendChild(art);
+    const it = {id, st, art, errs:[]};
+    items.push(it); byStage[st].items.push(it);
+    if (error || !d){ it.errs.push('Rysunek nie działa: ' + (error || 'pusta definicja')); art.querySelector('.frames').innerHTML = `<p class="err">${esc(it.errs[0])}</p>`; }
+    else d.frames.forEach((f,i) => {
+      const box = document.createElement('div'); box.className = 'frame';
+      box.innerHTML = '<figure></figure><ol class="issues"></ol>';
+      art.querySelector('.frames').appendChild(box);
+      const cap = (d.frames.length > 1 ? `Klatka ${i+1}/${d.frames.length}: ` : '') + (f.caption || d.caption || '');
+      try { ILLUS.mount(box.firstChild, {frames:[{caption:cap, svg:f.svg}]}, {still:true}); }
+      catch(e){ box.innerHTML = `<p class="err">Rysunek nie działa: ${esc(e.message)}</p>`; it.errs.push('Rysunek nie działa: ' + e.message); }
+    });
+    rate(it, n.r);
+    art.querySelectorAll('.rate button').forEach(b => b.onclick = () => { const r = (notes[id] || {}).r === b.dataset.r ? null : b.dataset.r; notes[id] = Object.assign(notes[id] || {}, {r}); save(); rate(it, r); });
+    art.querySelector('textarea').oninput = e => { notes[id] = Object.assign(notes[id] || {}, {c:e.target.value}); save(); };
+  });
+}
+function rate(it, r){
+  it.art.classList.toggle('is-ok', r === 'ok'); it.art.classList.toggle('is-bad', r === 'bad');
+  it.art.querySelectorAll('.rate button').forEach(b => b.setAttribute('aria-pressed', b.dataset.r === r));
+}
+function checkAll(){
+  items.forEach(it => {
+    it.errs = it.errs.filter(e => /^Rysunek nie działa/.test(e));
+    $$('.frame', it.art).forEach((box, i, all) => {
+      const svg = box.querySelector('.il-fr svg'), ol = box.querySelector('.issues'); if (!svg) return;
+      const e = check(svg);
+      ol.innerHTML = e.length ? e.map((m,j) => `<li><i>${j+1}</i>${esc(m)}</li>`).join('') : '<li class="none">Bez błędów</li>';
+      e.forEach(m => it.errs.push((all.length > 1 ? `klatka ${i+1}: ` : '') + m));
+    });
+    const b = it.art.querySelector('.badge'), n = it.errs.length;
+    b.textContent = n ? n + ' ' + plural(n) : 'bez błędów'; b.classList.toggle('zero', !n);
+  });
+  tally();
+}
+let filter = Q.get('etap') || 'all';
+function tally(){
+  const nav = $('#tally'), rows = Object.keys(byStage).map(st => [st, byStage[st].items.reduce((n, it) => n + it.errs.length, 0)]);
+  const tot = rows.reduce((n, r) => n + r[1], 0);
+  nav.innerHTML = [['all', tot, 'Wszystkie']].concat(rows).map(r => `<button type="button" data-st="${r[0]}" aria-pressed="${filter === r[0]}">${esc(r[2] || r[0].slice(0,2) + ' ' + (BUDOWA._stages[r[0]] || r[0].slice(3)))} <b class="${r[1] ? '' : 'zero'}">${r[1]}</b></button>`).join('');
+  nav.querySelectorAll('button').forEach(b => b.onclick = () => { filter = b.dataset.st; apply(); tally(); });
+  rows.forEach(r => { byStage[r[0]].sec.querySelector('h2 span').textContent = r[1] ? `${r[1]} ${plural(r[1])}` : 'bez błędów'; });
+  $('#qa-report').textContent = JSON.stringify({auto: ILLUS.auto, total: tot, stages: Object.fromEntries(rows),
+    items: Object.fromEntries(items.filter(it => it.errs.length).map(it => [it.id, it.errs]))}, null, 1);
+  document.documentElement.dataset.qaDone = '1';
+}
+function apply(){
+  Object.keys(byStage).forEach(st => { byStage[st].sec.hidden = filter !== 'all' && filter !== st; });
+  const one = Q.get('id'); if (one) items.forEach(it => { it.art.hidden = it.id !== one; });   // ?id=etap/krok: jedna ilustracja
+  try { history.replaceState(null, '', '?' + new URLSearchParams(Object.assign(Object.fromEntries(Q), {etap: filter})).toString()); } catch(e){}
+}
+
+/* ---------- przełączniki ---------- */
+function theme(t){
+  document.documentElement.dataset.theme = t;
+  try { localStorage.setItem('budowa-przeglad-motyw', t); } catch(e){}
+  $$('[data-theme]').forEach(b => { if (b.tagName === 'BUTTON') b.setAttribute('aria-pressed', b.dataset.theme === t); });
+}
+function width(w){ document.body.classList.toggle('phone', w === 'phone'); $$('[data-w]').forEach(b => b.setAttribute('aria-pressed', b.dataset.w === w)); }
+$$('button[data-theme]').forEach(b => b.onclick = () => theme(b.dataset.theme));
+$$('[data-w]').forEach(b => b.onclick = () => width(b.dataset.w));
+$('#marks').onchange = e => document.body.classList.toggle('no-marks', !e.target.checked);
+$('#raw').checked = !ILLUS.auto;
+$('#raw').onchange = e => { const p = new URLSearchParams(location.search); if (e.target.checked) p.set('surowe', '1'); else p.delete('surowe'); location.search = p.toString(); };
+$('#copy').onclick = () => {
+  const withAuto = $('#withAuto').checked, lines = [];
+  items.forEach(it => {
+    const n = notes[it.id] || {}, c = (n.c || '').trim().replace(/\s*\n\s*/g, '; ');
+    if (n.r === 'bad' || c) lines.push(`${it.id}: ${c || 'do poprawy'}`);
+    if (withAuto) it.errs.forEach(e => lines.push(`${it.id}: [auto] ${e}`));
+  });
+  const txt = lines.join('\n'), st = $('#status');
+  if (!txt){ st.textContent = 'Nic do skopiowania: oznacz ilustracje ✗ albo dopisz komentarz.'; return; }
+  const done = () => { st.textContent = `Skopiowano ${lines.length} ${lines.length === 1 ? 'linię' : 'linii'}.`; };
+  const fallback = () => { const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); done(); } catch(e){ st.textContent = 'Kopiowanie zablokowane: zaznacz tekst ręcznie.'; } ta.remove(); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, fallback); else fallback();
+};
+theme(document.documentElement.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+width(Q.get('telefon') === '1' ? 'phone' : 'full');
+
+/* start: najpierw font (szerokości napisów), potem montaż i kontrole */
+const fonts = document.fonts ? Promise.race([Promise.all(['500 14px Onest', '600 15px Onest', '700 14px Onest'].map(f => document.fonts.load(f))), new Promise(r => setTimeout(r, 2500))]).catch(() => {}) : Promise.resolve();
+fonts.then(() => { build(); requestAnimationFrame(() => setTimeout(() => { ILLUS.fit(document.getElementById('list')); checkAll(); apply(); }, 30)); });
+})();
+</script>
+</body>
+</html>

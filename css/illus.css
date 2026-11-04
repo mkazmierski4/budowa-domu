@@ -69,6 +69,15 @@
 .il .p-kan{stroke:#C8733F} .il .p-woda{stroke:var(--il-woda)} .il .p-cieplo{stroke:var(--il-bad)} .il .p-rura{stroke:var(--il-blacha)}
 .il .il-cab{fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round}
 .il .il-ghost{opacity:.3}
+.il .c-ok{color:var(--il-ok)}
+.il .il-dk{fill:color-mix(in srgb, currentColor 84%, #000)}
+.il .il-chk{fill:none; stroke:#fff; stroke-width:4; stroke-linecap:round; stroke-linejoin:round}
+.il .il-ring{fill:none; stroke:var(--il-kmb); stroke-width:4}
+.il .il-zone{fill:color-mix(in srgb, var(--vz-accent) 8%, transparent); stroke:var(--il-line); stroke-width:2.5; stroke-dasharray:6 5}
+.il .il-boom{fill:none; stroke:var(--il-maszyna); stroke-width:9; stroke-linecap:round; stroke-linejoin:round}
+.il .il-mast{fill:none; stroke:var(--il-maszyna); stroke-width:3; stroke-linecap:round; stroke-linejoin:round}
+.il .il-panel{fill:var(--vz-sheet); fill-opacity:.55; stroke:var(--vz-rule-2)}
+.il .il-lead{fill:none; stroke:var(--vz-ink-2); stroke-width:1.5; stroke-linecap:round}
 
 /* postać i dłoń */
 .il .il-skin{fill:var(--il-skin); stroke:var(--il-skin-d); stroke-width:1}

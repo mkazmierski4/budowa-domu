@@ -70,10 +70,13 @@ BUDOWA.addIllus('02-projekt/droga-do-pozwolenia', function(a){
   });
 
   BUDOWA.addIllus('02-projekt/pozwolenie-czy-zgloszenie', function(a){
-    const plot = (x,r,cx) => a.rect(x,60,190,130,'trawa',{r:8}) + house(a,x+70,150,1) + `<circle cx="${cx}" cy="125" r="${r}" style="stroke:var(--il-line);stroke-width:2.5;stroke-dasharray:5 5;fill:none"/>`;
-    const s = plot(30,48,125) + plot(260,70,355) + a.ok(125,36,16) + a.bad(355,36,16) +
-      a.pill(125,214,'Zgłoszenie',{acc:1}) + a.num(125,250,'21 dni') + a.pill(125,286,'oddziaływanie na działce',{k:'z'}) +
-      a.pill(355,214,'Pozwolenie',{acc:1}) + a.num(355,250,'do 65 dni') + a.pill(355,286,'oddziaływanie poza granicą',{k:'p'});
+    // dwa pola obok siebie: ta sama działka z domem, różny zasięg obszaru oddziaływania (przerywana elipsa na gruncie)
+    const plot = (rx,k) => { const P = a.iso(111,124,.55);
+      return P.box(-120,-90,-6,240,180,6,'trawa') + `<ellipse cx="111" cy="130" rx="${rx}" ry="${rx*.56}" class="il-zone" data-k="${k}"/>` + a.house(111,136,.5); };
+    const s = a.layout.compare(
+      plot(64,'z') + a.num(111,212,'21 dni') + a.text(111,240,'zasięg w granicy działki',{s:1,a:'middle'}),
+      plot(108,'p') + a.num(111,212,'do 65 dni') + a.text(111,240,'zasięg wychodzi za granicę',{s:1,a:'middle'}),
+      ['Zgłoszenie', 'Pozwolenie']);
     return { caption: 'Gdy obszar oddziaływania mieści się na twojej działce, zgłoszenie z projektem oszczędza 1–2 miesiące. Wątpliwość = pozwolenie.', svg: a.svg(s,480,320,'Obszar oddziaływania w granicach działki (zgłoszenie) i poza nią (pozwolenie)') };
   });
 
@@ -86,10 +89,13 @@ BUDOWA.addIllus('02-projekt/droga-do-pozwolenia', function(a){
   });
 
   BUDOWA.addIllus('02-projekt/terminy-i-uprawomocnienie', function(a){
-    const seg = (x,y,w,mat,t) => a.rect(x,y,w,34,mat,{r:8}) + a.text(x+w/2,y+22,t,{a:'middle',b:1});
-    const s = a.text(40,50,'POZWOLENIE',{b:1}) + seg(40,62,250,'beton','urząd: do 65 dni') + seg(296,62,100,'zwir','odwołanie 14 dni') + a.ok(430,79,14) +
-      a.text(40,140,'ZGŁOSZENIE',{b:1}) + seg(40,152,140,'beton','21 dni') + a.ok(214,169,14) +
-      a.icon('kalendarz',60,250,1.6) + a.pill(250,236,'Start po decyzji ostatecznej',{k:'s',acc:1}) + a.num(250,276,'ok. 1,5–4 mies.',{k:'t'});
+    // jedna skala dni dla obu osi (360 px = 79 dni), tekst w paskach dopasowuje się sam (a.label)
+    const D = 360/79;
+    const s = a.layout.timeline([{t:'urząd: do 65 dni', len:65, k:'u'}, {t:'14 dni', len:14, k:'o'}], {x:40, y:84, w:79*D, h:40, title:'Pozwolenie', end:'ok'}) +
+      a.pill(366,40,'na odwołania',{k:'o'}) + a.line([[366,54],[366,82]],'il-ptr') +
+      a.layout.timeline([{t:'21 dni', len:21, k:'z'}], {x:40, y:184, w:21*D, h:40, title:'Zgłoszenie', end:'ok'}) +
+      a.dim(170,204,400,204,'1–2 mies. krócej') +
+      a.icon('kalendarz',116,276,1.6) + a.pill(150,276,'Start po decyzji ostatecznej',{k:'s',acc:1,a:'start'});
     return { caption: 'Pozwolenie: do 65 dni + 14 dni na uprawomocnienie. Zgłoszenie: 21 dni.', svg: a.svg(s,480,320,'Osie czasu: pozwolenie 65 + 14 dni, zgłoszenie 21 dni') };
   });
 

@@ -81,9 +81,11 @@ BUDOWA.addIllus('01-dzialka/umowa-przedwstepna', function(a){
 });
 
 BUDOWA.addIllus('01-dzialka/akt-notarialny', function(a){
-  const f1 = a.rect(40,200,400,16,'drewno',{r:4}) + a.rect(60,216,12,70,'drewno',{r:2}) + a.rect(408,216,12,70,'drewno',{r:2}) +
-    a.person(110,200,{s:.85,kask:false,arms:[10,60]}) + a.person(240,200,{s:.85,kask:false,arms:[-10,20]}) + a.person(370,200,{s:.85,kask:false,flip:1,arms:[10,60]}) +
-    a.fresh(a.doc(210,160,60,46,{stamp:1}),{d:300}) + a.pill(240,50,'Akt notarialny',{k:'a'}) + a.num(240,92,'1–2 godz.') + a.pill(110,128,'Sprzedający',{a:'middle'}) + a.pill(370,128,'Ty',{a:'middle'});
+  // kancelaria: ściana z oknem i zegarem, ludzie siedzą PRZY stole (a.layout.table pilnuje skali)
+  const clock = '<circle cx="240" cy="72" r="19" class="il-m c-papier"/><path class="il-ln" d="M240 72V60M240 72L249 77" style="stroke-width:2.5"/>';
+  const f1 = a.rect(20,24,440,262,'papier',{r:10,cls:'il-panel'}) + a.window(48,58,72,66) + clock + a.num(316,72,'1–2 godz.') +
+    a.layout.table([{at:'l', t:'Sprzedający', k:'s'}, {at:'c', t:'Notariusz', k:'n', st:'--il-shirt:var(--il-pants)'}, {at:'r', t:'Ty', k:'t'}],
+      a.fresh(a.doc(-44,-26,34,26,{stamp:1,lines:2}), {d:300}) + '<path class="il-ln" d="M24 -2L42 -14" style="stroke-width:3"/>');
   const row = (y,t,k) => a.rect(280,y,170,36,'papier',{r:8,k:k}) + a.pill(365,y+18,t);
   const f2 = a.rect(40,112,200,140,'piasek',{r:10}) + a.rect(70,170,140,66,'trawa',{r:6}) + a.pill(140,140,'Cena działki',{k:'c'}) + a.text(140,274,'190–240 tys. zł',{s:1,a:'middle'}) +
     row(112,'PCC 2%','p') + row(160,'Taksa notarialna','t') + row(208,'Wpis do księgi','k') + a.num(366,76,'ok. 6,5–8,5 tys. zł') + a.text(366,274,'koszty zakupu',{s:1,a:'middle'});
