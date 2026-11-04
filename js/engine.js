@@ -9,11 +9,11 @@
   var TOTAL = 2300000;
   // Podział budżetu z docs/DECYZJE.md. Rezerwa jest pokazywana osobno i etapy jej nie wydają.
   var CATS = [
-    { id:'dzialka', name:'Działka i formalności', plan:330000 },
-    { id:'surowy',  name:'Stan surowy',           plan:680000 },
-    { id:'instal',  name:'Instalacje',            plan:270000 },
-    { id:'wykoncz', name:'Wykończenie',           plan:540000 },
-    { id:'ogrod',   name:'Ogród',                 plan:250000 },
+    { id:'dzialka', name:'Działka i formalności', plan:315000 },
+    { id:'surowy',  name:'Stan surowy',           plan:685000 },
+    { id:'instal',  name:'Instalacje',            plan:245000 },
+    { id:'wykoncz', name:'Wykończenie',           plan:545000 },
+    { id:'ogrod',   name:'Ogród',                 plan:280000 },
     { id:'rezerwa', name:'Rezerwa',               plan:230000, reserve:true }
   ];
   var RESERVE = CATS.filter(function(c){ return c.reserve; }).reduce(function(a, c){ return a + c.plan; }, 0);

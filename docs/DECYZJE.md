@@ -4,7 +4,7 @@ Każda sesja z treścią dopisuje tu wybrane rozwiązania (jedna linia), żeby k
 Format: `etap | temat | wybór | szacowany koszt`
 
 - 00 | budżet całkowity | 2 300 000 zł (wariant A, decyzja właściciela 2026-11-03: dom jak na zdjęciu, z basenem i rezerwą 10%) | —
-- 00 | podział budżetu (plan od 2026-11-03) | działka i formalności 330 tys. · stan surowy 680 tys. · instalacje 270 tys. · wykończenie (z elewacją i meblami) 540 tys. · ogród 250 tys. · **rezerwa 230 tys. (10%)** | razem 2 300 000 zł; limity kategorii razem 2 070 000 zł; etapy planują w limitach kategorii, rezerwy nie wydają
+- 00 | podział budżetu (plan, korekta 2026-11-04 po etapach 00–16) | działka i formalności 315 tys. · stan surowy 685 tys. · instalacje 245 tys. · wykończenie (z elewacją i meblami) 545 tys. · ogród 280 tys. (pergola na 2. rok) · **rezerwa 230 tys. (10%)** | razem 2 300 000 zł; limity kategorii razem 2 070 000 zł dopasowane do realnych kosztów etapów; rezerwa nietknięta
 - 01 | działka | ok. 1200 m², prostokąt ok. 30 × 40 m (front min. 27 m), obrzeża małego miasta 5–10 km, MPZP z przeznaczeniem MN, prąd i woda w drodze, wjazd od północy (ogród, taras i basen od południa), grunt nośny pod ławy wg opinii geotechnicznej | działka 190–240 tys. zł (śr. 215 tys.)
 - 01 | koszty zakupu i przygotowania | umowa przedwstępna notarialna 1–1,6 tys. · akt: PCC 2% + taksa + KW ok. 6,5–8,5 tys. · geotechnika 1,8–3,5 tys. · mapa do celów projektowych 2–3,5 tys. · wypis MPZP ok. 0,1 tys. | etap 01 razem ok. 202–257 tys. zł (śr. ok. 229 tys.)
 - F1 | budżet w silniku | koszt kroku = `cost` kroku + `cost` wybranej opcji; opcja to dopłata/oszczędność względem kosztów kroków (może być ujemna); pasek: ciemny = kroki odebrane, jasny = zaplanowane (środek widełek) | —
