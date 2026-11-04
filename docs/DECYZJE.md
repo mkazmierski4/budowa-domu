@@ -11,6 +11,7 @@ Format: `etap | temat | wybór | szacowany koszt`
 - F1 | wizualizacja a postęp | silnik woła `VIZ.setStage(nr)` przy zmianie etapu; po odebraniu wszystkich kroków etapu `VIZ.setStage(nr + 1)` (dom „dorasta” do kolejnego etapu) | —
 - F1 | układ strony (poprawka) | jedno przewijanie całej strony; pasek budżetu sticky u góry, stopka kroku sticky u dołu; lista etapów i panel domu sticky pod paskiem tylko gdy mieszczą się w wysokości ekranu (klasa `.stick`); po zmianie kroku płynny powrót do początku karty | —
 - F1 | rezerwa w pasku budżetu | 6. kategoria `rezerwa` 230 tys. (`reserve:true` w `CATS`), kreskowany segment, etapy jej nie wydają; „Zostaje” liczone od 2,3 mln, czerwone gdy plan przekroczy 2,07 mln | —
+- F1 | długie słowa na telefonie (poprawka 2026-11-04) | tytuły, pytania, karty i listy łamią długie słowa (`overflow-wrap:anywhere`, `hyphens:auto`); przyczyną poziomego przewijania był h1 „Membrana wysokoparoprzepuszczalna” | —
 - F0c | geometria domu w wizualizacji | bryła 13 × 9,5 m + garaż 6,5 × 7 m (dach dwuspadowy prostopadły), dach 40°, ścianka kolankowa 1 m, posadzka ±0,00 = teren +0,35–0,40 | —
 - F0c | przegroda ściany (przekrój) | pustak ceramiczny 25 + styropian grafitowy 20 (wełna jako wariant), cokół i fundament XPS 15, ściana fund. z bloczków 25, ława 60 × 35 (4Ø12, strz. Ø6), spód ławy −1,40 | —
 - F0c | podłoga na gruncie | podkład 10 + papa + EPS 100 15 cm + jastrych 6,5 z podłogówką | —

@@ -45,11 +45,12 @@ Pliki etapów (wpięte w `index.html`; brakujące silnik pomija). Treść: `cont
 ## Faza 5 — Ilustracje kroków (1 sesja = 1 etap, pliki `js/illus/NN-slug.js`, tagi już są w `index.html`)
 - ✅ F5a: system ilustracji `js/illus.js` + `css/illus.css`, wpięcie w silnik (`BUDOWA.addIllus`), wzorce: `04-fundamenty` (zbrojenie ław 3 klatki, izolacje, XPS), `02-projekt` (droga do pozwolenia) → `prompts/F5a-ilustracje.md`
 - ✅ F5b: zmiana stylu na „instrukcję obrazkową” (aksonometria, postacie, kolory, ruch), przerobione 3 wzorce i zasady w `CLAUDE.md`
-- ⬜ 00 Finanse (np. podział budżetu, transze kredytu na osi czasu)
-- ⬜ 01 Działka
-- 🔄 02 Projekt i pozwolenie (gotowe: `droga-do-pozwolenia`)
-- ⬜ 03 Przygotowanie budowy
+- ✅ 00 Finanse (10 ilustracji, 4 sekwencje; infografiki; zrzuty sprawdzone w ciemnym motywie)
+- ✅ 01 Działka (11 ilustracji, 2 sekwencje 2-klatkowe; infografiki; zrzuty sprawdzone w ciemnym motywie)
+- ✅ 02 Projekt i pozwolenie (13 ilustracji, 1 sekwencja 3-klatkowa; infografiki)
+- ✅ 03 Przygotowanie budowy (12 ilustracji, 5 sekwencji; bez zrzutów ekranu — sprawdzone tylko wykonaniem w Node)
 - 🔄 04 Fundamenty (gotowe: `zbrojenie-law`, `izolacja-przeciwwilgociowa`, `ocieplenie-fundamentu`)
-- ⬜ 05 Ściany i stropy
+- ✅ 04 Fundamenty (15 ilustracji: 3 wzorce + 12 nowych, 8 sekwencji w sumie; zrzut w jasnym motywie, bez ciemnego i telefonu)
+- ✅ 05 Ściany i stropy (14 ilustracji, 12 sekwencji; `js/illus/05-sciany.js`)
 - ⬜ 06 Dach
 - ⬜ 07–16: po napisaniu treści etapu (F3)
