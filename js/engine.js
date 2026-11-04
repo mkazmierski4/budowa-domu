@@ -196,7 +196,7 @@
       $('.f', seg).style.width = fw+'%';
       $('.c', seg).style.left = fw+'%';
       $('.c', seg).style.width = cw+'%';
-      seg.classList.toggle('over', x.d+x.p > c.plan);
+      seg.classList.toggle('over', x.d+x.p > c.plan*1.01); // do 1% ponad limit to zaokrąglenia widełek, nie alarm
       $('[data-cat="'+c.id+'"]', seg).textContent = k(x.d)+' / '+k(c.plan)+' tys.';
       seg.title = c.name+': wydano do tego kroku '+zl(x.d)+', plan całej kategorii '+zl(x.d+x.p)+' z limitu '+zl(c.plan)+(x.lo||x.hi ? ' (widełki '+money(x.lo, x.hi)+')' : '');
     });
