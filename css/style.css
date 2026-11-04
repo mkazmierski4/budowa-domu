@@ -98,7 +98,8 @@ h1,h2,h3,.q,.dq,.lead,.card-n,.ans,.chk,.acc-b,.stp,.stg .t{overflow-wrap:anywhe
 .trk i{position:absolute;top:0;bottom:0;left:0;width:0;transition:width .6s var(--spring),left .6s var(--spring)}
 .trk .f{background:var(--wood)}
 .trk .c{background:color-mix(in srgb,var(--wood) 32%,transparent)}
-.bar-key{display:flex;gap:14px;margin-top:6px;font-size:12px;color:var(--ink-3)}
+.bar-key{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:6px;font-size:12px;color:var(--ink-3)}
+.bar-key span{white-space:nowrap}
 .bar-key i{display:inline-block;width:14px;height:8px;border-radius:2px;margin-right:6px;vertical-align:middle}
 .bar-key .k-f{background:var(--wood)}
 .bar-key .k-c{background:color-mix(in srgb,var(--wood) 32%,transparent)}
