@@ -10,7 +10,7 @@ BUDOWA.addWidget('kalkulator-ogrzewania', function(el, api){
     stary:{ t: 'Starszy dom (przed 2014)', w: 70, q: 110 }
   };
   var SIZES = [4, 6, 8, 10, 12, 14, 16];
-  var s = { pow:190, std:'wt', os:4, scop:3.5, cena:1.10, pv:true, kwp:3.6 };
+  var s = { pow:190, std:'wt', os:4, scop:3.5, cena:1.10, pv:true, kwp:6.4 };
   var sv = api.get(); if (sv) for (var x in s) if (sv[x] !== undefined) s[x] = sv[x];
   if (!STD[s.std]) s.std = 'wt';
 
@@ -32,7 +32,7 @@ BUDOWA.addWidget('kalkulator-ogrzewania', function(el, api){
       '<div class="wg-row"><span class="wg-l">Sprawność sezonowa pompy (SCOP)</span>' + chips('scop', [3, 3.5, 4], function(p){ return String(p).replace('.',','); }) + '</div>' +
       inp('koCena', 'Cena prądu z dystrybucją', s.cena, 'zł/kWh') +
       '<div class="tgl"><label class="tg"><input type="checkbox" id="koPv"'+(s.pv?' checked':'')+'><span class="sw"></span>Fotowoltaika (etap 10)</label></div>' +
-      '<div id="koPvBox"'+(s.pv?'':' hidden')+'>' + inp('koKwp', 'Moc PV (8 modułów ≈ 3,6 kWp)', s.kwp, 'kWp') + '</div>' +
+      '<div id="koPvBox"'+(s.pv?'':' hidden')+'>' + inp('koKwp', 'Moc PV (14 modułów ≈ 6,4 kWp)', s.kwp, 'kWp') + '</div>' +
     '</div>' +
     '<ul class="wg-res" id="koRes" aria-live="polite"></ul>' +
     '<div class="wg-sum"><span>Pompa ciepła ok. <b class="num" id="koKw"></b></span><span>Prąd za ogrzewanie i CWU <b class="num" id="koZl"></b></span></div>' +

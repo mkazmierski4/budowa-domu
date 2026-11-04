@@ -1,6 +1,6 @@
 /* Ilustracje etapu 03 — Przygotowanie terenu i przyłącza. Liczby z docs/DECYZJE.md (ogrodzenie ok. 60 m, brama min. 4 m, droga 0/63 25–30 cm ok. 120 m² szer. min. 3,5 m, humus 30 cm ok. 190 m³ w hałdzie, dom 13 × 9,5 m, przyłącza w jednym wykopie poniżej 1,0–1,2 m). */
 (function(){
-  const truck = (a,x,y,s) => a.g(a.rect(0,-34,70,26,'blacha',{r:5}) + a.rect(70,-44,34,36,'dachowka',{r:6}) + a.poly([[2,-40],[60,-40],[52,-70],[8,-62]],'maszyna') +
+  const truck = (a,x,y,s) => a.g(a.rect(0,-34,70,26,'blacha',{r:5}) + a.rect(70,-44,34,36,'dachowka-ceg',{r:6}) + a.poly([[2,-40],[60,-40],[52,-70],[8,-62]],'maszyna') +
     '<circle cx="18" cy="-4" r="9" class="il-m c-maszyna"/><circle cx="52" cy="-4" r="9" class="il-m c-maszyna"/><circle cx="88" cy="-4" r="9" class="il-m c-maszyna"/>', {tr:`translate(${x} ${y}) scale(${s||1})`});
   const house = (a,x,y,s) => a.g(a.poly([[0,-30],[26,-52],[52,-30],[52,0],[0,0]],'bloczek') + a.poly([[-4,-30],[26,-56],[56,-30]],'dachowka') + a.rect(20,-18,12,18,'drewno',{r:1}), {tr:`translate(${x} ${y}) scale(${s||1})`});
   const sec = (a,y) => a.rect(20,y,440,320-y,'ziemia',{r:0}) + a.rect(20,y-4,440,10,'trawa',{r:4});
@@ -31,7 +31,7 @@
 
   BUDOWA.addIllus('03-przygotowanie/zaplecze', function(a){
     const s = a.ground(0,254,480,66) + a.rect(60,140,200,114,'blacha',{r:4}) + a.rect(60,132,200,12,'maszyna',{r:3}) + a.rect(80,170,54,84,'maszyna',{r:3}) + a.rect(180,170,60,40,'szklo',{r:3}) +
-      a.rect(120,196,10,18,'dachowka',{r:2}) + a.rect(310,160,64,94,'szklo',{r:6}) + a.rect(304,150,76,14,'drewno',{r:4}) + a.rect(322,186,14,22,'papier',{r:3}) +
+      a.rect(120,196,10,18,'dachowka-ceg',{r:2}) + a.rect(310,160,64,94,'szklo',{r:6}) + a.rect(304,150,76,14,'drewno',{r:4}) + a.rect(322,186,14,22,'papier',{r:3}) +
       a.callout('kon',160,150,100,70,'Kontener 20′',{d:200}) + a.callout('wc',350,170,430,96,'Toaleta z serwisem',{d:350}) + a.num(240,296,'7,5–13 tys. zł',{k:'c'}) + a.pill(110,290,'na kłódkę',{k:'k'});
     return { caption: 'Kontener z wynajmu i toaleta przenośna z serwisem. Dobre ekipy bez tego nie pracują.', svg: a.svg(s,480,320,'Kontener budowlany i toaleta przenośna na działce') };
   });
@@ -68,7 +68,7 @@
   BUDOWA.addIllus('03-przygotowanie/wytyczenie', function(a){
     const P = a.iso(260,90,1.05), C = [[35,52],[165,52],[165,147],[35,147]];
     const base = P.box(0,0,-10,200,200,10,'trawa') + P.line([[35,52,0],[165,52,0],[165,147,0],[35,147,0],[35,52,0]],'il-ln','stroke-dasharray:6 5');
-    const stake = c => P.box(c[0]-3,c[1]-3,0,6,6,32,'drewno') + P.box(c[0]-3,c[1]-3,32,6,6,5,'dachowka');
+    const stake = c => P.box(c[0]-3,c[1]-3,0,6,6,32,'drewno') + P.box(c[0]-3,c[1]-3,32,6,6,5,'dachowka-ceg');
     const tripod = a.line('M66 252L82 196L98 252M82 196V160','il-ln','stroke-width:3') + a.rect(70,146,26,16,'maszyna',{r:4});
     const f1 = a.svg(base + C.map(stake).join('') + tripod + a.person(40,262,{s:.9,arms:[10,60]}) + a.dim(P.P(35,160,0)[0],P.P(35,160,0)[1],P.P(165,160,0)[0],P.P(165,160,0)[1],'13 × 9,5 m',{dx:0,dy:36}) + a.callout('pal',P.P(35,52,30)[0],P.P(35,52,30)[1],110,60,'Paliki w narożach',{d:300}), 480,320,'Geodeta wbija paliki w narożnikach domu');
     const f2 = a.svg(base + C.map(stake).join('') + a.fresh(a.doc(330,200,80,100,{lines:4,stamp:1}),{d:200}) + a.pill(370,180,'Wpis w dzienniku',{k:'w'}) + a.num(110,280,'2–3 godz. w terenie',{k:'t'}) + a.pill(110,250,'+ reper wysokościowy',{k:'r'}), 480,320,'Wytyczenie wpisane do dziennika budowy');
@@ -86,7 +86,7 @@
     const d1 = P.P(20,100,30), d2 = P.P(50,100,0);
     const f1 = a.svg(ground + posts + a.fresh(boards,{d:100}) + a.dim(d1[0]-10,d1[1]+18,d2[0]-10,d2[1]+18,'1,5–2 m',{dx:-20,dy:30}) + a.pill(380,60,'Deski na słupkach',{k:'d'}) + a.pill(380,96,'za krawędzią wykopu',{k:'w'}), 480,320,'Deski na słupkach 1,5–2 m za krawędzią wykopu');
     const f2 = a.svg(ground + posts + boards + a.fresh(strings,{d:100}) + a.pill(380,60,'Żyłki wyznaczają osie ścian',{k:'z',a:'middle'}) + a.num(380,100,'przekątne 16,10 m',{k:'p'}), 480,320,'Żyłki rozciągnięte między ławami pokazują osie ścian');
-    const f3 = a.svg(a.rect(70,150,16,130,'drewno',{r:2}) + a.rect(330,150,16,130,'drewno',{r:2}) + a.board(50,120,320,30) + a.level(110,106,220) + a.rect(200,126,60,14,'dachowka',{r:2}) + a.text(230,138,'±0,00',{a:'middle',b:1}) +
+    const f3 = a.svg(a.rect(70,150,16,130,'drewno',{r:2}) + a.rect(330,150,16,130,'drewno',{r:2}) + a.board(50,120,320,30) + a.level(110,106,220) + a.rect(200,126,60,14,'dachowka-ceg',{r:2}) + a.text(230,138,'±0,00',{a:'middle',b:1}) +
       a.callout('lv',230,120,400,70,'Poziom domu',{d:300}) + a.fresh(a.hand(150,90,{r:-10,s:.7}),{d:200}) + a.ok(232,200,14), 480,320,'Znak poziomu ±0,00 na ławie ciesielskiej');
     return { caption: 'Ławy ciesielskie wyznaczają osie i poziom ±0,00 całego domu. Kontroluj przekątne (16,10 m).', frames: [
       { caption: 'Ławice stawiasz 1,5–2 m za krawędzią wykopu.', svg: f1 }, { caption: 'Żyłki między deskami pokazują osie ścian.', svg: f2 }, { caption: 'Na desce zaznaczasz poziom ±0,00 poziomicą.', svg: f3 }] };

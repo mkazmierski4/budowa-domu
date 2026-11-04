@@ -104,7 +104,7 @@ BUDOWA.addIllus('00-finanse/kredyt-transze', function(a){
   const f2 = a.ground(30,236,420,50) + P.box(0,0,0,110,70,14,'beton') + a.move(P.box(0,0,14,110,10,20,'ceramika'),0,-60) +
     a.person(350,236,{s:.8,kask:true,arms:[20,50]}) + a.doc(380,150,44,56,{stamp:1}) + a.pill(350,60,'Inspekcja banku',{acc:1}) + a.fresh(a.ok(300,150,15),{d:600});
   let st = '';
-  for (let i = 0; i < 6; i++) st += a.fresh(a.rect(46+i*68,236-(i+1)*26,56,(i+1)*26,i < 2 ? 'beton' : i < 4 ? 'ceramika' : 'dachowka',{r:4}) + a.fresh(a.text(74+i*68,226-(i+1)*26,'zł',{a:'middle',b:1})),{d:i*160});
+  for (let i = 0; i < 6; i++) st += a.fresh(a.rect(46+i*68,236-(i+1)*26,56,(i+1)*26,i < 2 ? 'beton' : i < 4 ? 'ceramika' : 'dachowka-ceg',{r:4}) + a.fresh(a.text(74+i*68,226-(i+1)*26,'zł',{a:'middle',b:1})),{d:i*160});
   const f3 = a.ground(30,236,420,50,{trawa:false}) + st + a.num(150,40,'5–8 transz') + a.text(330,40,'wypłata po kilku dniach',{s:1,a:'middle'});
   return { caption:'Pieniądze płyną etapami: bank wypłaca kolejną transzę po inspekcji.', frames:[
     {caption:'Umowa kredytu: 4–8 tygodni na decyzję i umowę.', svg:V(f1,'Podpisanie umowy kredytu na budowę')},

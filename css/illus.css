@@ -8,7 +8,7 @@
   --il-beton:#BCBDB8; --il-chudy:#D5D2C8; --il-stal:#B4633A; --il-stal-d:#80401F; --il-drewno:#E0B77F; --il-wood-d:#9C6B3A;
   --il-ziemia:#B98B5F; --il-trawa:#9DB26C; --il-piasek:#E3CD98; --il-zwir:#C9C1B2;
   --il-kmb:#3B3532; --il-papa:#4C4440; --il-folia:#EBC64A; --il-eps:#F6F4EE; --il-xps:#8EC0D6; --il-welna:#E8CF7E;
-  --il-ceramika:#CF8F68; --il-bloczek:#C4C4BD; --il-woda:#79B6D8; --il-dachowka:#8E4F3A; --il-szklo:#BFDCE6; --il-blacha:#9FA6AB;
+  --il-ceramika:#CF8F68; --il-bloczek:#C4C4BD; --il-woda:#79B6D8; --il-dachowka:#3E444B; --il-dachowka-ceg:#8E4F3A; --il-membrana:#8597A6; --il-szklo:#BFDCE6; --il-blacha:#9FA6AB;
   --il-papier:#FFFDF8; --il-maszyna:#E39A3B; --il-poziomica:#F0C24A; --il-ok:#4E8B4C; --il-bad:#C4553B;
   --il-skin:#EFBE96; --il-skin-d:#C98F68; --il-shirt:#E07B39; --il-pants:#4F6274; --il-helmet:#F3B73A; --il-hair:#6B4A33;
   --il-road:#E2D5C1;
@@ -19,7 +19,7 @@
   --il-beton:#8E908C; --il-chudy:#A19D93; --il-stal:#B8693F; --il-stal-d:#7D3F20; --il-drewno:#B38C58; --il-wood-d:#7A5530;
   --il-ziemia:#86603F; --il-trawa:#6E8150; --il-piasek:#B39E6E; --il-zwir:#8E877A;
   --il-kmb:#151210; --il-papa:#2A2420; --il-folia:#C9A73A; --il-eps:#DAD6CC; --il-xps:#5F94AC; --il-welna:#BFA75E;
-  --il-ceramika:#A86D4D; --il-bloczek:#8F8F89; --il-woda:#4E93B8; --il-dachowka:#6B3A2A; --il-szklo:#7FA6B4; --il-blacha:#737A80;
+  --il-ceramika:#A86D4D; --il-bloczek:#8F8F89; --il-woda:#4E93B8; --il-dachowka:#59616A; --il-dachowka-ceg:#6B3A2A; --il-membrana:#6C8191; --il-szklo:#7FA6B4; --il-blacha:#737A80;
   --il-papier:#E8E2D6; --il-maszyna:#C47F2A; --il-poziomica:#D2A535; --il-ok:#5E9E5B; --il-bad:#D0664B;
   --il-skin:#D9A47D; --il-skin-d:#A9744F; --il-shirt:#C9692C; --il-pants:#3C4B59; --il-helmet:#D9A02A; --il-hair:#3E2B1E;
   --il-road:#3A3229;
@@ -29,7 +29,7 @@
   --il-beton:#8E908C; --il-chudy:#A19D93; --il-stal:#B8693F; --il-stal-d:#7D3F20; --il-drewno:#B38C58; --il-wood-d:#7A5530;
   --il-ziemia:#86603F; --il-trawa:#6E8150; --il-piasek:#B39E6E; --il-zwir:#8E877A;
   --il-kmb:#151210; --il-papa:#2A2420; --il-folia:#C9A73A; --il-eps:#DAD6CC; --il-xps:#5F94AC; --il-welna:#BFA75E;
-  --il-ceramika:#A86D4D; --il-bloczek:#8F8F89; --il-woda:#4E93B8; --il-dachowka:#6B3A2A; --il-szklo:#7FA6B4; --il-blacha:#737A80;
+  --il-ceramika:#A86D4D; --il-bloczek:#8F8F89; --il-woda:#4E93B8; --il-dachowka:#59616A; --il-dachowka-ceg:#6B3A2A; --il-membrana:#6C8191; --il-szklo:#7FA6B4; --il-blacha:#737A80;
   --il-papier:#E8E2D6; --il-maszyna:#C47F2A; --il-poziomica:#D2A535; --il-ok:#5E9E5B; --il-bad:#D0664B;
   --il-skin:#D9A47D; --il-skin-d:#A9744F; --il-shirt:#C9692C; --il-pants:#3C4B59; --il-helmet:#D9A02A; --il-hair:#3E2B1E;
   --il-road:#3A3229;
@@ -53,6 +53,7 @@
 .il .c-kmb{color:var(--il-kmb)} .il .c-papa{color:var(--il-papa)} .il .c-folia{color:var(--il-folia)} .il .c-eps{color:var(--il-eps)} .il .c-xps{color:var(--il-xps)}
 .il .c-welna{color:var(--il-welna)} .il .c-ceramika{color:var(--il-ceramika)} .il .c-bloczek{color:var(--il-bloczek)} .il .c-woda{color:var(--il-woda)}
 .il .c-dachowka{color:var(--il-dachowka)} .il .c-szklo{color:var(--il-szklo)} .il .c-blacha{color:var(--il-blacha)} .il .c-papier{color:var(--il-papier)}
+.il .c-dachowka-ceg{color:var(--il-dachowka-ceg)} .il .c-membrana{color:var(--il-membrana)}
 .il .c-maszyna{color:var(--il-maszyna)} .il .c-poziomica{color:var(--il-poziomica)} .il .c-bad{color:var(--il-bad)}
 .il .il-m{fill:currentColor; stroke:color-mix(in srgb, currentColor 62%, var(--il-line)); stroke-width:1.2; stroke-linejoin:round}
 .il .ft,.il .fl,.il .fr{stroke:color-mix(in srgb, currentColor 60%, var(--il-line)); stroke-width:1; stroke-linejoin:round}

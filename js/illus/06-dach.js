@@ -101,8 +101,8 @@
   const rafters = a => { let s = a.rect(20,262,440,10,'blacha',{r:2}); for (let x = 40; x < 450; x += 60) s += a.rect(x,30,18,232,'drewno',{r:1}); return s; };
   const stapler = '<path d="M-14 -6H14V4H-14Z" class="il-m c-maszyna"/><path d="M-12 4H12V9H-12Z" class="il-m c-kmb"/>';
   BUDOWA.addIllus('06-dach/membrana', function(a){
-    const strip = (y,o) => a.rect(20,y,440,56,'folia',Object.assign({r:1,st:'opacity:.92'},o));
-    const f1 = rafters(a) + a.move(strip(206,{k:'mem'}),-300,0) + `<rect x="452" y="200" width="16" height="68" rx="8" class="il-m c-folia"/>` +
+    const strip = (y,o) => a.rect(20,y,440,56,'membrana',Object.assign({r:1,st:'opacity:.92'},o));
+    const f1 = rafters(a) + a.move(strip(206,{k:'mem'}),-300,0) + `<rect x="452" y="200" width="16" height="68" rx="8" class="il-m c-membrana"/>` +
       a.hand(176,214,{s:.8,hold:stapler}) + a.arrow([[330,180],[336,120],[330,60]]) + a.pill(240,24,'Od okapu ku kalenicy',{acc:1});
     const f2 = rafters(a) + strip(206) + a.move(strip(156,{k:'zak'}),0,-50) + a.rect(20,206,440,6,'kmb',{r:0,st:'opacity:.35'}) +
       a.drops(108,120,3) + a.arrow([[120,140],[124,190],[120,240]]) + a.ok(160,250,12);
@@ -116,7 +116,7 @@
   const T = 'rotate(-22 240 170)', R = (x,y) => { const c = Math.cos(-22*Math.PI/180), s = Math.sin(-22*Math.PI/180), dx = x-240, dy = y-170; return [240+dx*c-dy*s, 170+dx*s+dy*c]; };
   const LX = [50,133,216,299,382];
   const layers = (a,n) => {
-    let s = a.rect(20,186,440,46,'drewno',{r:1,k:'kro'}) + a.rect(20,182,440,4,'folia',{r:0});
+    let s = a.rect(20,186,440,46,'drewno',{r:1,k:'kro'}) + a.rect(20,182,440,4,'membrana',{r:0});
     if (n > 0) s += (n === 1 ? a.move(a.rect(20,170,440,12,'drewno',{r:1,k:'kon'}),0,-40) : a.rect(20,170,440,12,'drewno',{r:1,k:'kon'}));
     if (n > 1) s += LX.map((x,i) => n === 2 ? a.fresh(a.rect(x,158,12,12,'drewno',{r:1,k:'lat'}),{d:i*120}) : a.rect(x,158,12,12,'drewno',{r:1,k:'lat'})).join('');
     if (n > 2) s += LX.map((x,i) => a.fresh(`<path d="M${x-4} 150H${x+96}L${x+92} 160H${x+2}V170H${x-4}Z" class="il-m c-dachowka"/>`,{d:i*90})).join('') +
@@ -142,7 +142,7 @@
     const f1 = rafters(a) + bat + rows + a.move(a.hand(300,96,{s:.85,hold:a.g(tile,{tr:'translate(0 4)'})}),40,-50) +
       a.pill(120,24,'Rząd po rzędzie w górę') + a.num(380,24,'ok. 255 m²');
     // szczegół: dachówka zaczepiona noskiem o łatę, klamra
-    const f2 = a.rect(20,236,440,26,'drewno',{r:1}) + a.rect(20,222,440,14,'drewno',{r:1}) + a.rect(20,218,440,4,'folia',{r:0}) +
+    const f2 = a.rect(20,236,440,26,'drewno',{r:1}) + a.rect(20,222,440,14,'drewno',{r:1}) + a.rect(20,218,440,4,'membrana',{r:0}) +
       [90,250].map(x => a.rect(x,190,40,32,'drewno',{r:1,k:'lat'})).join('') +
       [70,230].map(x => `<path d="M${x} 150H${x+200}L${x+196} 172H${x+64}V194H${x+44}V178H${x-6}Z" class="il-m c-dachowka"/>`).join('') +
       `<path class="il-rb" d="M300 150V140H318V196H290" style="stroke-width:3" data-k="kla"/>`;
@@ -208,7 +208,7 @@
 
   /* 12 ---------- Pod PV, podbitka ---------- */
   BUDOWA.addIllus('06-dach/pod-pv-podbitka', function(a){
-    const f1 = a.rect(20,200,440,46,'drewno',{r:1}) + a.rect(20,196,440,4,'folia',{r:0}) + a.rect(20,184,440,12,'drewno',{r:1}) +
+    const f1 = a.rect(20,200,440,46,'drewno',{r:1}) + a.rect(20,196,440,4,'membrana',{r:0}) + a.rect(20,184,440,12,'drewno',{r:1}) +
       [60,190,320].map(x => a.rect(x,172,14,12,'drewno',{r:1})).join('') + a.tiles(20,158,170,3) + a.tiles(320,158,140,3) +
       a.fresh(`<path class="il-rb" d="M220 200V176H246V128H300" style="stroke-width:6" data-k="hak"/>`) + a.move(a.hand(262,118,{s:.75,hold:a.drill(-6,4,.6)}),40,-30);
     let pv = ''; for (let i = 0; i < 4; i++) for (let j = 0; j < 2; j++) pv += a.rect(110+i*66,70+j*90,60,84,'szklo',{r:3});

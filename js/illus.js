@@ -19,7 +19,7 @@ const still = () => !document.body.animate || matchMedia('(prefers-reduced-motio
 // o = {k: klucz podświetlania, from: [dx,dy] wjazd przy pokazaniu klatki, d: opóźnienie ms, cls, st}
 const ex = o => !o ? '' : (o.k ? ` data-k="${o.k}"` : '') + (o.from ? ` data-from="${o.from.join(' ')}"` : '') + (o.d ? ` data-d="${o.d}"` : '') + (o.st ? ` style="${o.st}"` : '');
 const pts = p => 'M' + p.map(q => r1(q[0])+' '+r1(q[1])).join('L');
-const MATS = 'beton chudy stal drewno ziemia trawa piasek zwir kmb papa folia eps xps welna ceramika bloczek woda dachowka szklo blacha papier';
+const MATS = 'beton chudy stal drewno ziemia trawa piasek zwir kmb papa folia eps xps welna ceramika bloczek woda dachowka dachowka-ceg membrana szklo blacha papier';
 
 /* ---------- Biblioteka elementów (wszystko zwraca string SVG) ---------- */
 const A = {};

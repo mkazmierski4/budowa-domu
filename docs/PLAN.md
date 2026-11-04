@@ -31,9 +31,9 @@ Pliki etapów (wpięte w `index.html`; brakujące silnik pomija). Treść: `cont
 - ✅ 07 Okna, drzwi zewnętrzne, bramy garażowe (SSZ) (12 kroków, 6 decyzji, 12 quizów, widget `kalkulator-okien`; `content/07-okna.js`, `js/widgets/07-okna.js`; etap 125–196 tys., śr. ok. 161 tys. zł, ok. 5 tys. ponad resztę limitu „surowy”)
 - ✅ 08 Elektryka, niskoprądowe, oświetlenie (13 kroków, 7 decyzji, 10 quizów, widget `kalkulator-punktow`; `content/08-elektryka.js`, `js/widgets/08-elektryka.js`; etap 42,3–65 tys., śr. ok. 54 tys. zł z limitu „instal” 270 tys. dla 08–10)
 - ✅ 09 Woda, kanalizacja, ogrzewanie (15 kroków, 6 decyzji, 12 quizów, widget `kalkulator-ogrzewania`; `content/09-woda-ogrzewanie.js`, `js/widgets/09-woda-ogrzewanie.js`; 15 ilustracji, 8 sekwencji w `js/illus/09-woda-ogrzewanie.js`, przegląd 0 błędów, oba motywy i telefon)
-- ⬜ 10 Rekuperacja, fotowoltaika, smart home
-- ⬜ 11 Tynki, wylewki, sucha zabudowa, ocieplenie poddasza
-- ⬜ 12 Elewacja: ocieplenie ścian, tynk, kamień, drewno
+- ✅ 10 Rekuperacja, fotowoltaika, smart home (14 kroków, 7 decyzji, 11 quizów, widget `kalkulator-pv`; `content/10-rekuperacja-pv.js`, `js/widgets/10-rekuperacja-pv.js`; 14 ilustracji, 6 sekwencji w `js/illus/10-rekuperacja-pv.js`, przegląd 0 błędów, oba motywy i telefon; etap 57–88 tys., śr. ok. 73 tys. zł; PV 14 modułów zamiast 8 — viz do poprawy)
+- ✅ 11 Tynki, wylewki, sucha zabudowa, ocieplenie poddasza (13 kroków, 3 decyzje, 11 quizów, widget `kalkulator-wylewki`; `content/11-tynki-wylewki.js`, `js/widgets/11-tynki-wylewki.js`; etap 87,3–129,3 tys., śr. ok. 108 tys. zł z limitu „wykoncz” 540 tys. dla 11–14; 13 ilustracji, 9 sekwencji w `js/illus/11-tynki-wylewki.js`, przegląd 0 błędów, oba motywy i telefon)
+- ✅ 12 Elewacja: ocieplenie ścian, tynk, kamień, drewno (15 kroków, 5 decyzji, 14 quizów, widget `kalkulator-elewacji`; `content/12-elewacja.js`, `js/widgets/12-elewacja.js`; etap 101,3–147 tys., śr. ok. 124 tys. zł z limitu „wykoncz”; 15 ilustracji, 13 sekwencji w `js/illus/12-elewacja.js`, przegląd 0 błędów, oba motywy i telefon)
 - ⬜ 13 Wykończenie: podłogi, łazienki, kuchnia, schody, drzwi
 - ⬜ 14 Umeblowanie i aranżacja
 - ⬜ 15 Ogród: podjazd, taras, ogrodzenie, trawnik, nawadnianie, basen
