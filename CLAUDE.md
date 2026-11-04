@@ -8,7 +8,7 @@ Przeglądarkowy, darmowy poradnik „od działki do klucza”. To encyklopedia z
 - Po skończonym zadaniu: zaktualizuj status w `docs/PLAN.md`, dopisz decyzje do `docs/DECYZJE.md` i zakończ krótkim podsumowaniem (3–5 linii).
 - Bez frameworków i bez build stepu. Czysty HTML/CSS/JS. Strona ma działać po otwarciu `index.html` z dysku (file://), więc nie używamy `fetch()` ani JSON-ów. Treść trzymamy w plikach `.js` ładowanych tagiem `<script>`.
 - Sesje mogą działać **równolegle**. `docs/PLAN.md` i `docs/DECYZJE.md` czytaj ponownie tuż przed edycją i zmieniaj tylko swoje linie. `index.html` ma już tagi dla wszystkich etapów, więc go nie edytuj.
-- Projekt nie jest w gicie. Zanim przerobisz istniejącą makietę, skopiuj ją do `makieta/archiwum/` z datą w nazwie.
+- Repo git na **prywatnym** GitHubie (`git@github-private:mkazmierski4/budowa-domu.git`). **Sesje robocze nie robią commitów ani pushy.** Commituje i pushuje sesja-manager po każdej paczce zadań, bo sesje działają równolegle. Nigdy nie zmieniaj globalnej konfiguracji gita ani logowania `gh`.
 - Po zrobieniu lub zmianie strony otwórz ją użytkownikowi w przeglądarce: `Start-Process "<ścieżka do html>"`.
 - Hosting docelowy: GitHub Pages.
 - Język: polski, z polskimi znakami, UTF-8.
