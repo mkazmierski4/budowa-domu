@@ -17,40 +17,40 @@ BUDOWA.addStage({
       <p>Budżet obejmuje <strong>wszystko</strong>: działkę, projekt, dom w stanie deweloperskim, instalacje, wykończenie, meble i ogród z basenem. Ceny w tej encyklopedii to orientacyjne widełki z 2026 r. dla okolic małego miasta, więc w twojej gminie mogą się różnić o kilkanaście procent.</p>
       <p>Podział, którego trzymają się wszystkie etapy:</p>
       <ul>
-        <li><strong>Działka i formalności:</strong> 330 tys. zł (14,3%)</li>
-        <li><strong>Stan surowy:</strong> 680 tys. zł (29,6%)</li>
-        <li><strong>Instalacje:</strong> 270 tys. zł (11,7%)</li>
-        <li><strong>Wykończenie (z elewacją i meblami):</strong> 540 tys. zł (23,5%)</li>
-        <li><strong>Ogród:</strong> 250 tys. zł (10,9%)</li>
+        <li><strong>Działka i formalności (z odbiorami i przeprowadzką):</strong> 315 tys. zł (13,7%)</li>
+        <li><strong>Stan surowy (z oknami i drzwiami):</strong> 685 tys. zł (29,8%)</li>
+        <li><strong>Instalacje:</strong> 245 tys. zł (10,7%)</li>
+        <li><strong>Wykończenie (z elewacją i meblami):</strong> 545 tys. zł (23,7%)</li>
+        <li><strong>Ogród:</strong> 280 tys. zł (12,2%), pergola dopiero w 2. roku</li>
         <li><strong>Rezerwa:</strong> 230 tys. zł (10%), której etapy nie wydają</li>
       </ul>
       <p>To nie jest sztywny kontrakt. Etapy planują w limitach swoich kategorii, a rezerwę ruszasz dopiero, gdy limit naprawdę pęka. Pasek budżetu w aplikacji pokazuje środek widełek wybranych rozwiązań.</p>`,
     diagram: `<svg viewBox="0 0 360 110" role="img" aria-label="Podział budżetu 2,3 mln zł na pięć kategorii i rezerwę">
-      <rect x="10" y="14" width="49" height="30" style="fill:var(--amber)"/>
-      <rect x="59" y="14" width="101" height="30" style="fill:var(--concrete)"/>
-      <rect x="160" y="14" width="40" height="30" style="fill:var(--water)"/>
-      <rect x="200" y="14" width="80" height="30" style="fill:var(--wood)"/>
-      <rect x="280" y="14" width="37" height="30" style="fill:var(--lawn)"/>
-      <rect x="317" y="14" width="33" height="30" style="fill:var(--rust)"/>
-      <text x="18" y="62">330</text>
-      <text x="100" y="62">680</text>
-      <text x="168" y="62">270</text>
-      <text x="228" y="62">540</text>
-      <text x="289" y="62">250</text>
-      <text x="324" y="62">230</text>
+      <rect x="10" y="14" width="47" height="30" style="fill:var(--amber)"/>
+      <rect x="57" y="14" width="101" height="30" style="fill:var(--concrete)"/>
+      <rect x="158" y="14" width="36" height="30" style="fill:var(--water)"/>
+      <rect x="194" y="14" width="81" height="30" style="fill:var(--wood)"/>
+      <rect x="275" y="14" width="41" height="30" style="fill:var(--lawn)"/>
+      <rect x="316" y="14" width="34" height="30" style="fill:var(--rust)"/>
+      <text x="18" y="62">315</text>
+      <text x="98" y="62">685</text>
+      <text x="164" y="62">245</text>
+      <text x="224" y="62">545</text>
+      <text x="284" y="62">280</text>
+      <text x="322" y="62">230</text>
       <text x="12" y="82">działka</text>
-      <text x="90" y="82">stan surowy</text>
-      <text x="162" y="82">instal.</text>
-      <text x="208" y="82">wykończenie</text>
-      <text x="282" y="96">ogród</text>
+      <text x="88" y="82">stan surowy</text>
+      <text x="158" y="96">instal.</text>
+      <text x="204" y="82">wykończenie</text>
+      <text x="279" y="96">ogród</text>
       <text x="314" y="82">rezerwa</text>
       <text x="10" y="8">tys. zł, razem 2 300</text>
     </svg>
     <figcaption>Podział budżetu na kategorie. Szerokość pasów odpowiada kwotom.</figcaption>`,
     tips: [
       "<b>Zapisz budżet w arkuszu od pierwszego dnia.</b> Jedna kolumna „plan”, jedna „umowa”, jedna „zapłacone”. Po kwartale wiesz, gdzie uciekają pieniądze.",
-      "<b>Wykończenie to największe pole do rozjazdu.</b> Płytki, podłogi, kuchnia i łazienka potrafią różnić się trzykrotnie w cenie przy tym samym metrażu. Dlatego ma 540 tys. zł, a nie „co zostanie”.",
-      "<b>Najpierw dom, potem ogród.</b> Ogród z basenem (250 tys. zł) można rozłożyć na 2 lata po wprowadzeniu się. Dom nie.",
+      "<b>Wykończenie to największe pole do rozjazdu.</b> Płytki, podłogi, kuchnia i łazienka potrafią różnić się trzykrotnie w cenie przy tym samym metrażu. Dlatego ma 545 tys. zł, a nie „co zostanie”.",
+      "<b>Najpierw dom, potem ogród.</b> Ogród z basenem (280 tys. zł) można rozłożyć na 2 lata po wprowadzeniu się: pergolę stawiasz w 2. roku na stopach wylanych od razu. Dom nie.",
       "<b>Liczby z internetu traktuj jak punkt wyjścia.</b> Zbierz 2–3 oferty od lokalnych ekip, zanim zaufasz jakiejkolwiek tabeli, także tej."
     ],
     mistakes: [
@@ -184,7 +184,7 @@ BUDOWA.addStage({
     time: "decyzja jednorazowa", team: "ty",
     facts: [["Rezerwa", "230 000 zł (10%)", "wallet"], ["Limity kategorii", "2 070 000 zł", "wallet"]],
     body: `
-      <p>Rezerwa to <strong>nie osobny dodatek</strong>, tylko część 2,3 mln zł. Etapy planujesz w limitach pięciu kategorii, razem <strong>2,07 mln zł</strong>, a <strong>230 tys. zł</strong> trzymasz na koncie albo w depozycie jako osobną kategorię „rezerwa”, której etapy nie wydają.</p>
+      <p>Rezerwa to <strong>nie osobny dodatek</strong>, tylko część 2,3 mln zł. Etapy planujesz w limitach pięciu kategorii (315 + 685 + 245 + 545 + 280 tys. zł), razem <strong>2,07 mln zł</strong>, a <strong>230 tys. zł</strong> trzymasz na koncie albo w depozycie jako osobną kategorię „rezerwa”, której etapy nie wydają.</p>
       <p>Co zjada rezerwę: <strong>prace dodatkowe</strong> (grunt gorszy niż w opinii, wymiana części rur), <strong>wzrost cen</strong> materiałów między ofertą a zakupem, <strong>zmiany w trakcie budowy</strong> (dodatkowe gniazdka, większe okno, zmiana płytek) i <strong>przestoje</strong>, gdy ekipa nie przyjedzie, a ty płacisz kolejny miesiąc za wynajem mieszkania i odsetki.</p>`,
     decision: {
       question: "Jaka rezerwa?",

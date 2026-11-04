@@ -40,7 +40,7 @@ Pliki etapów (wpięte w `index.html`; brakujące silnik pomija). Treść: `cont
 - ✅ 16 Odbiory, zgłoszenie zakończenia, przeprowadzka (15 kroków, 6 decyzji, 8 quizów, widget `lista-odbiorow`; `content/16-odbiory.js`, `js/widgets/16-odbiory.js`; etap 6,9–15,5 tys., śr. ok. 11 tys. zł z kategorii „działka i formalności”; 15 ilustracji, 8 sekwencji w `js/illus/16-odbiory.js`, przegląd 0 błędów, oba motywy i telefon)
 
 ## Faza 4 — Szlif i publikacja
-- ⬜ F4: przegląd spójności budżetu, wyszukiwarka, fonty lokalnie (offline), publikacja na GitHub Pages
+- ✅ F4: szlif przed publikacją → `prompts/F4-szlif.md` · budżet 2 063 731 zł (kategorie w limitach ±0,4 tys.), pergola na 2. rok (15), okap przyścienny (13), pełny test headless (17 etapów, 230 kroków, oba motywy, 1366 i 390 px: 0 błędów), poziome przewijanie przez opis wizualizacji naprawione, usunięty tag nieistniejącego `js/widgets/01-dzialka.js`, kontrast napisów w ilustracjach (przegląd: 0 błędów w 4 wariantach), wyszukiwarka Ctrl+K, ekran powitalny, fonty lokalnie, favicon, meta/OG, `README.md`, `.nojekyll`; do zrobienia przy publikacji: włączyć Pages, ewentualnie obrazek OG
 
 ## Faza 5 — Ilustracje kroków (1 sesja = 1 etap, pliki `js/illus/NN-slug.js`, tagi już są w `index.html`)
 - ✅ F5a: system ilustracji `js/illus.js` + `css/illus.css`, wpięcie w silnik (`BUDOWA.addIllus`), wzorce: `04-fundamenty` (zbrojenie ław 3 klatki, izolacje, XPS), `02-projekt` (droga do pozwolenia) → `prompts/F5a-ilustracje.md`

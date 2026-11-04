@@ -646,13 +646,14 @@ BUDOWA.addStage({
     facts: [["Gniazda i łączniki", "jedna seria, ok. 150–200 punktów", "bulb"], ["Pomiary", "protokół elektryczny", "listcheck"]],
     body: `
       <p><strong>Hydraulik</strong>: miski WC na stelażach z przyciskami, umywalki z syfonami, baterie, wanna z syfonem, deszczownice, zawory kątowe pod zlew i zmywarkę (sama kuchnia w etapie 14), pralka w pomieszczeniu technicznym, drabinki łazienkowe (etap 09). Na końcu próba szczelności i kontrola temperatury wody.</p>
-      <p><strong>Elektryk</strong>: osprzęt z jednej serii, oczka i taśmy LED, lustra łazienkowe, termostaty i panele sterowania (etap 10), <strong>okap obiegowy nad wyspą</strong> z filtrem węglowym (etap 10; model wybierasz razem z AGD w etapie 14). Lampy dekoracyjne zawiesza się w etapie 14. Koszt osprzętu i pomiarów jest już w etapie 08.</p>
+      <p><strong>Elektryk</strong>: osprzęt z jednej serii, oczka i taśmy LED, lustra łazienkowe, termostaty i panele sterowania (etap 10), <strong>okap obiegowy przyścienny</strong> z filtrem węglowym nad płytą indukcyjną przy ścianie, 65–75 cm nad płytą (etap 10; zlew i zmywarka są w wyspie, a model okapu wybierasz razem z AGD w etapie 14). Lampy dekoracyjne zawiesza się w etapie 14. Koszt osprzętu i pomiarów jest już w etapie 08.</p>
       <p>Po białym montażu elektryk wykonuje <strong>pomiary</strong> (izolacja, pętla zwarcia, wyłączniki różnicowoprądowe, uziemienie) i wystawia protokół, który trafia do teczki odbioru (etap 16).</p>`,
-    cost: { min: 5500, max: 11500, note: "robocizna hydraulika, syfony, zawory kątowe, wężyki, okap obiegowy wyspowy ok. 2–5 tys.; osprzęt elektryczny w etapie 08" },
+    cost: { min: 5000, max: 10000, note: "robocizna hydraulika, syfony, zawory kątowe, wężyki, okap obiegowy przyścienny z montażem ok. 1,5–3,5 tys.; osprzęt elektryczny w etapie 08" },
     tips: [
       "<b>Puszki czyste przed montażem.</b> Farba i tynk w puszce utrudniają montaż i mogą zabrudzić zaciski; elektryk przedmuchuje każdą.",
       "<b>Ramki w poziomie, w jednej linii.</b> Wysokości z etapu 08 liczone od gotowej podłogi: gniazda ok. 30 cm, łączniki ok. 105–110 cm.",
       "<b>Zawory kątowe z filtrem siateczkowym.</b> Resztki z instalacji nie zablokują perlatorów i termostatów.",
+      "<b>Okap przyścienny, nie wyspowy.</b> Płyta stoi przy ścianie, więc okap wisi na ścianie nad nią: jest tańszy od wyspowego o ok. 1–2 tys. zł, lepiej łapie opary i nie wymaga konstrukcji w suficie. Gniazdo nad szafkami zaplanuj w etapie 08.",
       "<b>Silikon sanitarny po montażu ceramiki.</b> Misa WC i umywalki odsunięte od ściany o grubość silikonu, bez szczelin, w których rośnie pleśń."
     ],
     mistakes: [

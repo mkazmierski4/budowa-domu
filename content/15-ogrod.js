@@ -12,7 +12,7 @@ BUDOWA.addStage({
     title: "Projekt ogrodu i kolejność prac",
     lead: "Ogród robi się od dołu do góry: najpierw to, co wymaga koparki i dźwigu, potem rury i kable, potem nawierzchnie, a trawnik i rośliny na samym końcu. Odwrotna kolejność kończy się rozjeżdżonym trawnikiem i rozkopanym podjazdem.",
     time: "2–4 tyg. projektu", team: "architekt krajobrazu, ty",
-    facts: [["Ogród", "ok. 1000 m² (działka 1200 m²)", "house"], ["Limit kategorii", "250 tys. zł", "wallet"], ["Sezon prac", "kwiecień–październik", "sun"]],
+    facts: [["Ogród", "ok. 1000 m² (działka 1200 m²)", "house"], ["Limit kategorii", "280 tys. zł", "wallet"], ["Sezon prac", "kwiecień–październik", "sun"]],
     body: `
       <p>Na działce ok. 30 × 40 m dom z garażem zajmuje ok. 170 m², wjazd jest od północy, a <strong>taras, basen i większość ogrodu od południa</strong>. Projekt ogrodu rozkłada na planie: podjazd i ścieżki, taras, basen 4,2 × 8,5 m, trawnik ok. 600 m², żywopłot, drzewa, pergolę, domek dla dzieci, miejsce na kubły i drewno.</p>
       <p>Najważniejsza część projektu to <strong>kolejność</strong> i to, czego nie widać: trasy rur deszczówki, kabli do basenu, bramy i lamp, rur nawadniania. Rysuje się je na jednym planie z wymiarami od narożników domu, żeby za 10 lat wiedzieć, gdzie nie kopać.</p>
@@ -44,7 +44,7 @@ BUDOWA.addStage({
       "<b>Najpierw basen, potem reszta.</b> Wykop basenu to ok. 70–90 m³ ziemi i kilkanaście kursów wywrotki, a niecka poliestrowa przyjeżdża na naczepie i wchodzi dźwigiem. Po ułożonym podjeździe i trawniku nikt tam już nie wjedzie.",
       "<b>Ogrodzenie tymczasowe zostaje.</b> Panele z etapu 03 zdejmij dopiero, gdy wjadą ostatnie ciężkie dostawy. Docelowe ogrodzenie i bramę montuj po podjeździe albo równolegle z nim.",
       "<b>Planuj w czasie.</b> Ogród to 3–5 miesięcy pracy kilku ekip. Rośliny sadzi się wiosną albo jesienią, trawnik sieje w kwietniu–maju albo w sierpniu–wrześniu.",
-      "<b>Ogród wychodzi ok. 225–350 tys. zł (śr. ok. 288 tys.) przy limicie 250 tys.</b> Na 2. rok przesuń to, co lekkie: zadaszenie szklane tarasu (ok. 27 tys.; stopy słupów i konsole zrób od razu), pergolę (ok. 8,5 tys.; stopy od razu) i część drzew. Basenu nie przesuwaj: koparka i dźwig zniszczyłyby gotowy ogród."
+      "<b>Ogród mieści się w limicie 280 tys. zł, bo pergola idzie na 2. rok.</b> Stopy pod jej słupy wylej od razu, przed trawnikiem (ok. 1 tys. zł), a samą pergolę (ok. 8,5 tys.) postaw rok później. Gdy oferty wyjdą drożej, następne w kolejce do przesunięcia są zadaszenie szklane tarasu (ok. 27 tys.; stopy słupów i konsole od razu) i część drzew. Basenu nie przesuwaj: koparka i dźwig zniszczyłyby gotowy ogród."
     ],
     mistakes: [
       "<b>Trawnik przed podjazdem.</b> Gruszka z betonem, wywrotka z kostką i dźwig rozjeżdżają go w jeden dzień.",
@@ -788,32 +788,32 @@ BUDOWA.addStage({
     title: "Pergola, domek dla dzieci, kubły i drewno",
     lead: "Ostatnie elementy ogrodu: pergola z pnączami, domek ze zjeżdżalnią w zasięgu wzroku z kuchni, wiata na kubły przy bramie i drewutnia na drewno do kominka.",
     time: "1–2 tyg.", team: "1–2 cieśli / montażystów",
-    facts: [["Pergola", "ok. 3 × 4 m", "house"], ["Strefa pod zjeżdżalnią", "ok. 1,5–2 m wolnego miejsca", "shield"], ["Drewno", "ok. 3–5 mp na sezon", "rebar"]],
+    facts: [["Pergola", "ok. 3 × 4 m, w 2. roku", "house"], ["Strefa pod zjeżdżalnią", "ok. 1,5–2 m wolnego miejsca", "shield"], ["Drewno", "ok. 3–5 mp na sezon", "rebar"]],
     body: `
-      <p><strong>Pergola</strong> ok. 3 × 4 m z drewna (modrzew jak deska na elewacji, etap 12) przy basenie albo na końcu ścieżki, z pnączami: winobluszcz, powojnik, róża pnąca. Słupy na stopach betonowych z kotwami, nie wkopane w ziemię.</p>
+      <p><strong>Pergola</strong> ok. 3 × 4 m z drewna (modrzew jak deska na elewacji, etap 12) przy basenie albo na końcu ścieżki, z pnączami: winobluszcz, powojnik, róża pnąca. Słupy na stopach betonowych z kotwami, nie wkopane w ziemię. W planie domu referencyjnego <strong>pergolę stawiasz w 2. roku</strong>, żeby ogród zmieścił się w limicie 280 tys. zł, ale <strong>stopy z kotwami wylewasz od razu</strong>, przed humusem i trawnikiem. Rok później cieśla przykręca słupy bez kopania w gotowym ogrodzie.</p>
       <p><strong>Domek dla dzieci na palach ze zjeżdżalnią</strong> stoi po przeciwnej stronie ogrodu niż basen, ale w <strong>widoku z kuchni i tarasu</strong>. Pod zjeżdżalnią i wokół domku <strong>nawierzchnia amortyzująca</strong> (zrębki, piasek lub płyty gumowe ok. 30 cm), nie trawa i nie kostka.</p>
       <p><strong>Wiata na kubły</strong> przy bramie od frontu, na utwardzonym podłożu: 4–5 pojemników (zmieszane, papier, szkło, metale i tworzywa, bio). Bioodpady możesz kompostować w ogrodzie. <strong>Drewutnia</strong> przy garażu albo przy wejściu na taras: zadaszona, przewiewna z boków, drewno na podkładach nad ziemią.</p>`,
     cost: { min: 7000, max: 14000, note: "domek ze zjeżdżalnią i nawierzchnią amortyzującą, wiata śmietnikowa, drewutnia" },
     decision: {
       question: "Jaka pergola?",
-      intro: "Koszt z montażem i stopami, ok. 3 × 4 m.",
-      chosen: "drewno",
+      intro: "Koszt z montażem i stopami, ok. 3 × 4 m. W planie pergola czeka na 2. rok, a stopy robisz teraz.",
+      chosen: "pozniej",
       options: [
         { id: "drewno", name: "Drewniana (modrzew) z pnączami",
           cost: { min: 6000, max: 11000 }, time: "3–5 dni", note: "słupy 12 × 12, stopy z kotwami",
           pros: ["Spójna z deską na elewacji", "Pnącza zarastają ją w 2–3 lata"],
           cons: ["Olejowanie co 2–3 lata"],
-          why: "Tańsza i cieplejsza w wyglądzie, pasuje do modrzewia z elewacji." },
+          why: "Gdy budżet ogrodu ma zapas już w 1. roku. Tańsza i cieplejsza w wyglądzie niż aluminium, pasuje do modrzewia z elewacji. To też wariant, który stawiasz w 2. roku." },
         { id: "alu", name: "Aluminiowa (antracyt)",
           cost: { min: 9000, max: 16000 }, time: "2–3 dni", note: "systemowa",
           pros: ["Bez konserwacji", "Pasuje do zadaszenia tarasu i stolarki"],
           cons: ["Drożej o ok. 3–5 tys. zł", "Chłodniejsza w wyglądzie"],
           why: "Gdy liczy się zero konserwacji i spójność z antracytową stolarką." },
-        { id: "pozniej", name: "Pergola w 2. roku",
-          cost: { min: 0, max: 0 }, time: "—", note: "teraz tylko stopy fundamentowe",
-          pros: ["Odciąża budżet pierwszego roku"],
-          cons: ["Pnącza zaczynają rosnąć rok później"],
-          why: "Najprostsza oszczędność, jeśli ogród przekracza limit. Stopy pod słupy wylej od razu, przed trawnikiem." }
+        { id: "pozniej", name: "Pergola w 2. roku, stopy teraz",
+          cost: { min: 700, max: 1500 }, time: "1 dzień", note: "teraz 4 stopy z kotwami; drewniana pergola ok. 6–11 tys. zł w 2. roku",
+          pros: ["Ogród mieści się w limicie 280 tys. zł", "Słupy staną na gotowych stopach, bez kopania w trawniku", "Pnącza możesz posadzić od razu przy stopach"],
+          cons: ["Cień nad ławką dopiero rok później"],
+          why: "Najprostsza oszczędność bez szkody dla ogrodu: pergola nie wymaga ciężkiego sprzętu, więc spokojnie poczeka rok. Stopy wylej od razu, przed humusem i trawnikiem, i zaznacz je na planie tras." }
       ]
     },
     tips: [
@@ -832,7 +832,7 @@ BUDOWA.addStage({
       ["<b>Miejsce na odpady.</b> Odległości od okien i granicy wg warunków technicznych i regulaminu gminy", "zapytaj projektanta lub w gminie"]
     ],
     checklist: [
-      "Stopy pergoli z kotwami, słupy nad gruntem",
+      "Stopy pergoli z kotwami wylane przed trawnikiem, zaznaczone na planie",
       "Domek w widoku z kuchni, z dala od basenu, z nawierzchnią amortyzującą",
       "Wiata na kubły przy bramie, na utwardzeniu",
       "Drewutnia zadaszona i przewiewna"

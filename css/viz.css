@@ -101,7 +101,8 @@
 .viz .vz-loupe{position:absolute; left:1.5%; top:2%; width:25%; aspect-ratio:1}
 .viz .vz-loupe svg{display:block; width:100%; height:100%; overflow:visible; transform-origin:50% 50%}
 .viz .vz-detail{margin-top:12px; border-top:1px solid var(--vz-rule); padding-top:4px}
-.viz .vz-detail-text{display:flex; gap:10px; align-items:baseline; margin:10px 2px 0; font-size:14px; color:var(--vz-ink-2)}
+.viz .vz-detail-text{display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; row-gap:2px; margin:10px 2px 0; font-size:14px; color:var(--vz-ink-2)}
+.viz .vz-detail-text span{min-width:0; flex:1 1 220px}
 .viz .vz-detail-text b{color:var(--vz-accent); font-weight:650; white-space:nowrap}
 .viz .vz-det-list{margin:6px 0 0; padding-left:22px; columns:2 280px; column-gap:28px; font-size:13.5px; color:var(--vz-ink-2)}
 .viz .vz-det-list li{break-inside:avoid; margin-bottom:2px}

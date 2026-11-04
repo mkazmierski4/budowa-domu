@@ -4,9 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Przegląd ilustracji</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../css/fonts.css">
 <link rel="stylesheet" href="../css/viz.css">
 <link rel="stylesheet" href="../css/illus.css">
 <script>
@@ -234,6 +232,23 @@ function check(svg){
     const x = Math.max(vb.x, b.x), y = Math.max(vb.y, b.y);
     add({x, y, w:Math.max(6, Math.min(vb.x + vb.width, b.x + b.w) - x), h:Math.max(6, Math.min(vb.y + vb.height, b.y + b.h) - y)},
       `${e.tagName === 'text' ? 'Tekst ' + nm(e) : 'Rysunek'} wychodzi poza kadr o ${Math.round(o)} px`);
+  });
+
+  // 5. słaby kontrast napisu z kształtem, na którym stoi (zależy od motywu)
+  const rgb = c => { const m = String(c).match(/-?[\d.]+/g); if (!m || m.length < 3 || (m.length > 3 && +m[3] === 0)) return null;
+    const v = m.slice(0, 3).map(Number); return /color\(/.test(c) ? v.map(x => x * 255) : v; };
+  const lum = v => v.map(x => { x /= 255; return x <= .03928 ? x / 12.92 : Math.pow((x + .055) / 1.055, 2.4); }).reduce((a, x, i) => a + x * [.2126, .7152, .0722][i], 0);
+  texts.forEach(t => {
+    const tb = B(t); if (!tb.w) return;
+    const cx = tb.x + tb.w/2, cy = tb.y + tb.h/2; let best = null;
+    shapes.forEach(s => { const b = s.b;
+      if (cx < b.x || cx > b.x + b.w || cy < b.y || cy > b.y + b.h) return;
+      if (!(s.e.compareDocumentPosition(t) & Node.DOCUMENT_POSITION_FOLLOWING)) return;
+      if (!best || area(b) < area(best.b)) best = s; });
+    if (!best) return;
+    const a = rgb(getComputedStyle(t).fill), c = rgb(getComputedStyle(best.e).fill); if (!a || !c) return;
+    const la = lum(a), lc = lum(c), r = (Math.max(la, lc) + .05) / (Math.min(la, lc) + .05);
+    if (r < 3) add(tb, `Słaby kontrast napisu ${nm(t)} z tłem (${r.toFixed(1)}:1)`);
   });
 
   // znaki korekty

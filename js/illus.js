@@ -342,9 +342,48 @@ function fit(root){
     if (!B){ all = false; return; }
     if (ILL.auto) arrange(svg, B);
     relink(svg, B);
+    if (ILL.auto) inkFind(svg, B);
   });
   return all;
 }
+
+/* ---------- Kontrast napisów: napis stojący na kształcie dostaje ciemny albo jasny tusz ----------
+   Kształt pod napisem szukamy raz (po rozsuwaniu), a tusz liczymy od nowa po każdej zmianie motywu,
+   bo materiały mają inne kolory w jasnym i ciemnym motywie (np. papier). */
+const SHAPES = 'rect.il-m, path.il-m, circle.il-m, ellipse.il-m, path.ft, path.fl, path.fr';
+function inkFind(svg, B){
+  const shapes = [...svg.querySelectorAll(SHAPES)].filter(e => !e.closest('.il-pill') && !e.classList.contains('il-panel')).map(e => ({e, b:B(e)}));
+  svg.querySelectorAll('text').forEach(t => {
+    if (t.closest('.il-pill, .il-stop, .il-mk') || t.classList.contains('il-out') || !t.textContent.trim()) return;
+    const tb = B(t); if (!tb.w) return;
+    const cx = tb.x + tb.w/2, cy = tb.y + tb.h/2; let best = null;
+    shapes.forEach(s => { const b = s.b;
+      if (cx < b.x || cx > b.x + b.w || cy < b.y || cy > b.y + b.h) return;
+      if (!(s.e.compareDocumentPosition(t) & Node.DOCUMENT_POSITION_FOLLOWING)) return;
+      if (!best || b.w*b.h < best.b.w*best.b.h) best = s; });
+    t._bg = best ? best.e : null;
+  });
+  ink(svg);
+}
+const rgb = c => { const m = String(c).match(/-?[\d.]+/g); if (!m || m.length < 3 || (m.length > 3 && +m[3] === 0)) return null;
+  const v = m.slice(0, 3).map(Number); return /color\(/.test(c) ? v.map(x => x*255) : v; };
+const lum = v => v.map(x => { x /= 255; return x <= .03928 ? x/12.92 : Math.pow((x+.055)/1.055, 2.4); }).reduce((a, x, i) => a + x*[.2126,.7152,.0722][i], 0);
+const ratio = (a, b) => (Math.max(a, b) + .05) / (Math.min(a, b) + .05);
+function ink(svg){
+  svg.querySelectorAll('text').forEach(t => {
+    if (t._bg === undefined) return;
+    t.classList.remove('il-ink-d', 'il-ink-l');
+    if (!t._bg) return;
+    const f = rgb(getComputedStyle(t).fill), c = rgb(getComputedStyle(t._bg).fill); if (!f || !c) return;
+    const lb = lum(c);
+    if (ratio(lum(f), lb) >= 3) return;
+    t.classList.add(ratio(.012, lb) >= ratio(.9, lb) ? 'il-ink-d' : 'il-ink-l');
+  });
+}
+// zmiana motywu (przycisk albo ustawienie systemu): przelicz tusz we wszystkich ilustracjach
+function reink(){ requestAnimationFrame(() => document.querySelectorAll('.il svg').forEach(ink)); }
+new MutationObserver(reink).observe(document.documentElement, {attributes:true, attributeFilter:['data-theme']});
+if (window.matchMedia){ const mq = matchMedia('(prefers-color-scheme: dark)'); if (mq.addEventListener) mq.addEventListener('change', reink); }
 // prostokąty w jednostkach viewBox (z uwzględnieniem wszystkich transformacji)
 function boxer(svg){
   const vb = svg.viewBox && svg.viewBox.baseVal, r = svg.getBoundingClientRect();

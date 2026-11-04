@@ -1,8 +1,8 @@
 /* Widget „kalkulator-ogrodu”: powierzchnie i długości (podjazd, taras, trawnik, ogrodzenie, basen) → koszt, czas pracy ekip
-   i porównanie z limitem kategorii „ogród” 250 tys. zł. Stawki to środek widełek z kroków etapu 15, z robocizną.
+   i porównanie z limitem kategorii „ogród” 280 tys. zł (pergola w 2. roku, stopy od razu). Stawki to środek widełek z kroków etapu 15, z robocizną.
    Ceny orientacyjne, 2026 r., okolice małego miasta. */
 BUDOWA.addWidget('kalkulator-ogrodu', function(el, api){
-  var f = api.fmt, LIMIT = 250000;
+  var f = api.fmt, LIMIT = 280000;
   // zł/m² lub zł/mb z robocizną; dni: wydajność ekipy (m² lub mb na dzień)
   var KOSTKA = 200, KOSTKA_D = 12;              // ok. 110 m² na podbudowie z etapu 03
   var TARAS = 580, TARAS_D = 4;                  // płyta ze spadkiem + gres na wspornikach
@@ -18,9 +18,9 @@ BUDOWA.addWidget('kalkulator-ogrodu', function(el, api){
   };
   // reszta etapu (środek widełek z kroków): projekt, odwodnienie, opaska, humus, oświetlenie, nasadzenia, domek, wiaty
   var RESZTA = [['projekt ogrodu', 4500], ['deszczówka i skrzynki rozsączające', 10000], ['opaska żwirowa', 4000], ['humus i niwelacja', 5000],
-                ['oświetlenie 12–24 V', 8000], ['żywopłot, drzewa, rabaty', 12500], ['domek, wiata na kubły, drewutnia', 10500]];
+                ['oświetlenie 12–24 V', 8000], ['żywopłot, drzewa, rabaty', 12500], ['domek, wiata na kubły, drewutnia', 10500], ['stopy pod pergolę', 1100]];
   var PERGOLA = 8500;
-  var s = { podjazd:110, taras:32, dach:true, trawnik:600, tr:'siew', naw:true, front:25, boki:110, brama:true, basen:'pol', pergola:true };
+  var s = { podjazd:110, taras:32, dach:true, trawnik:600, tr:'siew', naw:true, front:25, boki:110, brama:true, basen:'pol', pergola:false };
   var sv = api.get(); if (sv) for (var x in s) if (sv[x] !== undefined) s[x] = sv[x];
 
   function seg(name, map, cur){
@@ -33,7 +33,7 @@ BUDOWA.addWidget('kalkulator-ogrodu', function(el, api){
   function tg(id, lab, on){ return '<label class="tg"><input type="checkbox" id="'+id+'"'+(on?' checked':'')+'><span class="sw"></span>'+lab+'</label>'; }
 
   el.innerHTML =
-    '<div class="wg-h"><span class="acc-ic"><svg class="ico" aria-hidden="true"><use href="#i-calc"/></svg></span><span>Kalkulator ogrodu<small>Powierzchnie i długości → koszt, czas ekip i limit 250 tys. zł</small></span></div>' +
+    '<div class="wg-h"><span class="acc-ic"><svg class="ico" aria-hidden="true"><use href="#i-calc"/></svg></span><span>Kalkulator ogrodu<small>Powierzchnie i długości → koszt, czas ekip i limit 280 tys. zł</small></span></div>' +
     '<div class="wg-f">' +
       inp('koPj', 'Podjazd i ścieżki (kostka)', s.podjazd, 'm²') +
       inp('koTa', 'Taras (gres na wspornikach)', s.taras, 'm²') +
@@ -46,7 +46,7 @@ BUDOWA.addWidget('kalkulator-ogrodu', function(el, api){
         tg('koDach', 'Zadaszenie szklane tarasu', s.dach) +
         tg('koNaw', 'Nawadnianie automatyczne', s.naw) +
         tg('koBr', 'Brama przesuwna z napędem i furtka', s.brama) +
-        tg('koPe', 'Pergola', s.pergola) +
+        tg('koPe', 'Pergola już w 1. roku (plan: w 2. roku)', s.pergola) +
       '</div>' +
     '</div>' +
     '<ul class="wg-res" id="koRes" aria-live="polite"></ul>' +
@@ -77,8 +77,8 @@ BUDOWA.addWidget('kalkulator-ogrodu', function(el, api){
     add('Reszta etapu', RESZTA.map(function(x){ return x[0]; }).join(', '), r, 15);
     var over = tot - LIMIT;
     rows += over > 0
-      ? row('<span style="color:var(--red)">Ponad limit o '+k(over)+'</span>', 'do 2. roku: zadaszenie tarasu (ok. 27 tys.), pergola (ok. 8,5 tys.), część drzew; basenu nie przesuwaj, bo potrzebuje ciężkiego sprzętu', '!', 'sub')
-      : row('W limicie, zostaje '+k(-over), 'limit kategorii „ogród” 250 tys. zł', '✓', 'sub');
+      ? row('<span style="color:var(--red)">Ponad limit o '+k(over)+'</span>', 'do 2. roku: '+(s.pergola ? 'pergola (ok. 8,5 tys.), ' : '')+'zadaszenie tarasu (ok. 27 tys.), część drzew; basenu nie przesuwaj, bo potrzebuje ciężkiego sprzętu', '!', 'sub')
+      : row('W limicie, zostaje '+k(-over), 'limit kategorii „ogród” 280 tys. zł'+(s.pergola ? '' : ', pergola w 2. roku'), '✓', 'sub');
     $('#koRes').innerHTML = rows;
     var a = $('#koT'), c = $('#koAll');
     a.textContent = 'ok. '+nf(d/5, 0)+' tyg.'; c.textContent = k(tot);
